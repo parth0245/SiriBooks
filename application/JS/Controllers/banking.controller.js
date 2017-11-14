@@ -40,7 +40,9 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         return columns;
       };
 
-      
+    $scope.getCompanyLedger = function(row,column){
+        $state.go('Home.bankLedger');
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Banking');
     $scope.gridOptions.treeRowHeaderAlwaysVisible = false;
     $scope.gridOptions.enableRowSelection = false;
@@ -53,7 +55,11 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         cellTemplate : cellTemplate},
         { field: 'subGroupName' ,grouping: { groupPriority: 2 },
         cellTemplate: cellTemplate},
-        { field: 'ledgerName'},
+        { field: 'ledgerName',
+        cellTemplate : '<div>'+
+        '<div ng-click="grid.appScope.getCompanyLedger(row,col)" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div>'+
+           '</div>'
+        },
         { field: 'balance' , 
         treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
         customTreeAggregationFinalizerFn: function( aggregation ) {

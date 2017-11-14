@@ -48,13 +48,20 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
         cellTemplate : cellTemplate},
         { field: 'subGroupName' ,grouping: { groupPriority: 2 },
         cellTemplate : cellTemplate},
-        { field: 'ledgerName'},
+        { field: 'ledgerName',
+        cellTemplate : '<div>'+
+        '<div ng-click="grid.appScope.getCompanyLedger(row,col)" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div>'+
+           '</div>'
+        },
         { field: 'balance' , 
         treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
         customTreeAggregationFinalizerFn: function( aggregation ) {
           aggregation.rendered = aggregation.value;
         }}
 ];
+$scope.getCompanyLedger = function(row,column){
+    $state.go('Home.companyLedgers');
+}
 $scope.gridOptions.showTreeExpandNoChildren = true;
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;

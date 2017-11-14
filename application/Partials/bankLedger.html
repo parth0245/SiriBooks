@@ -1,0 +1,65 @@
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
+        <div class="sectionSubHeading">
+            <h3>Ledger of : Bank Name</h3>
+        </div>
+        <div class="topPadding20">
+            <md-content>
+                <form name="companyLedgerForm" style="background-color:#f5f6f8">
+                            <div layout="row" class="topPadding10">
+                                    <md-input-container flex="55">
+                                        <label>Address</label>
+                                        <input name="add" ng-model="add">
+                                    </md-input-container>
+                                    <md-input-container flex="25"  flex-offset="5">
+                                            <label>Account No.</label>
+                                            <input name="contact" ng-model="contact">
+                                    </md-input-container>
+                            </div>
+                            <div layout="row" class="sectionSubHeading">
+                                <h3>Select Period</h3>
+                            </div>
+                            <div layout="row" class="topPadding30">
+                                <md-input-container flex="25">
+                                    <label>From Date</label>
+                                    <md-datepicker ng-model="date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                                </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                    <label>To Date</label>
+                                    <md-datepicker ng-model="date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                                </md-input-container>
+                                <md-button class="md-raised md-primary ifBold" flex-offset="5">View</md-button>
+                                <md-button class="md-raised ifBold" flex-offset="5">Reset</md-button>
+                            </div>
+                </form>
+            </md-content>
+        </div>
+        <div class="pagingPart col-xs-3 col-xs-offset-8 paddingTop100 paddingBottom10 paddingLeft0">
+                <span class="">
+                    <img src="application/Images/Assets/download_icon.png" height="20" width="20"/>
+                </span>
+                <span class="paddingLeft10 paddingRight10">
+                    <img src="application/Images/Assets/download_icon.png" height="20" width="20"/>
+                </span>
+            <span class="buttonBorder" ng-click="prevPage()">
+                <img src="application/Images/Assets/pagination_left.png"/>
+            </span>
+            <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+            <span class="buttonBorder" ng-click="nextPage()">
+                <img src="application/Images/Assets/pagination_right.png"/>
+            </span>
+            <span class="ui-grid-pager-row-count-picker">
+                <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+                ng-change="seek(paging.pageSelected)"
+                 ng-options="o for o in pageNumber">
+                </select>
+            </span>
+    </div>
+        <div class="col-xs-11 inventorySection paddingRight30 paddingLeft0 paddingBottom30">
+            <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
+                <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+            </div>
+    </div>
+    <div>
+        <md-button class="md-raised md-primary ifBold" flex-offset="80">BRS</md-button>
+    </div>
+    </div>

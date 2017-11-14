@@ -71,10 +71,20 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         templateUrl: 'application/Partials/addLedger.html',
         controller: 'addLedgerCtrl'
     })
+    .state('Home.companyLedgers', {
+        url: '/companyLedgers',
+        templateUrl: 'application/Partials/companyLedgers.html',
+        controller: 'companyLedgersCtrl'
+    })
     .state('Home.Banking', {
         url: '/banking',
         templateUrl: 'application/Partials/diffModules.html',
         controller: 'bankingCtrl'
+    })
+    .state('Home.bankLedger', {
+        url: '/bankLedger',
+        templateUrl: 'application/Partials/bankLedger.html',
+        controller: 'bankLedgerCtrl'
     })
     .state('Home.Sales', {
         url: '/sales',

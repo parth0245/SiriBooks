@@ -16,7 +16,10 @@ app.constant('CONSTANTS', {
                         organizationRoleList : 'application/fixture/organizationRoleList.json',
                         accountingList : 'application/fixture/accountingList.json',
                         bankingLedger : 'application/fixture/bankingLedger.json',
-                        importCustomer : 'application/fixture/importCustomer.json'
+                        importCustomer : 'application/fixture/importCustomer.json',
+                        companyLedgers : 'application/fixture/companyLedger.json',
+                        bankLedgers : 'application/fixture/bankLedger.json'
+                        
                 },{
                         inventoryList : '',
                         customerList : '',
@@ -32,7 +35,9 @@ app.constant('CONSTANTS', {
                         organizationRoleList : '' ,
                         accountingList : '',
                         bankingLedger : 'application/fixture/bankingLedger.json',
-                        importCustomer : ''
+                        importCustomer : '',
+                        companyLedgers : 'application/fixture/importCustomer.json',
+                        bankLedgers : 'application/fixture/bankLedger.json'
                 }
         ],
         headBarNavigator : [
@@ -451,5 +456,23 @@ Accountingfields : [
         {field : "number"},
         {field : "effectiveDate"},
         {field : "updatedOn"}
+],
+CompanyLedgerfields : [
+        {field : "date"},
+        {field : "particulars"},
+        {field : "voucherType"},
+        {field : "voucherNo."},
+        {field : "debit"},
+        {field : "credit"},
+        {field : "netBalance"}
+],
+BankLedgerfields : [
+        {field : "date"},
+        {field : "particulars"},
+        {field : "voucherType"},
+        {field : "voucherNo."},
+        {field : "debit"},
+        {field : "credit"},
+        {field : "netBalance"}
 ]
 });

@@ -322,7 +322,7 @@
 	background-color: #0935ae !important;
 	color:white;	
 }
-.addInventory button.md-raised.md-primary {
+.addInventory button.md-raised.md-primary , .addInventory button.md-raised.md-primary label{
 	background-color: #0935ae !important;
 	color:white;	
 }
@@ -372,6 +372,9 @@
 .paddingTop120 {
 	padding-top:120px;
 }
+.paddingLeft0 {
+	padding-left: 0px;
+}
 .paddingLeft10 {
 	padding-left: 10px !important;
 }
@@ -390,6 +393,9 @@
 .paddingLeft65 {
 	padding-left: 65px;
 }
+.paddingLeft70 {
+	padding-left: 70px;
+}
 .paddingLeft80 {
 	padding-left: 80px;
 }
@@ -404,6 +410,9 @@
 }
 .paddingRight0 {
 	padding-right:0px;
+}
+.paddingRight10 {
+	padding-right:10px;
 }
 .paddingBottom5 {
 	padding-bottom: 5px;
@@ -544,9 +553,14 @@
 .sectionSubSection .col-xs-2 button{
 	width:100%;
 }
-.addInventory .paddingBottom30 span , .addInventory .paddingBottom30 md-radio-button {
+.addInventory .paddingBottom30 span , .addInventory .paddingBottom30 md-radio-button ,.addInventory .topPadding20 span , .addInventory .topPadding20 md-radio-button {
 	font-family: "Montserrat-Medium";
 	font-size: 12px;
+	font-weight: 400;
+}
+.addInventory .topPadding20 span , .addInventory .topPadding20 md-radio-button {
+	font-family: "Montserrat-Medium";
+	font-size: 14px;
 	font-weight: 400;
 }
 .addPaddingButtons {

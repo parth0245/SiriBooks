@@ -56,9 +56,13 @@
                                 </md-input-container>
                         </div>
                         <div layout="row" class="topPadding20">
-                                <md-button class="md-raised md-primary marginLeft0" flex="20" style="text-align:left;">Identity<span class="pull-right description">-</span></md-button>
+                                <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
+                                        Identity
+                                        <span ng-hide="!panelShow" class="pull-right description">+</span>
+                                        <span ng-hide="panelShow" class="pull-right description">-</span>
+                                </md-button>
                         </div>
-                        <div layout="row" class="topPadding20">
+                        <div layout="row" class="topPadding20" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>Address 1</label>
                                 <input name="add1" ng-model="add1">
@@ -72,7 +76,7 @@
                                     <input name="sku" ng-model="sku">
                             </md-input-container>
                         </div>
-                        <div layout="row" class="topPadding10">
+                        <div layout="row" class="topPadding10" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>State</label>
                                 <md-select name="state" ng-model="state">
@@ -92,7 +96,7 @@
                                 <input name="pin" ng-model="pin">
                         </md-input-container>
                         </div>
-                        <div layout="row" class="topPadding10">
+                        <div layout="row" class="topPadding10" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>GST</label>
                                 <input name="gst" ng-model="gst">
@@ -106,7 +110,7 @@
                                 <input name="aadhar" ng-model="aadhar">
                         </md-input-container>
                         </div>
-                        <div layout="row" class="topPadding10">
+                        <div layout="row" class="topPadding10" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>Nature of Business</label>
                                 <md-select name="nob" ng-model="nob">
