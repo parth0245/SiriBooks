@@ -1,4 +1,4 @@
-app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants){
+app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants , uiGridTreeBaseService){
     console.log('Inside Ledgers Controller');
     $rootScope.isActive = 'LEDGERS';
 
@@ -39,7 +39,7 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Ledger');
     $scope.gridOptions.treeRowHeaderAlwaysVisible = false;
     $scope.gridOptions.enableRowSelection = false;
-    var cellTemplate = '<div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div>';
+    var cellTemplate = '<div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP"><div style=\"position:absolute;\" class=\"ui-grid-tree-base-row-header-buttons\" ng-class=\"{\'ui-grid-tree-base-header\': row.treeLevel > -1 }\" ng-click=\"grid.appScope.toggleRow(row,evt)\"><i ng-show="grid.appScope.ifToShow(row)" ng-class=\"{\'ui-grid-icon-minus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'expanded\', \'ui-grid-icon-plus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'collapsed\'}\" ng-style=\"{\'padding-left\': grid.options.treeIndent * row.treeLevel + \'px\'}\"></i> &nbsp;</div>{{COL_FIELD CUSTOM_FILTERS}}</div>';
     $scope.gridOptions.columnDefs = [
         { field: 'primaryGroup' , 
         grouping: { groupPriority: 0 },
@@ -59,7 +59,22 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
           aggregation.rendered = aggregation.value;
         }}
 ];
+$scope.ifToShow = function(row){
+    var exp = $scope.gridApi.treeBase.getRowChildren(row)[0];
+    for (var key in exp.entity) {
+        var keys = exp.entity[key];
+        if(keys.groupVal==""){
+            return false;
+        }
+    }
+    return true;
+}
+$scope.toggleRow = function( row,evt ){
+    uiGridTreeBaseService.toggleRowTreeState($scope.gridApi.grid, row, evt);
+    //$scope.gridApi.treeBase.toggleRowTreeState($scope.gridApi.grid.renderContainers.body.visibleRowCache[rowNum]);
+  };
 $scope.getCompanyLedger = function(row,column){
+    //console.log('row',row);
     $state.go('Home.companyLedgers');
 }
 $scope.gridOptions.showTreeExpandNoChildren = true;

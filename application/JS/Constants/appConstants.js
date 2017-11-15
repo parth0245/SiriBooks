@@ -81,6 +81,7 @@ app.constant('CONSTANTS', {
                                 enableSorting: true,
                                 rowHeight: 40,
                                 enableRowSelection: true,
+                                showTreeRowHeader: false,
                                 enableColumnResizing: false,
                                 enableRowHeaderSelection: false,
                                 multiSelect : false,
