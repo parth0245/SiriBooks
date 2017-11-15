@@ -88,12 +88,15 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
-
-    organizationServices.getuserList().then(function(response){
+    $scope.searchString = '';
+    $scope.search = function(search){
+    organizationServices.searchUsers(search).then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
@@ -105,7 +108,14 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
           },function(error){
         console.log('error',error);
    });
-
+    }
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
     $scope.changeHeight(0);
 });
 app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices){
@@ -168,12 +178,17 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
     $scope.gridOptions.rowHeight = 160;
-    organizationServices.getRoleList().then(function(response){
+    $scope.searchString = '';
+    $scope.search = function(search){
+        
+    organizationServices.getRoleList(search).then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
@@ -185,7 +200,15 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
           },function(error){
         console.log('error',error);
    });
+    }
 
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
     $scope.changeHeight(0);
 
 

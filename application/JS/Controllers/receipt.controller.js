@@ -19,7 +19,22 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
             $state.go('Home.addReceipt' , { data: row.entity });
         });
     }
-    
+    $scope.searchString = '';
+    $scope.search = function(search){
+        receiptServices.searchReceipt(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+           
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val);
     }
@@ -55,24 +70,19 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
 
-    receiptServices.getReceipts().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
-        }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
-      
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
    $scope.changeHeight(0);
 });

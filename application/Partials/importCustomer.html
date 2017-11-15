@@ -10,7 +10,7 @@
             <button class="col-xs-11 btn btn-primary btn-app-blue-color fontBold">Import</button>
         </div>
     </div>
-    <div class="col-xs-9 paddingTop100 noPaddingRight">
+    <div class="col-xs-9 paddingTop100 noPaddingRight pagingPart">
         <ul class="nav nav-tabs col-xs-9">
             <li class="active">
                 <a data-toggle="tab" href="#success">Success ( 10/20 )</a>
@@ -19,18 +19,18 @@
                 <a data-toggle="tab" href="#failure">Failure ( 10/20 )</a>
             </li>
           </ul>
-          <div class="col-xs-3">
+          <div class="col-xs-3 text-right" ng-if="!checkModule()">
             <span class="buttonBorder" ng-click="prevPage()">
                 <img src="application/Images/Assets/pagination_left.png"/>
             </span>
-            <span class="pageIndicator">{{ gridApi.pagination.getPage()}} / {{ gridApi.pagination.getTotalPages()}}</span>
+            <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
             <span class="buttonBorder" ng-click="nextPage()">
                 <img src="application/Images/Assets/pagination_right.png"/>
             </span>
             <span class="ui-grid-pager-row-count-picker">
-                <select class="selectPaginationBox" ng-model="gridOptions.paginationPageSize" 
-                ng-change="changeHeight(0)"
-                 ng-options="o as o for o in gridOptions.paginationPageSizes">
+                <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+                ng-change="seek(paging.pageSelected)"
+                 ng-options="o for o in pageNumber">
                 </select>
             </span>
     </div>

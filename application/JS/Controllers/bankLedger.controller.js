@@ -60,6 +60,10 @@ app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , C
         console.log('error',error);
    });
       
+   $scope.brs = function(){
+       $state.go('Home.bankBRS');
+   }
+
    $scope.changeHeight(0);
 
 });

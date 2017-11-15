@@ -108,11 +108,11 @@
                                 <label for="select">Image Upload</label>
                         </md-button>
                         <input class="file-input" flow-btn id="select" ng-show="!$flow.files.length">
-                        <md-button ng-show="$flow.files.length" class="md-raised md-primary">
+                        <md-button ng-show="$flow.files.length" class="md-raised md-primary ifBold">
                         <label for="change">Change</label>
                         </md-button>
                         <input class="file-input" flow-btn id="change" ng-show="$flow.files.length">
-                        <md-button ng-show="$flow.files.length" class="md-raised md-primary">
+                        <md-button ng-show="$flow.files.length" class="md-raised md-primary ifBold">
                         <label for="cancel">Remove</label>
                         </md-button>
                         <input class="file-input" id="cancel" ng-click="$flow.cancel()"

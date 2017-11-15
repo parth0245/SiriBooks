@@ -1,6 +1,6 @@
 <div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
     <div class="sectionSubHeading">
-        <h3>Ledger of : Company Name</h3>
+        <h3>Reconciliation of : Bank Name</h3>
     </div>
     <div class="topPadding20">
         <md-content>
@@ -11,18 +11,12 @@
                                     <input name="add" ng-model="add">
                                 </md-input-container>
                                 <md-input-container flex="25"  flex-offset="5">
-                                        <label>Contact</label>
+                                        <label>Account No.</label>
                                         <input name="contact" ng-model="contact">
                                 </md-input-container>
                         </div>
                         <div layout="row" class="sectionSubHeading">
-                            <h3>Select View</h3>
-                        </div>
-                        <div class="topPadding20">
-                            <md-radio-group ng-model="group1" layout="row" flex="85">
-                                <md-radio-button value="day"  class="md-primary">Day Wise</md-radio-button>
-                                <md-radio-button value="month" flex-offset="10" class="md-primary">Consolidated by Month</md-radio-button>
-                            </md-radio-group>
+                            <h3>Select Period</h3>
                         </div>
                         <div layout="row" class="topPadding30">
                             <md-input-container flex="25">
@@ -41,11 +35,11 @@
     </div>
     <div class="pagingPart col-xs-11 text-right paddingTop100 paddingBottom10 paddingRight30">
             <span class="">
-                <img src="application/Images/Assets/download.png" height="25" width="25"/>
-            </span>
-            <span class="paddingLeft10 paddingRight10">
-                <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
-            </span>
+                    <img src="application/Images/Assets/download.png" height="25" width="25"/>
+                </span>
+                <span class="paddingLeft10 paddingRight10">
+                    <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
+                </span>
         <span class="buttonBorder" ng-click="prevPage()">
             <img src="application/Images/Assets/pagination_left.png"/>
         </span>
@@ -64,5 +58,9 @@
         <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
             <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
         </div>
+</div>
+<div>
+    <span flex="20" class="savedRecords">Your Saved Records are displayed like this</span>
+    <md-button class="md-raised md-primary ifBold" ng-click="save()" flex-offset="50">Save</md-button>
 </div>
 </div>

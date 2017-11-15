@@ -1,13 +1,10 @@
-app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONSTANTS ,vendorServices){
-    console.log('Inside Import Vendor Controller');
-    $rootScope.isActive = 'VENDORS';
-
+app.controller('bankBRSCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices){
+    console.log('Inside Bank BRS Controller');
+    $rootScope.isActive = 'CASH/BANKING';
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val);
     }
-
-    $scope.gridOptions = CONSTANTS.gridOptionsConstants('ImportVendor');
-    $scope.gridOptions.enableRowSelection = false;
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('BRS');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
@@ -44,14 +41,12 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
-        var i= 0;
-        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
 
-    vendorServices.importVendor().then(function(response){
+    bankingServices.getBRS().then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
@@ -60,14 +55,11 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
         else {
             $scope.changeHeight(200);
         }   
+       
           },function(error){
         console.log('error',error);
-     });
-     $scope.checkModule = function(){
-        if($scope.gridOptions.data.length == 0) {
-            return true;
-        }
-        return false;
-    }
+   });
+      
    $scope.changeHeight(0);
+
 });

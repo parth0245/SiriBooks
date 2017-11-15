@@ -21,12 +21,27 @@ app.controller('inventoryCtrl',function($rootScope,$scope ,$state ,$timeout , CO
             $state.go('Home.AddInventory' , { data: row.entity });
         });
     }
-    
+    $scope.searchString = '';
+    $scope.search = function(search){
+        inventoryServices.searchInventories(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
+
         if($scope.paging.pageSelected != $scope.totalPages) {
             $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
         }
@@ -57,24 +72,19 @@ app.controller('inventoryCtrl',function($rootScope,$scope ,$state ,$timeout , CO
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
-        for(i=0;i<newVal;i++){
-            $scope.pageNumber[i] = i+1; 
-        }
+        var i = 0;
+        $scope.pageNumber = [];
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }        
     });
-   inventoryServices.getInventories().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        $scope.showWait = false;
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
+    $scope.search('');
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
         }
-        else {
-            $scope.changeHeight(200);
-        }
-          },function(error){
-        console.log('error',error);
-        $scope.showWait = false;
-   });
-      
+        return false;
+    }
+
    $scope.changeHeight(0);
 });

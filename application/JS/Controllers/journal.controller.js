@@ -22,7 +22,22 @@ app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
             $state.go('Home.addJournal' , { data: row.entity });
         });
     }
-
+    $scope.searchString = '';
+    $scope.search = function(search){
+        journalServices.searchJournal(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+           
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -60,20 +75,14 @@ app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         }
     });
 
-    journalServices.getJournals().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
-        }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
-      
+    
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
    $scope.changeHeight(0);
 
 });

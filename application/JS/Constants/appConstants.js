@@ -18,7 +18,9 @@ app.constant('CONSTANTS', {
                         bankingLedger : 'application/fixture/bankingLedger.json',
                         importCustomer : 'application/fixture/importCustomer.json',
                         companyLedgers : 'application/fixture/companyLedger.json',
-                        bankLedgers : 'application/fixture/bankLedger.json'
+                        bankLedgers : 'application/fixture/bankLedger.json',
+                        bankBRS : 'application/fixture/bankLedger.json',
+                        searchInventoryList : 'application/fixture/searchInventory.json'
                         
                 },{
                         inventoryList : '',
@@ -37,7 +39,9 @@ app.constant('CONSTANTS', {
                         bankingLedger : 'application/fixture/bankingLedger.json',
                         importCustomer : '',
                         companyLedgers : 'application/fixture/importCustomer.json',
-                        bankLedgers : 'application/fixture/bankLedger.json'
+                        bankLedgers : 'application/fixture/bankLedger.json',
+                        bankBRS : 'application/fixture/bankLedger.json',
+                        searchInventoryList : ''
                 }
         ],
         headBarNavigator : [
@@ -474,5 +478,15 @@ BankLedgerfields : [
         {field : "debit"},
         {field : "credit"},
         {field : "netBalance"}
+],
+BRSfields : [
+        {field : "date"},
+        {field : "particulars"},
+        {field : "voucherType"},
+        {field : "debit"},
+        {field : "credit"},
+        {field : "note"},
+        {field : "date"}
+
 ]
 });

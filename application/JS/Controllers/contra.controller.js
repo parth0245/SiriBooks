@@ -22,7 +22,21 @@ app.controller('contraCtrl',function($rootScope,$scope ,$state ,$timeout , CONST
             $state.go('Home.addContra' , { data: row.entity });
         });
     }
-
+    $scope.searchString = '';
+    $scope.search = function(search){
+        contraServices.searchContra(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -55,24 +69,20 @@ app.controller('contraCtrl',function($rootScope,$scope ,$state ,$timeout , CONST
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
 
-    contraServices.getContraList().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
+    $scope.search('');
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
         }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
+        return false;
+    }
       
    $scope.changeHeight(0);
 

@@ -60,11 +60,11 @@
     </div>
     <div class="col-xs-12 sectionSubSection topPadding20" ng-if="!ifThreeBtn">
         <div class="col-xs-7 form-group has-feedback noPadding">
-            <input type="text" class="form-control" id="inputSuccess2"/>
+            <input type="text" class="form-control" id="inputSuccess2" ng-model="searchString"/>
             <span class="glyphicon glyphicon-search form-control-feedback"></span>
         </div>
         <div class="col-xs-2 paddingLeft30" style="margin-left:-5px;">
-            <button class="col-xs-11 btn btn-primary btn-app-white-color fontBold">{{btn1}}</button>
+            <button class="col-xs-11 btn btn-primary btn-app-white-color fontBold" ng-click="search(searchString)">{{btn1}}</button>
         </div>
         <div class="col-xs-2 noPadding paddingLeft10">
             <button class="col-xs-9 btn btn-primary btn-app-blue-color" ng-click="add()">{{btn2}}</button>
@@ -72,11 +72,11 @@
     </div>
     <div class="col-xs-11 sectionSubSection topPadding20" ng-if="ifThreeBtn">
         <div class="col-xs-6 form-group has-feedback noPadding">
-            <input type="text" class="form-control" id="inputSuccess2"/>
+            <input type="text" class="form-control" id="inputSuccess2" ng-model="searchString"/>
             <span class="glyphicon glyphicon-search form-control-feedback"></span>
         </div>
         <div class="col-xs-2 paddingLeft30">
-            <button class="btn btn-primary btn-app-white-color fontBold">{{btn1}}</button>
+            <button class="btn btn-primary btn-app-white-color fontBold" ng-click="search(searchString)">{{btn1}}</button>
         </div>
         <div class="col-xs-2">
             <button class="btn btn-primary btn-app-blue-color" ng-click="add()">{{btn2}}</button>
@@ -86,7 +86,7 @@
         </div>
     </div>
     <div ng-if="checkModule() || false" class="paddingTop100"></div>
-    <div ng-if="!checkModule() || false" class="pagingPart col-xs-3 col-xs-offset-8 paddingTop100 paddingBottom10" ng-class="moduleHeading == 'Application Users' || moduleHeading == 'Role List'  ? 'paddingLeft95' : 'paddingLeft85'">
+    <div ng-if="!checkModule() || false" class="col-xs-11 text-right pagingPart paddingTop100 paddingBottom10 paddingRight30" ng-class="moduleHeading == 'Application Users' || moduleHeading == 'Role List'  ? '' : ''">
             <span class="buttonBorder" ng-click="prevPage()">
                 <img src="application/Images/Assets/pagination_left.png"/>
             </span>

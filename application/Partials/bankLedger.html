@@ -33,13 +33,13 @@
                 </form>
             </md-content>
         </div>
-        <div class="pagingPart col-xs-3 col-xs-offset-8 paddingTop100 paddingBottom10 paddingLeft0">
+        <div class="pagingPart col-xs-11 text-right paddingTop100 paddingBottom10 paddingRight30">
                 <span class="">
-                    <img src="application/Images/Assets/download_icon.png" height="20" width="20"/>
-                </span>
-                <span class="paddingLeft10 paddingRight10">
-                    <img src="application/Images/Assets/download_icon.png" height="20" width="20"/>
-                </span>
+                        <img src="application/Images/Assets/download.png" height="25" width="25"/>
+                    </span>
+                    <span class="paddingLeft10 paddingRight10">
+                        <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
+                    </span>
             <span class="buttonBorder" ng-click="prevPage()">
                 <img src="application/Images/Assets/pagination_left.png"/>
             </span>
@@ -60,6 +60,6 @@
             </div>
     </div>
     <div>
-        <md-button class="md-raised md-primary ifBold" flex-offset="80">BRS</md-button>
+        <md-button class="md-raised md-primary ifBold" ng-click="brs()" flex-offset="80">BRS</md-button>
     </div>
     </div>

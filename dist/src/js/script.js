@@ -86,6 +86,11 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         templateUrl: 'application/Partials/bankLedger.html',
         controller: 'bankLedgerCtrl'
     })
+    .state('Home.bankBRS', {
+        url: '/bankBRS',
+        templateUrl: 'application/Partials/bankBRS.html',
+        controller: 'bankBRSCtrl'
+    })
     .state('Home.Sales', {
         url: '/sales',
         templateUrl: 'application/Partials/sales.html',
@@ -266,7 +271,9 @@ app.constant('CONSTANTS', {
                         bankingLedger : 'application/fixture/bankingLedger.json',
                         importCustomer : 'application/fixture/importCustomer.json',
                         companyLedgers : 'application/fixture/companyLedger.json',
-                        bankLedgers : 'application/fixture/bankLedger.json'
+                        bankLedgers : 'application/fixture/bankLedger.json',
+                        bankBRS : 'application/fixture/bankLedger.json',
+                        searchInventoryList : 'application/fixture/searchInventory.json'
                         
                 },{
                         inventoryList : '',
@@ -285,7 +292,9 @@ app.constant('CONSTANTS', {
                         bankingLedger : 'application/fixture/bankingLedger.json',
                         importCustomer : '',
                         companyLedgers : 'application/fixture/importCustomer.json',
-                        bankLedgers : 'application/fixture/bankLedger.json'
+                        bankLedgers : 'application/fixture/bankLedger.json',
+                        bankBRS : 'application/fixture/bankLedger.json',
+                        searchInventoryList : ''
                 }
         ],
         headBarNavigator : [
@@ -722,6 +731,16 @@ BankLedgerfields : [
         {field : "debit"},
         {field : "credit"},
         {field : "netBalance"}
+],
+BRSfields : [
+        {field : "date"},
+        {field : "particulars"},
+        {field : "voucherType"},
+        {field : "debit"},
+        {field : "credit"},
+        {field : "note"},
+        {field : "date"}
+
 ]
 });
 app.controller('addContraCtrl',function($rootScope , $scope , $stateParams){
@@ -990,6 +1009,71 @@ app.controller('applicationAccountingLevelCtrl',function($rootScope,$scope ,$sta
    $scope.changeHeight(0);
 });
 
+app.controller('bankBRSCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices){
+    console.log('Inside Bank BRS Controller');
+    $rootScope.isActive = 'CASH/BANKING';
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val);
+    }
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('BRS');
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
+
+    bankingServices.getBRS().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+       
+          },function(error){
+        console.log('error',error);
+   });
+      
+   $scope.changeHeight(0);
+
+});
 app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices ,uiGridGroupingConstants){
     console.log('Inside Banking Controller');
     $rootScope.isActive = 'CASH/BANKING';
@@ -1175,6 +1259,10 @@ app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , C
         console.log('error',error);
    });
       
+   $scope.brs = function(){
+       $state.go('Home.bankBRS');
+   }
+
    $scope.changeHeight(0);
 
 });
@@ -1267,7 +1355,21 @@ app.controller('contraCtrl',function($rootScope,$scope ,$state ,$timeout , CONST
             $state.go('Home.addContra' , { data: row.entity });
         });
     }
-
+    $scope.searchString = '';
+    $scope.search = function(search){
+        contraServices.searchContra(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -1300,24 +1402,20 @@ app.controller('contraCtrl',function($rootScope,$scope ,$state ,$timeout , CONST
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
 
-    contraServices.getContraList().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
+    $scope.search('');
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
         }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
+        return false;
+    }
       
    $scope.changeHeight(0);
 
@@ -1352,7 +1450,21 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
             $state.go('Home.addCustomers' , { data: row.entity });
         });
     }
-    
+    $scope.searchString = '';
+    $scope.search = function(search){
+        customerServices.searchCustomer(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val);
     }
@@ -1389,23 +1501,20 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
 
-    customerServices.getCustomer().then(function(response){
-         $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
+    $scope.search('');
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
         }
-        else {
-            $scope.changeHeight(200);
-        }   
-          },function(error){
-        console.log('error',error);
-     });
+        return false;
+    }
 
     $scope.changeHeight(0);
 });
@@ -1442,6 +1551,23 @@ app.controller('expenseCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         });
     }
 
+    $scope.searchString = '';
+    $scope.search = function(search){
+        expenseServices.searchExpense(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+           
+              },function(error){
+            console.log('error',error);
+       });
+    }
+
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -1474,25 +1600,21 @@ app.controller('expenseCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
 
-    expenseServices.getExpenses().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
-        }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
-      
+
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
    $scope.changeHeight(0);
 });
 app.controller('helpCtrl',function($rootScope){
@@ -1524,18 +1646,48 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , heightCalc ,CO
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
-
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
         $scope.changeHeight(0);
     }
     $scope.prevPage = function(){
         $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
         $scope.changeHeight(0);
     }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
 
     customerServices.importCustomer().then(function(response){
         $scope.gridOptions.data = response.data;
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
         }
@@ -1545,7 +1697,12 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , heightCalc ,CO
           },function(error){
         console.log('error',error);
      });
-
+     $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
+        }
+        return false;
+    }
    $scope.changeHeight(0);
 });
 
@@ -1565,15 +1722,46 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
 
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
         $scope.changeHeight(0);
     }
     $scope.prevPage = function(){
         $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
         $scope.changeHeight(0);
     }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i= 0;
+        $scope.pageNumber = [];
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
 
     vendorServices.importVendor().then(function(response){
         $scope.gridOptions.data = response.data;
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
         }
@@ -1583,7 +1771,12 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
           },function(error){
         console.log('error',error);
      });
-
+     $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
+        }
+        return false;
+    }
    $scope.changeHeight(0);
 });
 
@@ -1610,12 +1803,27 @@ app.controller('inventoryCtrl',function($rootScope,$scope ,$state ,$timeout , CO
             $state.go('Home.AddInventory' , { data: row.entity });
         });
     }
-    
+    $scope.searchString = '';
+    $scope.search = function(search){
+        inventoryServices.searchInventories(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
+
         if($scope.paging.pageSelected != $scope.totalPages) {
             $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
         }
@@ -1646,25 +1854,20 @@ app.controller('inventoryCtrl',function($rootScope,$scope ,$state ,$timeout , CO
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
-        for(i=0;i<newVal;i++){
-            $scope.pageNumber[i] = i+1; 
-        }
+        var i = 0;
+        $scope.pageNumber = [];
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }        
     });
-   inventoryServices.getInventories().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        $scope.showWait = false;
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
+    $scope.search('');
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
         }
-        else {
-            $scope.changeHeight(200);
-        }
-          },function(error){
-        console.log('error',error);
-        $scope.showWait = false;
-   });
-      
+        return false;
+    }
+
    $scope.changeHeight(0);
 });
 app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , journalServices){
@@ -1691,7 +1894,22 @@ app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
             $state.go('Home.addJournal' , { data: row.entity });
         });
     }
-
+    $scope.searchString = '';
+    $scope.search = function(search){
+        journalServices.searchJournal(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+           
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -1729,20 +1947,14 @@ app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         }
     });
 
-    journalServices.getJournals().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
-        }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
-      
+    
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
    $scope.changeHeight(0);
 
 });
@@ -1960,12 +2172,15 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
-
-    organizationServices.getuserList().then(function(response){
+    $scope.searchString = '';
+    $scope.search = function(search){
+    organizationServices.searchUsers(search).then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
@@ -1977,7 +2192,14 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
           },function(error){
         console.log('error',error);
    });
-
+    }
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
     $scope.changeHeight(0);
 });
 app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices){
@@ -2040,12 +2262,17 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
     $scope.gridOptions.rowHeight = 160;
-    organizationServices.getRoleList().then(function(response){
+    $scope.searchString = '';
+    $scope.search = function(search){
+        
+    organizationServices.getRoleList(search).then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
@@ -2057,7 +2284,15 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
           },function(error){
         console.log('error',error);
    });
+    }
 
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
     $scope.changeHeight(0);
 
 
@@ -2103,6 +2338,22 @@ app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
             $state.go('Home.addPayments' , { data: row.entity });
         });
     }
+    $scope.searchString = '';
+    $scope.search = function(search){
+        paymentServices.searchPayments(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+           
+              },function(error){
+            console.log('error',error);
+       });
+    }
 
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
@@ -2136,24 +2387,20 @@ app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
-    paymentServices.getPayments().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
-        }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
-      
+ 
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
    $scope.changeHeight(0);
 
 
@@ -2192,7 +2439,22 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
             $state.go('Home.addReceipt' , { data: row.entity });
         });
     }
-    
+    $scope.searchString = '';
+    $scope.search = function(search){
+        receiptServices.searchReceipt(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+           
+              },function(error){
+            console.log('error',error);
+       });
+    }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val);
     }
@@ -2228,25 +2490,20 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
 
-    receiptServices.getReceipts().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
-        }
-        else {
-            $scope.changeHeight(200);
-        }   
-       
-          },function(error){
-        console.log('error',error);
-   });
-      
+   $scope.search('');
+   $scope.checkModule = function(){
+       if($scope.gridOptions.data.length == 0) {
+           return true;
+       }
+       return false;
+   }
    $scope.changeHeight(0);
 });
 app.controller('salesCtrl',function($rootScope){
@@ -2281,6 +2538,21 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
             $state.go('Home.addVendors' , { data: row.entity });
         });
     }
+    $scope.searchString = '';
+    $scope.search = function(search){
+        vendorServices.searchVendor(search).then(function(response){
+            $scope.gridOptions.data = response.data;
+            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+            if($scope.gridOptions.data.length !== 0){
+                $scope.changeHeight(0);
+            }
+            else {
+                $scope.changeHeight(200);
+            }   
+              },function(error){
+            console.log('error',error);
+         });
+    }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val);
     }
@@ -2316,23 +2588,20 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
     $scope.pageNumber = [];
     $scope.$watch('totalPages',function(newVal , oldVal){
         $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
         for(i=0;i<newVal;i++){
             $scope.pageNumber[i] = i+1; 
         }
     });
-    //$scope.gridOptions.data = [];
-    vendorServices.getVendors().then(function(response){
-        $scope.gridOptions.data = response.data;
-        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-        if($scope.gridOptions.data.length !== 0){
-            $scope.changeHeight(0);
+ 
+     $scope.search('');
+     $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
         }
-        else {
-            $scope.changeHeight(200);
-        }   
-          },function(error){
-        console.log('error',error);
-     });
+        return false;
+    }
 
     $scope.changeHeight(0);
 
@@ -2350,24 +2619,42 @@ app.service('bankingServices',function($http , CONSTANTS){
      this.getBankLedgers = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].bankLedgers);
      };
+     this.getBRS = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].bankBRS);
+     };
 });
 app.service('contraServices',function($http , CONSTANTS){
     this.getContraList = function(){
        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].contraList);
     };
+    this.searchContra = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].contraList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });
 app.service('customerServices',function($http , CONSTANTS){
-    this.getCustomer = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].customerList);
-    };
     this.importCustomer = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].importCustomer);
     }
+    this.searchCustomer = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].customerList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });
 app.service('expenseServices',function($http , CONSTANTS){
-    this.getExpenses = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].expenseList);
-    };
+    this.searchExpense = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].expenseList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });
 app.factory('heightCalc',function($timeout){
     return {
@@ -2387,14 +2674,28 @@ app.factory('heightCalc',function($timeout){
     }
 });
 app.service('inventoryServices',function($http , CONSTANTS){
-    this.getInventories = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].inventoryList);
-    };
+    this.searchInventories = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].inventoryList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+     };
+     this.save = function(){
+        return false;
+    }
+    this.savePurchase = function(){
+        return false;
+    }
 });
 app.service('journalServices',function($http , CONSTANTS){
-    this.getJournals = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].journalList);
-    };
+    this.searchJournal = function(search) {
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].journalList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });
 app.service('ledgerServices',function($http , CONSTANTS){
     this.getLedgers = function(){
@@ -2405,28 +2706,48 @@ app.service('ledgerServices',function($http , CONSTANTS){
      };
 });
 app.service('organizationServices',function($http , CONSTANTS){
-    this.getuserList = function(){
-        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].organizationUserList);
-     };
-     this.getRoleList = function(){
-        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].organizationRoleList);
-     };
+     this.searchUsers = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].organizationUserList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
+    this.getRoleList = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].organizationRoleList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });
 app.service('paymentServices',function($http , CONSTANTS){
-    this.getPayments = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].paymentList);
-    };
+    this.searchPayments = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].paymentList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });
 app.service('receiptServices',function($http , CONSTANTS){
-    this.getReceipts = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].receiptList);
-    };
+    this.searchReceipt = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].receiptList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });
 app.service('vendorServices',function($http , CONSTANTS){
-    this.getVendors = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].vendorList);
-    };
     this.importVendor = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].importVendor);
+    }
+    this.searchVendor = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].vendorList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
     }
 });

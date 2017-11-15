@@ -5,4 +5,7 @@ app.service('bankingServices',function($http , CONSTANTS){
      this.getBankLedgers = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].bankLedgers);
      };
+     this.getBRS = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].bankBRS);
+     };
 });

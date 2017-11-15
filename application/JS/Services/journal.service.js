@@ -1,5 +1,9 @@
 app.service('journalServices',function($http , CONSTANTS){
-    this.getJournals = function(){
-       return $http.get(CONSTANTS.service[CONSTANTS.appLevel].journalList);
-    };
+    this.searchJournal = function(search) {
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].journalList);
+        }        
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
 });

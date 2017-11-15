@@ -86,6 +86,11 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         templateUrl: 'application/Partials/bankLedger.html',
         controller: 'bankLedgerCtrl'
     })
+    .state('Home.bankBRS', {
+        url: '/bankBRS',
+        templateUrl: 'application/Partials/bankBRS.html',
+        controller: 'bankBRSCtrl'
+    })
     .state('Home.Sales', {
         url: '/sales',
         templateUrl: 'application/Partials/sales.html',
