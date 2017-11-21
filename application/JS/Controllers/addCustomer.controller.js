@@ -1,4 +1,4 @@
-app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams){
+app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state){
     console.log('Inside Add Customer Controller');
     $rootScope.isActive = 'CUSTOMERS';
 
@@ -15,6 +15,40 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams){
     $scope.additionalData = [
         { name: "", value: "" }
     ];
+
+    $scope.cancel = function(){
+        $state.go('Home.Customers');
+    }
+
+    $scope.reserAll =function() {
+        $scope.additionalData = [
+            { name: "", value: "" }
+        ];
+        $scope.addCustomerForm4.$setUntouched();
+        $scope.addCustomerForm4.$setPristine();
+        $scope.resetForm1();
+        $scope.resetForm2();
+        $scope.resetForm3();
+        
+
+        
+    }
+
+    $scope.resetForm1 = function(){
+        $scope.location = {};
+        $scope.addCustomerForm1.$setUntouched();
+        $scope.addCustomerForm1.$setPristine();
+    }
+    $scope.resetForm2 = function(){
+        $scope.identity = {};
+        $scope.addCustomerForm2.$setUntouched();
+        $scope.addCustomerForm2.$setPristine();
+    }
+    $scope.resetForm3 = function(){
+        $scope.books = {};
+        $scope.addCustomerForm3.$setUntouched();
+        $scope.addCustomerForm3.$setPristine();
+    }
 
     $scope.Add = function(){
         $scope.addData = {};

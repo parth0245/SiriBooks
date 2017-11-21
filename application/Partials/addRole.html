@@ -8,7 +8,7 @@
                 <div layout="row">
                         <md-input-container flex="25">
                                 <label>Role Name*</label>
-                                <input name="rname" ng-model="rname">
+                                <input name="rname" ng-model="rname" ng-disabled="btnLabel == 'Update'">
                             </md-input-container>
                         <md-input-container flex="25" flex-offset="5">
                                 <label>Role Category</label>
@@ -128,8 +128,9 @@
                     </table>
         </div>
         <div layout="row" class="addPaddingButtons">
-                <md-button class="md-raised ifBold" flex-offset="45">Reset All</md-button>
-                <md-button class="md-raised md-primary ifBold">{{btnLabel}}</md-button>
-                <md-button class="md-raised ifBold">Cancel</md-button>
+                <md-button class="md-raised ifBold" flex-offset="45" ng-if="btnLabel == 'Update'">Reset All</md-button>
+                <md-button class="md-raised md-primary ifBold" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+                <md-button class="md-raised md-primary ifBold" flex-offset="55" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
+                <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
             </div>
 </div>

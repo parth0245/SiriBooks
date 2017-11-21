@@ -1,4 +1,4 @@
-app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,heightCalc , vendorServices){
+app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,heightCalc , vendorServices , $filter){
     console.log('Inside Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -14,31 +14,49 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
     $scope.import = function(){
         $state.go('Home.ImportVendors');
     }
+    $scope.editData = function(row){
+        $state.go('Home.addVendors' , { data: row.entity });
+    }    
+    $scope.editLedger = function(row){
+        $state.go('Home.companyLedgers' , { data: row.entity });
+    }
     
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Vendor');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
+        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
             $state.go('Home.addVendors' , { data: row.entity });
-        });
+        });*/
     }
-    $scope.searchString = '';
-    $scope.search = function(search){
-        vendorServices.searchVendor(search).then(function(response){
-            $scope.gridOptions.data = response.data;
-            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-            if($scope.gridOptions.data.length !== 0){
-                $scope.changeHeight(0);
-            }
-            else {
-                $scope.changeHeight(200);
-            }   
-              },function(error){
-            console.log('error',error);
-         });
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
+    $scope.search = function(searchterm){
+        if(searchterm == '') {
+        return;
+        }
+        var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+        $scope.gridOptions.data = temp;
+        if(temp.length == 0) {
+            $scope.totalPages = 1;
+            $scope.changeHeight(200);
+        }
+        else {
+            $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+            $scope.paging.pageSelected=1;
+            $scope.changeHeight(0);
+        }       
+    }
+    $scope.removeSearchFilter = function() {
+        $scope.gridOptions.data =  $scope.dataForGrid;
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.search.searchString = '';
+        $scope.changeHeight(0);
     }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 20);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
@@ -79,7 +97,19 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
         }
     });
  
-     $scope.search('');
+    vendorServices.searchVendor('').then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+          },function(error){
+        console.log('error',error);
+     });
      $scope.checkModule = function(){
         if($scope.gridOptions.data.length == 0) {
             return true;

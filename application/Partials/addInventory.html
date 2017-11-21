@@ -4,11 +4,11 @@
         </div>
         <div class="topPadding20">
             <md-content>
-                <form name="addExpenseForm" style="background-color:#f5f6f8">
+                <form name="addInventoryForm" style="background-color:#f5f6f8">
                         <div layout="row">
                                 <md-input-container flex="25">
                                     <label>Product / Sevice</label>
-                                    <md-select name="product" ng-model="product" required>
+                                    <md-select class="mdSelect" name="product" ng-model="inventory.product" required>
                                         <md-option value="Product 1">Product 1</md-option>
                                         <md-option value="Product 2">Product 2</md-option>
                                     </md-select>
@@ -18,21 +18,18 @@
                             <div layout="row" class="topPadding10">
                                     <md-input-container flex="25">
                                         <label>Name</label>
-                                        <input name="name" ng-model="name" required>
-                                       <div ng-messages="addExpenseForm.name.$error">
-                                            <div ng-message="required">This is required.</div>
-                                        </div>
+                                        <input name="name" ng-model="inventory.name" required>
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
-                                            <label>Category</label>
-                                            <input name="category" ng-model="category">
+                                            <label>Group</label>
+                                            <input name="group" ng-model="inventory.group">
                                             <!--<div ng-messages="projectForm.clientName.$error">
                                                 <div ng-message="required">This is required.</div>
                                             </div>-->
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                         <label>Unit of Measure</label>
-                                        <md-select name="unit" ng-model="unit">
+                                        <md-select name="unit" ng-model="inventory.unit">
                                             <md-option value="one">One</md-option>
                                             <md-option value="two">Two</md-option>
                                         </md-select>
@@ -41,32 +38,32 @@
                             <div layout="row">
                                     <md-input-container flex="25">
                                         <label>HSN Code</label>
-                                        <input name="hsnCode" ng-model="hsnCode">
+                                        <input name="hsnCode" ng-model="inventory.hsnCode">
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Barcode</label>
-                                            <input name="barcode" ng-model="barcode">
+                                            <input name="barcode" ng-model="inventory.barcode">
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>SKU</label>
-                                            <input name="sku" ng-model="sku">
+                                            <input name="sku" ng-model="inventory.sku">
                                     </md-input-container>
                             </div>
                             <div layout="row">
                                     <md-input-container flex="25">
                                         <label>Vendor</label>
-                                        <md-select name="vendor" ng-model="vendor">
+                                        <md-select name="vendor" ng-model="inventory.vendor">
                                             <md-option value="one">Vendor 1</md-option>
                                             <md-option value="two">Vendor 2</md-option>
                                         </md-select>
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Price</label>
-                                            <input name="price" ng-model="price">
+                                            <input name="price" ng-model="inventory.price">
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Description</label>
-                                            <input name="desc" ng-model="descript">
+                                            <input name="desc" ng-model="inventory.descript">
                                     </md-input-container>
                             </div>
                             <div layout="row" class="topPadding20">
@@ -123,10 +120,11 @@
 
                             </div>
     <div layout="row" class="addPaddingButtons">
-            <md-button class="md-raised ifBold" flex-offset="30">Reset All</md-button>
-            <md-button class="md-raised md-primary ifBold">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold" flex="16">{{btnLabel}} & Purchase</md-button>
-            <md-button class="md-raised ifBold">Cancel</md-button>
+            <md-button class="md-raised ifBold" flex-offset="30" ng-if="btnLabel != 'Update'" ng-click="reserAll()">Reset All</md-button>
+            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex-offset="40" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex="22">{{btnLabel}} & Purchase</md-button>
+            <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
     </div>
                 </form>
             </md-content>

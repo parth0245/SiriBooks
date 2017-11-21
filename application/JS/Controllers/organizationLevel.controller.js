@@ -21,7 +21,7 @@ app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS)
 
 });
 
-app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices){
+app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices , $filter){
     console.log('Inside Organization Level - user Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'User';
@@ -43,19 +43,20 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
     $scope.btn2 = 'Add New';
     $scope.ifThreeBtn = false;
 
-    $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+    $scope.changeHeight = function(val) {
+        heightCalc.calculateGridHeight(val , 0);
     }
 
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('OrganizationUser');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
-            $scope.addNewUserPanel = true;
-            $scope.userType = "Update";
-            $scope.usertypeBtn = "Update";
-        });
     }
+    $scope.editData = function(row){
+        //$state.go('Home.AddInventory' , { data: row.entity });
+        $scope.addNewUserPanel = true;
+        $scope.userType = "Update";
+        $scope.usertypeBtn = "Update";
+    } 
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -94,10 +95,34 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
             $scope.pageNumber[i] = i+1; 
         }
     });
-    $scope.searchString = '';
-    $scope.search = function(search){
-    organizationServices.searchUsers(search).then(function(response){
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.search = function(searchterm){
+        if(searchterm == '') {
+        return;
+        }
+        var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+        $scope.gridOptions.data = temp;
+        if(temp.length == 0) {
+            $scope.totalPages = 1;
+            $scope.changeHeight(200);
+        }
+        else {
+            $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+            $scope.paging.pageSelected=1;
+            $scope.changeHeight(0);
+        }       
+    }
+    $scope.removeSearchFilter = function() {
+        $scope.gridOptions.data =  $scope.dataForGrid;
+        $scope.search.searchString = '';
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }
+    organizationServices.searchUsers('').then(function(response){
         $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
@@ -108,8 +133,6 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
           },function(error){
         console.log('error',error);
    });
-    }
-   $scope.search('');
    $scope.checkModule = function(){
        if($scope.gridOptions.data.length == 0) {
            return true;
@@ -118,7 +141,7 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
    }
     $scope.changeHeight(0);
 });
-app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices){
+app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices , $filter){
     console.log('Inside Organization Level - role Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'Roles';
@@ -136,15 +159,19 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
+
+    $scope.editData = function(row){
+        $state.go('Home.addRole' , { data: row.entity });
+    }  
 
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('RoleList');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
-            $state.go('Home.addRole' , { data: row.entity });
-        });
+       /* $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
+            
+        });*/
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
@@ -185,11 +212,35 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
         }
     });
     $scope.gridOptions.rowHeight = 160;
-    $scope.searchString = '';
-    $scope.search = function(search){
-        
-    organizationServices.getRoleList(search).then(function(response){
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.search = function(searchterm){
+        if(searchterm == '') {
+        return;
+        }
+        var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+        $scope.gridOptions.data = temp;
+        if(temp.length == 0) {
+            $scope.totalPages = 1;
+            $scope.changeHeight(200);
+        }
+        else {
+            $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+            $scope.paging.pageSelected=1;
+            $scope.changeHeight(0);
+        }       
+    }
+    $scope.removeSearchFilter = function() {
+        $scope.gridOptions.data =  $scope.dataForGrid;
+        $scope.search.searchString = '';
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }
+
+    organizationServices.getRoleList('').then(function(response){
         $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
@@ -200,9 +251,6 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
           },function(error){
         console.log('error',error);
    });
-    }
-
-   $scope.search('');
    $scope.checkModule = function(){
        if($scope.gridOptions.data.length == 0) {
            return true;
@@ -214,7 +262,7 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
 
 });
 
-app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $stateParams){
+app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $stateParams , $state){
     console.log('Inside Organization Add Role Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'Roles';
@@ -228,5 +276,9 @@ app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $statePa
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+    }
+
+    $scope.cancel = function(){
+        $state.go('Home.Roles');
     }
 });

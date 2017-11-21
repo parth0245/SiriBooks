@@ -1,4 +1,4 @@
-app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants , uiGridTreeBaseService){
+app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter){
     console.log('Inside Ledgers Controller');
     $rootScope.isActive = 'LEDGERS';
 
@@ -16,7 +16,7 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
 
     var setGroupValues = function( columns, rows ) {
@@ -69,12 +69,36 @@ $scope.ifToShow = function(row){
     }
     return true;
 }
+$scope.search = {
+    searchString : ''
+}
+$scope.search = function(searchterm){
+    if(searchterm == '') {
+    return;
+    }
+    var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+    $scope.gridOptions.data = temp;
+    if(temp.length == 0) {
+        $scope.totalPages = 1;
+        $scope.changeHeight(200);
+    }
+    else {
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }       
+}
+$scope.removeSearchFilter = function() {
+    $scope.gridOptions.data =  $scope.dataForGrid;
+    $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+    $scope.search.searchString = '';
+    $scope.changeHeight(0);
+}
+
 $scope.toggleRow = function( row,evt ){
     uiGridTreeBaseService.toggleRowTreeState($scope.gridApi.grid, row, evt);
     //$scope.gridApi.treeBase.toggleRowTreeState($scope.gridApi.grid.renderContainers.body.visibleRowCache[rowNum]);
   };
 $scope.getCompanyLedger = function(row,column){
-    //console.log('row',row);
     $state.go('Home.companyLedgers');
 }
 $scope.gridOptions.showTreeExpandNoChildren = true;
@@ -109,6 +133,7 @@ $scope.gridOptions.showTreeExpandNoChildren = true;
 
     ledgerServices.getLedgers().then(function(response){
         $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
         if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
         }
@@ -122,7 +147,18 @@ $scope.gridOptions.showTreeExpandNoChildren = true;
    $scope.changeHeight(0);
 });
 
-app.controller('addLedgerCtrl',function($rootScope , $scope){
+app.controller('addLedgerCtrl',function($rootScope , $scope , $state){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'LEDGERS';
+
+
+    $scope.resetAll = function(){
+        $scope.ledger ={};
+        $scope.addLedgerForm.$setPristine();
+    }
+
+    $scope.cancel = function(){
+        $state.go('Home.Ledgers');
+    }
+
 });

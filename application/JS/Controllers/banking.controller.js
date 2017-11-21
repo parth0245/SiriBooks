@@ -1,4 +1,4 @@
-app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices ,uiGridGroupingConstants , uiGridTreeBaseService){
+app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter){
     console.log('Inside Banking Controller');
     $rootScope.isActive = 'CASH/BANKING';
 
@@ -15,7 +15,7 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     var cellTemplate = '<div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP"><div style=\"position:absolute;\" class=\"ui-grid-tree-base-row-header-buttons\" ng-class=\"{\'ui-grid-tree-base-header\': row.treeLevel > -1 }\" ng-click=\"grid.appScope.toggleRow(row,evt)\"><i ng-show="grid.appScope.ifToShow(row)" ng-class=\"{\'ui-grid-icon-minus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'expanded\', \'ui-grid-icon-plus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'collapsed\'}\" ng-style=\"{\'padding-left\': grid.options.treeIndent * row.treeLevel + \'px\'}\"></i> &nbsp;</div>{{COL_FIELD CUSTOM_FILTERS}}</div>';
     var setGroupValues = function( columns, rows ) {
@@ -78,6 +78,31 @@ $scope.ifToShow = function(row){
     }
     return true;
 }
+
+$scope.search = {
+    searchString : ''
+}
+$scope.search = function(searchterm){
+    if(searchterm == '') {
+    return;
+    }
+    var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+    $scope.gridOptions.data = temp;
+    if(temp.length == 0) {
+        $scope.totalPages = 1;
+        $scope.changeHeight(200);
+    }
+    else {
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }       
+}
+$scope.removeSearchFilter = function() {
+    $scope.gridOptions.data =  $scope.dataForGrid;
+    $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+    $scope.search.searchString = '';
+    $scope.changeHeight(0);
+}
 $scope.toggleRow = function( row,evt ){
     uiGridTreeBaseService.toggleRowTreeState($scope.gridApi.grid, row, evt);
     //$scope.gridApi.treeBase.toggleRowTreeState($scope.gridApi.grid.renderContainers.body.visibleRowCache[rowNum]);
@@ -117,7 +142,7 @@ $scope.gridOptions.showTreeExpandNoChildren = false;
 
     bankingServices.getLedgers().then(function(response){
         $scope.gridOptions.data = response.data;
-
+        $scope.dataForGrid = angular.copy(response.data);
        if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
         }

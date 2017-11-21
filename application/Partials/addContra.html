@@ -4,17 +4,17 @@
         </div>
         <div class="topPadding20">
             <md-content>
-                <form name="addCustomerForm1" style="background-color:#f5f6f8">
+                <form name="addCustomerForm" style="background-color:#f5f6f8">
                     <div layout="row" class="topPadding10">
                         <md-input-container flex="25">
                             <label>Date</label>
-                            <md-datepicker ng-model="date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                            <md-datepicker ng-model="contra.date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
                         </md-input-container>
                      </div>
                      <div layout="row" class="">
                        <md-input-container flex="40" >
                             <label>From</label>
-                            <md-select name="from" ng-model="from">
+                            <md-select name="from" ng-model="contra.from">
                                 <md-option value="one">From 1</md-option>
                                 <md-option value="two">From 2</md-option>
                             </md-select>
@@ -23,30 +23,31 @@
                     <div layout="row">
                             <md-input-container flex="40" >
                                     <label>To</label>
-                                    <md-select name="to" ng-model="to">
+                                    <md-select name="to" ng-model="contra.to">
                                         <md-option value="one">To 1</md-option>
                                         <md-option value="two">To 2</md-option>
                                     </md-select>
                             </md-input-container>
                             <md-input-container flex="15" flex-offset="5">
                                     <label>Amount</label>
-                                    <input name="amt" ng-model="amt">
+                                    <input name="amt" ng-model="contra.amt">
                                 </md-input-container>
                                 <md-input-container flex="20" flex-offset="5">
                                         <label>Reference</label>
-                                        <input name="ref" ng-model="ref">
+                                        <input name="ref" ng-model="contra.ref">
                                     </md-input-container>
                     </div>
                     <div layout="row">
                             <md-input-container flex="85">
                                     <label>Narration</label>
-                                    <input name="nrr" ng-model="nrr">
+                                    <input name="nrr" ng-model="contra.nrr">
                                 </md-input-container>
                     </div>
                     <div layout="row" class="addPaddingButtons">
-                            <md-button class="md-raised ifBold" flex-offset="45">Reset All</md-button>
-                            <md-button class="md-raised md-primary ifBold">{{btnLabel}}</md-button>
-                            <md-button class="md-raised ifBold">Cancel</md-button>
+                            <md-button class="md-raised ifBold" flex-offset="50" ng-if="btnLabel != 'Update'" ng-click="resetAll()">Reset All</md-button>
+                            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
+                            <md-button class="md-raised md-primary ifBold" flex-offset="60" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+                            <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
                         </div>
                 </form>
             </md-content>

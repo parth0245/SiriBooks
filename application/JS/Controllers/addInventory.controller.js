@@ -1,4 +1,4 @@
-app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams){
+app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'INVENTORY';
     if(angular.isDefined($stateParams.data.product)) {
@@ -14,6 +14,17 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams){
         { name: "", value: "" }
     ];
 
+    $scope.cancel = function(){
+        $state.go('Home.Inventory');
+    }
+    $scope.reserAll =function() {
+        $scope.inventory = {};
+        $scope.Description = [
+            { name: "", value: "" }
+        ];
+        $scope.addInventoryForm.$setUntouched();
+        $scope.addInventoryForm.$setPristine();
+    }
     $scope.Add = function(){
         $scope.desc = {};
         $scope.desc.name = "";

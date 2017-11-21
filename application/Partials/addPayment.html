@@ -84,7 +84,7 @@
                             <div layout="row" class="topPadding30">
                                     <md-input-container flex="25">
                                             <label>Voucher Number</label>
-                                            <input name="receipt" ng-model="receipt">
+                                            <input name="receipt" ng-model="receipt" disabled>
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>Against</label>
@@ -141,12 +141,9 @@
                                             </md-select>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
-                                            <label>Amount</label>
-                                            <md-select name="amt" ng-model="amt">
-                                                <md-option value="Product 1">amt 1</md-option>
-                                                <md-option value="Product 2">amt 2</md-option>
-                                            </md-select>
-                                        </md-input-container>
+                                                <label>Amount</label>
+                                                <input name="amt" ng-model="amt">
+                                            </md-input-container>
                             </div>
                             
 

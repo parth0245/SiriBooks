@@ -47,8 +47,9 @@
                                             </md-input-container>
                                 </div>
                                 <div layout="row" class="addPaddingButtons">
-                                        <md-button class="md-raised ifBold" flex-offset="55">Reset</md-button>
-                                        <md-button class="md-raised md-primary ifBold">{{usertypeBtn}}</md-button>
+                                        <md-button class="md-raised ifBold" flex-offset="65" ng-if="usertypeBtn != 'Update'">Reset</md-button>
+                                        <md-button class="md-raised md-primary ifBold" ng-if="usertypeBtn != 'Update'">{{usertypeBtn}}</md-button>
+                                        <md-button class="md-raised md-primary ifBold" flex-offset="75" ng-if="usertypeBtn == 'Update'">{{usertypeBtn}}</md-button>
                                         <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
                                 </div>
                         </form>
@@ -60,33 +61,58 @@
     </div>
     <div class="col-xs-12 sectionSubSection topPadding20" ng-if="!ifThreeBtn">
         <div class="col-xs-7 form-group has-feedback noPadding">
-            <input type="text" class="form-control" id="inputSuccess2" ng-model="searchString"/>
+            <input type="text" class="form-control"  id="inputSuccess2" ng-model="search.searchString"/>
+            <a style="right:40px;position:absolute;top:8px;" ng-click="removeSearchFilter()">
+                <span  class="glyphicon glyphicon-remove"></span>
+            </a>
             <span class="glyphicon glyphicon-search form-control-feedback"></span>
         </div>
-        <div class="col-xs-2 paddingLeft30" style="margin-left:-5px;">
-            <button class="col-xs-11 btn btn-primary btn-app-white-color fontBold" ng-click="search(searchString)">{{btn1}}</button>
+        <div class="col-xs-2" style="margin-left:-5px;">
+            <!--<button class="col-xs-11 btn btn-primary btn-app-white-color fontBold" ng-click="search(searchString)">{{btn1}}</button>-->
+            <md-button class="md-raised ifBold ifBlue" ng-click="search(search.searchString)">{{btn1}}</md-button>
         </div>
-        <div class="col-xs-2 noPadding paddingLeft10">
-            <button class="col-xs-9 btn btn-primary btn-app-blue-color" ng-click="add()">{{btn2}}</button>
+        <div class="col-xs-3 noPadding paddingLeft10">
+            <!--<button class="col-xs-9 btn btn-primary btn-app-blue-color" ng-click="add()">{{btn2}}</button>-->
+            <md-button class="md-raised md-primary ifBold ifWhite" ng-click="add()">{{btn2}}</md-button>
         </div>
     </div>
-    <div class="col-xs-11 sectionSubSection topPadding20" ng-if="ifThreeBtn">
+    <div class="col-xs-11 sectionSubSection ifThree topPadding20" ng-if="ifThreeBtn">
         <div class="col-xs-6 form-group has-feedback noPadding">
-            <input type="text" class="form-control" id="inputSuccess2" ng-model="searchString"/>
+            <input type="text" class="form-control" id="inputSuccess2" ng-model="search.searchString"/>
+            <a style="right:40px;position:absolute;top:8px;" ng-click="removeSearchFilter()">
+                    <span  class="glyphicon glyphicon-remove"></span>
+                </a>
             <span class="glyphicon glyphicon-search form-control-feedback"></span>
         </div>
-        <div class="col-xs-2 paddingLeft30">
-            <button class="btn btn-primary btn-app-white-color fontBold" ng-click="search(searchString)">{{btn1}}</button>
+        <div class="col-xs-2 paddingLeft15">
+            <!--<button class="btn btn-primary btn-app-white-color fontBold" ng-click="search(searchString)">{{btn1}}</button>-->
+            <md-button class="md-raised ifBold ifBlue" ng-click="search(search.searchString)">{{btn1}}</md-button>
         </div>
         <div class="col-xs-2">
-            <button class="btn btn-primary btn-app-blue-color" ng-click="add()">{{btn2}}</button>
+           <!--<button class="btn btn-primary btn-app-blue-color" ng-click="add()">{{btn2}}</button>-->
+            <md-button class="md-raised md-primary  ifBold ifWhite" ng-click="add()">{{btn2}}</md-button>
         </div>
         <div class="col-xs-2 paddingRight0">
-            <button class="btn btn-primary btn-app-blue-color" ng-click="import()">{{btn3}}</button>
+            <!--<button class="btn btn-primary btn-app-blue-color" ng-click="import()">{{btn3}}</button>-->
+            <md-button class="md-raised md-primary  ifBold ifWhite" ng-click="import()">{{btn3}}</md-button>
         </div>
     </div>
-    <div ng-if="checkModule() || false" class="paddingTop100"></div>
+    <div ng-if="checkModule() || false" class="paddingTop100 col-xs-11 pagingPart">
+        <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+    </div>
     <div ng-if="!checkModule() || false" class="col-xs-11 text-right pagingPart paddingTop100 paddingBottom10 paddingRight30" ng-class="moduleHeading == 'Application Users' || moduleHeading == 'Role List'  ? '' : ''">
+            <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+            <span ng-if="moduleHeading == 'Customers List'" class="moduleDownload">
+                <img src="application/Images/Assets/download.png" id="dropdownMenu1" data-toggle="dropdown" height="25" width="25"/>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a ng-click="pdfDownload()">PDF</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-click="csvDownload()">Excel</a></li>
+                  </ul>
+            </span>
+            <span ng-if="moduleHeading == 'Customers List'" class="paddingLeft10 paddingRight10">
+                <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
+            </span>
             <span class="buttonBorder" ng-click="prevPage()">
                 <img src="application/Images/Assets/pagination_left.png"/>
             </span>
@@ -102,7 +128,7 @@
             </span>
     </div>
     <div class="col-xs-11 inventorySection paddingRight30 paddingBottom30" ng-class="moduleHeading == 'Role List' ? 'centerItems' : ''">
-            <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
+            <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-exporter ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
                 <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
             </div>
     </div>

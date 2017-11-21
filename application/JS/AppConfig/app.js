@@ -1,6 +1,6 @@
-var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ngMessages','flow']);
+var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ui.grid.exporter','ngMessages','flow','ngFileUpload']);
 
-app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , flowFactoryProvider) {
+app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , flowFactoryProvider , $mdDateLocaleProvider) {
     $stateProvider
     .state('Login', {
         url: '/login',
@@ -74,7 +74,8 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     .state('Home.companyLedgers', {
         url: '/companyLedgers',
         templateUrl: 'application/Partials/companyLedgers.html',
-        controller: 'companyLedgersCtrl'
+        controller: 'companyLedgersCtrl',
+        params: {data : ''}
     })
     .state('Home.Banking', {
         url: '/banking',
@@ -242,4 +243,14 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
       // flowFactoryProvider.factory = fustyFlowFactory;
     $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise('/PageNotFound');
+
+    $mdDateLocaleProvider.formatDate = function(date) {
+        return date ? moment(date).format('DD-MM-YYYY') : '';
+      };
+      
+      $mdDateLocaleProvider.parseDate = function(dateString) {
+        var m = moment(dateString, 'DD-MM-YYYY', true);
+        return m.isValid() ? m.toDate() : new Date(NaN);
+      };
+
   });

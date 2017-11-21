@@ -1,4 +1,4 @@
-app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams){
+app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state){
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -15,6 +15,38 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams){
     $scope.vendorsData = [
         { name: "", value: "" }
     ];
+    $scope.cancel = function(){
+        $state.go('Home.Vendors');
+    }
+    
+    $scope.reserAll =function() {
+        $scope.vendorsData = [
+            { name: "", value: "" }
+        ];
+        $scope.addVendorForm4.$setUntouched();
+        $scope.addVendorForm4.$setPristine();
+        $scope.resetForm1();
+        $scope.resetForm2();
+        $scope.resetForm3();
+        
+
+        
+    }
+    $scope.resetForm1 = function(){
+        $scope.location = {};
+        $scope.addVendorForm1.$setUntouched();
+        $scope.addVendorForm1.$setPristine();
+    }
+    $scope.resetForm2 = function(){
+        $scope.identity = {};
+        $scope.addVendorForm2.$setUntouched();
+        $scope.addVendorForm2.$setPristine();
+    }
+    $scope.resetForm3 = function(){
+        $scope.books = {};
+        $scope.addVendorForm3.$setUntouched();
+        $scope.addVendorForm3.$setPristine();
+    }
 
     $scope.Add = function(){
         $scope.desc = {};

@@ -1,4 +1,4 @@
-app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , receiptServices){
+app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , receiptServices , $filter){
     console.log('Inside Receipt Controller');
     $rootScope.isActive = 'Receipt';
 
@@ -19,24 +19,33 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
             $state.go('Home.addReceipt' , { data: row.entity });
         });
     }
-    $scope.searchString = '';
-    $scope.search = function(search){
-        receiptServices.searchReceipt(search).then(function(response){
-            $scope.gridOptions.data = response.data;
-            $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
-            if($scope.gridOptions.data.length !== 0){
-                $scope.changeHeight(0);
-            }
-            else {
-                $scope.changeHeight(200);
-            }   
-           
-              },function(error){
-            console.log('error',error);
-       });
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.search = function(searchterm){
+        if(searchterm == '') {
+        return;
+        }
+        var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+        $scope.gridOptions.data = temp;
+        if(temp.length == 0) {
+            $scope.totalPages = 1;
+            $scope.changeHeight(200);
+        }
+        else {
+            $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+            $scope.paging.pageSelected=1;
+            $scope.changeHeight(0);
+        }       
+    }
+    $scope.removeSearchFilter = function() {
+        $scope.gridOptions.data =  $scope.dataForGrid;
+        $scope.search.searchString = '';
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
     }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
@@ -77,12 +86,31 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         }
     });
 
-   $scope.search('');
+    receiptServices.searchReceipt('').then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+       
+          },function(error){
+        console.log('error',error);
+   });
    $scope.checkModule = function(){
        if($scope.gridOptions.data.length == 0) {
            return true;
        }
        return false;
    }
+   $scope.editData = function(row){
+    $state.go('Home.addReceipt', {data : row.entity});
+}
+$scope.editLedger = function(row){
+   // $state.go('Home.addReceipt', {data : row.entity});
+}
    $scope.changeHeight(0);
 });

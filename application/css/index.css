@@ -110,7 +110,10 @@
 .subHeaderListImg {
 	background-color: grey;
 	text-align: center;
-	border-right: 1px solid grey;
+	border-right: 2px solid grey;
+    float: left;
+    width: 112px;
+    height: 70px;
 }
 .subHeaderListImg img {
 	/*width: 114px;*/
@@ -120,8 +123,7 @@
 .subHeaderListImgOrg {
 	background-color: grey;
 	text-align: center;
-	border-right: 1px solid grey;
-	width: 5.5%;
+	border-right: 2px solid grey;
 }
 .subHeaderListImgOrg img {
 	/*width: 114px;*/
@@ -229,8 +231,16 @@
 	padding-top:3px;
 	font-size: 18px;
 }
-.sectionSubSection button{
+.sectionSubSection .md-button{
 	font-family: "Montserrat-SemiBold";
+	margin-top:0px;
+}
+.sectionSubSection .md-button.ifWhite{
+	color:white !important;
+	background-color: #0935ae;
+}
+.sectionSubSection .md-button.ifBlue{
+	color: #0935ae !important;
 }
 .sectionSubSection input ,.sectionSubSection button{
 	height : 40px;
@@ -380,6 +390,9 @@
 .paddingLeft10 {
 	padding-left: 10px !important;
 }
+.paddingLeft15 {
+	padding-left: 15px;
+}
 .paddingLeft25 {
 	padding-left: 25px;
 }
@@ -476,7 +489,7 @@
 	margin-left: 59%;
 }
 .flex-22, .layout-row>.flex-22 {
-	width: 22%;
+	width: 22% !important;
 }
 /*Margins*/
 /*Grid*/
@@ -549,11 +562,18 @@
     text-align: center;
     z-index: 1000;
 }
-.sectionSubSection .col-xs-2{
-	width:16%;
+.sectionSubSection .col-xs-2 {
+	width:14% !important;
 }
-.sectionSubSection .col-xs-2 button{
+.sectionSubSection .col-xs-3 {
+	width:18% !important;
+}
+.sectionSubSection .col-xs-2 button , .sectionSubSection .col-xs-3 button{
 	width:100%;
+	font-size : 12px;
+}
+.sectionSubSection.ifThree .col-xs-2 {
+	width : 15.5% !important;
 }
 .addInventory .paddingBottom30 span , .addInventory .paddingBottom30 md-radio-button ,.addInventory .topPadding20 span , .addInventory .topPadding20 md-radio-button {
 	font-family: "Montserrat-Medium";
@@ -571,7 +591,8 @@
 
 }
 .addPaddingButtons .md-raised {
-	width : 12.6%;
+	width : 10%;
+	/*width: 14%;*/
 }
 .nav-tabs {
 	border-bottom:0px;
@@ -732,3 +753,23 @@
     padding: 10px 70px 10px 15px;
     font-family: Montserrat-Regular;
   }
+  .downloadSample{
+	font-family: Montserrat-Regular;
+    color: #0935ae;
+	text-decoration: none;
+    cursor: pointer;
+    font-size: 12px;
+   }
+.md-select-menu-container {
+	margin-top:50px;
+}
+.ui-grid-category {
+  text-align: center;
+  border-right: 0px;
+  box-shadow: -1px 1px #d4d4d4;
+  padding-left: 0px !important;
+}
+.moduleDownload .dropdown-menu {
+	left:initial;
+	right:160px !important;
+}

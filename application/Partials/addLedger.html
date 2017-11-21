@@ -8,18 +8,18 @@
                         <div layout="row" class="topPadding10">
                                 <md-input-container flex="25">
                                     <label>Name*</label>
-                                    <input name="name" ng-model="name">
+                                    <input name="name" ng-model="ledger.name">
                                 </md-input-container>
                                 <md-input-container flex="25" flex-offset="5">
                                     <label>Group/Ledger</label>
-                                    <md-select name="ledger" ng-model="ledger">
+                                    <md-select name="ledger" ng-model="ledger.ledger">
                                         <md-option value="one">1</md-option>
                                         <md-option value="two">2</md-option>
                                     </md-select>
                                 </md-input-container>
                                 <md-input-container flex="25" flex-offset="5">
                                     <label>Group</label>
-                                    <md-select name="group" ng-model="group">
+                                    <md-select name="group" ng-model="ledger.group">
                                         <md-option value="one">One</md-option>
                                         <md-option value="two">Two</md-option>
                                     </md-select>
@@ -28,21 +28,21 @@
                         <div layout="row">
                             <md-input-container flex="25">
                                 <label>Primary Group</label>
-                                <md-select name="primaryGroup" ng-model="primaryGroup">
+                                <md-select name="primaryGroup" ng-model="ledger.primaryGroup">
                                     <md-option value="one">One</md-option>
                                     <md-option value="two">Two</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5">
                                 <label>Major Group</label>
-                                <md-select name="majorGroup" ng-model="majorGroup">
+                                <md-select name="majorGroup" ng-model="ledger.majorGroup">
                                     <md-option value="one">One</md-option>
                                     <md-option value="two">Two</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5">
                                 <label>Sub Group</label>
-                                <md-select name="subGroup" ng-model="subGroup">
+                                <md-select name="subGroup" ng-model="ledger.subGroup">
                                     <md-option value="one">One</md-option>
                                     <md-option value="two">Two</md-option>
                                 </md-select>
@@ -51,12 +51,12 @@
                         <div layout="row" class="topPadding25">
                                 <md-input-container flex="25">
                                         <label>Description</label>
-                                        <input name="desc" ng-model="descript">
+                                        <input name="desc" ng-model="ledger.descript">
                                 </md-input-container>
                         </div>
                         <div layout="row" class="topPadding25 paddingBottom30 addLedger flex-25 borderRadio">
                             <span class="marginRight20">Opening Balance</span> 
-                            <md-radio-group ng-model="group1" layout="row" flex="25">
+                            <md-radio-group ng-model="ledger.group1" layout="row" flex="25">
                                 <md-radio-button value="Apple" class="md-primary">Debit</md-radio-button>
                                 <md-radio-button value="Banana" class="md-primary">Credit</md-radio-button>
                             </md-radio-group>
@@ -65,9 +65,9 @@
                             <hr />
                         </div>
 <div layout="row" class="addPaddingButtons">
-        <md-button class="md-raised ifBold" flex-offset="45">Reset All</md-button>
+        <md-button class="md-raised ifBold" flex-offset="50" ng-click="resetAll()">Reset All</md-button>
         <md-button class="md-raised md-primary ifBold">Create</md-button>
-        <md-button class="md-raised ifBold">Cancel</md-button>
+        <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
 </div>
             </form>
         </md-content>

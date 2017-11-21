@@ -80,7 +80,7 @@ app.constant('CONSTANTS', {
                         return {
                                 enableSorting: true,
                                 rowHeight: 40,
-                                enableRowSelection: true,
+                                enableRowSelection: false,
                                 showTreeRowHeader: false,
                                 enableColumnResizing: false,
                                 enableRowHeaderSelection: false,
@@ -98,7 +98,7 @@ app.constant('CONSTANTS', {
                 return {
                         enableSorting: true,
                         rowHeight: 40,
-                        enableRowSelection: true,
+                        enableRowSelection: false,
                         enableColumnResizing: false,
                         enableRowHeaderSelection: false,
                         multiSelect : false,
@@ -200,13 +200,9 @@ app.constant('CONSTANTS', {
         Contrafields :[
                 { field: 'transferredFrom',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
                         '<img height="15" width="15" '+
                                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                        '<img height="15" width="15" '+
-                                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
                         '</span>'+
                         '<span>{{grid.getCellValue(row, col)}}</span>'+
                         '</div>' },
@@ -222,27 +218,19 @@ app.constant('CONSTANTS', {
                 { field: 'customerName',
                 width : '35%',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                '<span>{{grid.getCellValue(row, col)}}</span>'+
+                '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                 '<img height="15" width="15" '+
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
-                '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                '<img height="15" width="15" '+
-                        'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                '</span>'+
-                '<span>{{grid.getCellValue(row, col)}}</span>'+
-                '</div>' },
+                 '</div>' },
         { field: 'amount',
         width : '15%',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
                 '<span>{{grid.getCellValue(row, col)}}</span>'+
-                '<span class="productInactive" ng-if="!row.isSelected">'+
+                '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
                 '<img height="20" width="20" '+
                         'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                '</span>'+
-                '<span class="productInactive" ng-if="row.isSelected">'+
-                '<img height="20" width="20" '+
-                        'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
                 '</span>'+
                 '</div>' },
         { field: 'date' },
@@ -253,108 +241,91 @@ app.constant('CONSTANTS', {
                 width : '20%',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
                               '<span>{{grid.getCellValue(row, col)}}</span>'+
-                              '<span class="productInactive" ng-if="!row.isSelected">'+
+                              '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                               '<img height="15" width="15" '+
                                     'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-                              '</span>'+
-                              '<span class="productInactive" ng-if="row.isSelected">'+
-                              '<img height="15" width="15" '+
-                                    'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
                               '</span>'+
                               '</div>' },
-              { field: 'ledger',
-                cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span>{{grid.getCellValue(row, col)}}</span>'+
-                        '<span class="productInactive" ng-if="!row.isSelected">'+
-                        '<img height="20" width="20" '+
-                                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected">'+
-                        '<img height="20" width="20" '+
-                                'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
-                        '</span>'+
-                        '</div>' },
-              { field: 'specification',
+             { field: 'specification',
               width : '20%' },
               { field: 'stockCount'},
-              { field: 'vendor',
-              width : '20%',
-                cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                            '<span>{{grid.getCellValue(row, col)}}</span>'+
-                            '<span class="productInactive" ng-if="!row.isSelected">'+
-                            '<img height="15" width="15" '+
-                                    'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-                            '</span>'+
-                            '<span class="productInactive" ng-if="row.isSelected">'+
-                            '<img height="15" width="15" '+
-                                    'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                            '</span>'+
-                            '</div>' },
-              { field: 'status'}
-],
+              { field: 'debit' ,category:"Balance Amount" ,
+              cellTemplate: '<div class="ui-grid-cell-contents" >'+
+              '<span>{{grid.getCellValue(row, col)}}</span>'+
+              '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+              '<img height="20" width="20" '+
+                      'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+              '</span>'+
+              '</div>' },
+              { field: 'credit' ,category:"Balance Amount" ,
+              cellTemplate: '<div class="ui-grid-cell-contents" >'+
+              '<span>{{grid.getCellValue(row, col)}}</span>'+
+              '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+              '<img height="20" width="20" '+
+                      'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+              '</span>'+
+              '</div>' },
+        ],
 Customerfields : [
         { field: 'name',
-        width : '20%',
+        width : '35%',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                '<span>{{grid.getCellValue(row, col)}}</span>'+
+                '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                 '<img height="15" width="15" '+
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-                '</span>'+
-                '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                '<img height="15" width="15" '+
-                        'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                '</span>'+
-                '<span>{{grid.getCellValue(row, col)}}</span>'+
-                '</div>' },
-        { field: 'ledger',
-        cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                '<span>{{grid.getCellValue(row, col)}}</span>'+
-                '<span class="productInactive" ng-if="!row.isSelected">'+
-                '<img height="20" width="20" '+
-                        'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                '</span>'+
-                '<span class="productInactive" ng-if="row.isSelected">'+
-                '<img height="20" width="20" '+
-                        'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
                 '</span>'+
                 '</div>' },
         { field: 'address',
-        width : '20%' },
+        width : '15%' },
         { field: 'type'},
         { field: 'contact'},
-        { field: 'status',
-width : '20%'}
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+
 ],
 Vendorfields : [
         { field: 'name',
-        width : '20%',
+        width : '30%',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                '<span>{{grid.getCellValue(row, col)}}</span>'+
+                '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                 '<img height="15" width="15" '+
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
-                '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                '<img height="15" width="15" '+
-                        'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                '</span>'+
-                '<span>{{grid.getCellValue(row, col)}}</span>'+
-                '</div>' },
-        { field: 'ledger',
-        cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                '<span>{{grid.getCellValue(row, col)}}</span>'+
-                '<span class="productInactive" ng-if="!row.isSelected">'+
-                '<img height="20" width="20" '+
-                        'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                '</span>'+
-                '<span class="productInactive" ng-if="row.isSelected">'+
-                '<img height="20" width="20" '+
-                        'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
-                '</span>'+
                 '</div>' },
         { field: 'address' },
-        { field: 'product'},
         { field: 'contact'},
-        { field: 'status'}
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
 ],
 ImportVendorfields : [
         { field: 'vendorName' },
@@ -372,13 +343,9 @@ OrganizationUserfields : [
         { field: 'userName' ,
         width:'20%',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-        '</span>'+
-        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-        '<img height="15" width="15" '+
-                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
         '</span>'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' },
@@ -395,13 +362,9 @@ RoleListfields : [
         {field : "category" ,
         cellClass : "paddingTop65" ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span class="productInactive" ng-if="!row.isSelected" style="float:none">'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:none">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-        '</span>'+
-        '<span class="productInactive" ng-if="row.isSelected" style="float:none">'+
-        '<img height="15" width="15" '+
-                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
         '</span>'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>'},
@@ -412,31 +375,31 @@ RoleListfields : [
         {field : "updatedOn",
         cellClass : "paddingTop65" },
         {field : "modules",
-        width : "25%",
+        width : "30%",
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<div>'+
         '<div class="moduleSection">'+
             '<span class="pull-left">Sales</span>'+
             '<span class="pull-right">'+
-                '<img src="application/Images/Assets/Module.png"/>'+
+                '<img src="application/Images/Assets/Module.png" height="20" width="90"/>'+
             '</span>'+
         '</div>'+
         '<div class="clearBoth moduleSection">'+
         '<span class="pull-left">Accounting</span>'+
         '<span class="pull-right">'+
-            '<img src="application/Images/Assets/Module.png"/>'+
+            '<img src="application/Images/Assets/Module.png" height="20" width="90"/>'+
         '</span>'+
     '</div>'+
     '<div class="clearBoth moduleSection">'+
     '<span class="pull-left">Inventory</span>'+
     '<span class="pull-right">'+
-        '<img src="application/Images/Assets/Module.png"/>'+
+        '<img src="application/Images/Assets/Module.png" height="20" width="90"/>'+
     '</span>'+
 '</div>'+
 '<div class="clearBoth moduleSection">'+
 '<span class="pull-left">Products</span>'+
 '<span class="pull-right">'+
-    '<img src="application/Images/Assets/Module.png"/>'+
+    '<img src="application/Images/Assets/Module.png" height="20" width="90"/>'+
 '</span>'+
 '</div>'+
         '</div>'+

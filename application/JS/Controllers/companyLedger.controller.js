@@ -1,8 +1,9 @@
-app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices){
+app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices , $stateParams){
     console.log('Inside Company Ledger Controller');
     $rootScope.isActive = 'LEDGERS';
+    $scope.pageData = $stateParams.data;
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {

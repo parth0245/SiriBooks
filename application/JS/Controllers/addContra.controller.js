@@ -1,4 +1,4 @@
-app.controller('addContraCtrl',function($rootScope , $scope , $stateParams){
+app.controller('addContraCtrl',function($rootScope , $scope , $stateParams , $state){
     console.log('Inside Add Contra Controller');
     $rootScope.isActive = 'Contra';
 
@@ -10,5 +10,11 @@ app.controller('addContraCtrl',function($rootScope , $scope , $stateParams){
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-
+    $scope.resetAll = function(){
+        $scope.contra = {};
+        $scope.addCustomerForm.$setPristine();
+    }
+    $scope.cancel = function(){
+        $state.go('Home.Contra');
+    }
 });

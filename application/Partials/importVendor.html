@@ -4,12 +4,18 @@
     </div>
     <div class="col-xs-12 sectionSubSection topPadding20">
         <div class="col-xs-7 form-group has-feedback noPadding">
-            <input type="text" class="form-control" id="inputSuccess2"/>
+            <input type="text" class="form-control" id="inputSuccess2"
+            placeholder="Click here to select a file to import (*.csv or xlsx only)"
+            ng-model="picFile.name"/>
         </div>
         <div class="col-xs-2 paddingLeft30 noPaddingRight">
-            <button class="col-xs-11 btn btn-primary btn-app-blue-color fontBold">Import</button>
+            <!--<button class="col-xs-11 btn btn-primary btn-app-blue-color fontBold">Import</button>-->
+            <md-button class="md-raised md-primary ifBold ifWhite"  type="file" ngf-select="" ng-model="picFile" name="file">Import</md-button>
         </div>
     </div>
+    <div class="col-xs-12">
+            <a class="downloadSample" ng-click="downloadSample()">Download Sample Here</a>
+        </div>
     <div class="col-xs-9 paddingTop100 noPaddingRight pagingPart ">
         <ul class="nav nav-tabs col-xs-9">
             <li class="active">

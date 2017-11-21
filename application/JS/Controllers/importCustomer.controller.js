@@ -68,5 +68,8 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , heightCalc ,CO
         }
         return false;
     }
+    $scope.downloadSample = function(){
+        window.open('application/fixture/Files/download.csv');
+    }
    $scope.changeHeight(0);
 });
