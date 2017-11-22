@@ -1,4 +1,4 @@
-<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column">
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
     <div class="sectionSubHeading">
         <h3>New Purchase</h3>
     </div>
@@ -18,31 +18,67 @@
                         <div layout="row" class="topPadding10">
                             <md-input-container flex="25">
                                 <label>Date</label>
-                                <md-datepicker ng-model="date" md-hide-icons="triangle"></md-datepicker>
+                                <md-datepicker ng-model="purchase.date" md-hide-icons="triangle"></md-datepicker>
                             </md-input-container>
                                 <md-input-container flex="25"  flex-offset="5">
                                         <label>Purchase option</label>
-                                        <md-select name="option" ng-model="option">
+                                        <md-select name="option" ng-model="purchase.option" required>
                                             <md-option value="one">option 1</md-option>
                                             <md-option value="two">option 2</md-option>
                                         </md-select>
+                                        <div ng-messages="purchaseForm.option.$error" ng-if="purchaseForm.option.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
                                 </md-input-container>
                                 <md-input-container flex="25" flex-offset="5">
                                     <label>GST Reverse Charge  Applicability</label>
-                                    <md-select name="unit" ng-model="unit">
+                                    <md-select name="gstCharge" ng-model="purchase.gstCharge" required>
                                         <md-option value="one">One</md-option>
                                         <md-option value="two">Two</md-option>
                                     </md-select>
+                                    <div ng-messages="purchaseForm.gstCharge.$error" ng-if="purchaseForm.gstCharge.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
                                 </md-input-container>
                         </div>
                         <div layout="row">
-                                <md-input-container flex="25">
-                                    <label>Invoice No.</label>
-                                    <input name="hsnCode" ng-model="hsnCode">
-                                </md-input-container>
+    <md-input-container flex="25">
+        <!--<label>Invoice No.</label>
+        <input name="invoice" ng-model="purchase.invoice" required>
+        <div ng-messages="purchaseForm.invoice.$error" ng-if="purchaseForm.invoice.$touched">
+                <div ng-message="required">This is required.</div>
+            </div>-->
+            <md-autocomplete
+                md-selected-item="selectedItem" 
+                md-search-text="searchText" 
+                md-items="item in getMatches(searchText)" 
+                md-item-text="item.name"
+                md-clear-button="false"
+                md-no-cache="true"
+                md-input-id="searchinput"
+                md-floating-label="Invoice No."
+                md-input-name="invoice" required>
+                
+                    <md-item-template>
+                        <span>{{item.name}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No matches found.
+                    </md-not-found>
+                    <div ng-messages="purchaseForm.invoice.$error" ng-if="purchaseForm.invoice.$touched">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                </md-autocomplete>
+               
+    </md-input-container>
                                 <md-input-container flex="25" flex-offset="5">
                                     <label>Invoice Date</label>
-                                    <md-datepicker ng-model="invoiceDate" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                                    <md-datepicker name="invoiceDate" ng-model="purchase.invoiceDate" md-hide-icons="triangle" md-open-on-focus="" ng-required="true">
+                                    </md-datepicker>
+                                    <div ng-messages="purchaseForm.invoiceDate.$error">
+                                            <div ng-message="valid">The entered value is not a date!</div>
+                                            <div ng-message="required">This date is required!</div>
+                                        </div>
                                 </md-input-container>
                                 <md-input-container flex="25"  flex-offset="5">
                                         <label>Purchase Order No.</label>
@@ -52,7 +88,7 @@
                         <div layout="row">
                                 <md-input-container flex="25">
                                     <label>Due Date of Payment</label>
-                                    <md-select name="vendor" ng-model="vendor">
+                                    <md-select name="vendor" ng-model="purchase.vendor">
                                         <md-option value="one">Vendor 1</md-option>
                                         <md-option value="two">Vendor 2</md-option>
                                     </md-select>
@@ -68,69 +104,69 @@
                         <div layout="row" class="topPadding20" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>Address 1</label>
-                                <input name="add1" ng-model="add1">
+                                <input name="add1" ng-model="add1" ng-readonly="true">
                             </md-input-container>
                             <md-input-container flex="25"  flex-offset="5">
                                     <label>Address 2</label>
-                                    <input name="add2" ng-model="add2">
+                                    <input name="add2" ng-model="add2" ng-readonly="true">
                             </md-input-container>
                             <md-input-container flex="25"  flex-offset="5">
                                     <label>City</label>
-                                    <input name="sku" ng-model="sku">
+                                    <input name="city" ng-model="city" ng-readonly="true">
                             </md-input-container>
                         </div>
                         <div layout="row" class="topPadding10" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>State</label>
-                                <md-select name="state" ng-model="state">
+                                <md-select name="state" ng-model="state" ng-readonly="true">
                                     <md-option value="Product 1">state 1</md-option>
                                     <md-option value="Product 2">state 2</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5">
                                 <label>Country</label>
-                                <md-select name="ctry" ng-model="ctry">
+                                <md-select name="ctry" ng-model="ctry" ng-readonly="true">
                                     <md-option value="Product 1">Country 1</md-option>
                                     <md-option value="Product 2">Country 2</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container flex="25"  flex-offset="5">
                                 <label>PIN</label>
-                                <input name="pin" ng-model="pin">
+                                <input name="pin" ng-model="pin" ng-readonly="true">
                         </md-input-container>
                         </div>
                         <div layout="row" class="topPadding10" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>GST</label>
-                                <input name="gst" ng-model="gst">
+                                <input name="gst" ng-model="gst" ng-readonly="true">
                             </md-input-container>
                         <md-input-container flex="25" flex-offset="5">
                                 <label>PAN</label>
-                                <input name="pan" ng-model="pan">
+                                <input name="pan" ng-model="pan" ng-readonly="true">
                         </md-input-container>
                         <md-input-container flex="25"  flex-offset="5">
                                 <label>Aadhar</label>
-                                <input name="aadhar" ng-model="aadhar">
+                                <input name="aadhar" ng-model="aadhar" ng-readonly="true">
                         </md-input-container>
                         </div>
                         <div layout="row" class="topPadding10" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>Nature of Business</label>
-                                <md-select name="nob" ng-model="nob">
+                                <md-select name="nob" ng-model="nob" ng-readonly="true">
                                     <md-option value="Product 1">NOB 1</md-option>
                                     <md-option value="Product 2">NOB 2</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5">
                                 <label>Type</label>
-                                <md-select name="type" ng-model="type">
+                                <md-select name="type" ng-model="type" ng-readonly="true">
                                     <md-option value="Product 1">Country 1</md-option>
                                     <md-option value="Product 2">Country 2</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container flex="25"  flex-offset="5">
                                 <label>Registration Number</label>
-                                <input name="nopin" ng-model="nopin">
+                                <input name="nopin" ng-model="nopin" ng-readonly="true">
                         </md-input-container>
                         </div>
   <!--                     
@@ -225,4 +261,36 @@
 
                 </div>
               </div>
+    <div class="col-xs-12 text-right pagingPart paddingTop100 paddingBottom10 paddingRight30 paddingLeft30" ng-class="moduleHeading == 'Application Users' || moduleHeading == 'Role List'  ? '' : ''">
+        <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+        <span ng-if="moduleHeading == 'Customers List'" class="moduleDownload">
+            <img src="application/Images/Assets/download.png" id="dropdownMenu1" data-toggle="dropdown" height="25" width="25"/>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a ng-click="pdfDownload()">PDF</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a ng-click="csvDownload()">Excel</a></li>
+                </ul>
+        </span>
+        <span ng-if="moduleHeading == 'Customers List'" class="paddingLeft10 paddingRight10">
+            <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
+        </span>
+        <span class="buttonBorder" ng-click="prevPage()">
+            <img src="application/Images/Assets/pagination_left.png"/>
+        </span>
+        <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+        <span class="buttonBorder" ng-click="nextPage()">
+            <img src="application/Images/Assets/pagination_right.png"/>
+        </span>
+        <span class="ui-grid-pager-row-count-picker">
+            <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+            ng-change="seek(paging.pageSelected)"
+                ng-options="o for o in pageNumber">
+            </select>
+        </span>
+</div>
+<div class="col-xs-12 inventorySection paddingRight30 paddingLeft30 paddingBottom30" style="overflow:hidden">
+    <div id="grid1" ui-grid="gridOptions" ui-grid-pagination class="grid">
+        <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+    </div>
+</div>
 </div>

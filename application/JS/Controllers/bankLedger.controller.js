@@ -2,7 +2,7 @@ app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , C
     console.log('Inside Ledger CASH/BANKING Controller');
     $rootScope.isActive = 'CASH/BANKING';
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('BankLedger');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {

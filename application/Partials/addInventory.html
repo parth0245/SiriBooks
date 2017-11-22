@@ -8,7 +8,7 @@
                         <div layout="row">
                                 <md-input-container flex="25">
                                     <label>Product / Sevice</label>
-                                    <md-select class="mdSelect" name="product" ng-model="inventory.product" required>
+                                    <md-select class="mdSelect" name="product" ng-model="inventory.product" required ng-disabled="btnLabel == 'Update'">
                                         <md-option value="Product 1">Product 1</md-option>
                                         <md-option value="Product 2">Product 2</md-option>
                                     </md-select>
@@ -23,16 +23,19 @@
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Group</label>
                                             <input name="group" ng-model="inventory.group">
-                                            <!--<div ng-messages="projectForm.clientName.$error">
+                                            <div ng-messages="addInventoryForm.group.$error">
                                                 <div ng-message="required">This is required.</div>
-                                            </div>-->
+                                            </div>
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                         <label>Unit of Measure</label>
-                                        <md-select name="unit" ng-model="inventory.unit">
+                                        <md-select name="unit" ng-model="inventory.unit" required>
                                             <md-option value="one">One</md-option>
                                             <md-option value="two">Two</md-option>
                                         </md-select>
+                                        <div ng-messages="addInventoryForm.unit.$error">
+                                                <div ng-message="required">This is required.</div>
+                                        </div>
                                     </md-input-container>
                             </div>
                             <div layout="row">
@@ -59,7 +62,10 @@
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Price</label>
-                                            <input name="price" ng-model="inventory.price">
+                                            <input name="price" ng-model="inventory.price" required>
+                                            <div ng-messages="addInventoryForm.price.$error">
+                                                <div ng-message="required">This is required.</div>
+                                        </div>
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Description</label>

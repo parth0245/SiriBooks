@@ -20,7 +20,8 @@ app.constant('CONSTANTS', {
                         companyLedgers : 'application/fixture/companyLedger.json',
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
-                        searchInventoryList : 'application/fixture/searchInventory.json'
+                        searchInventoryList : 'application/fixture/searchInventory.json',
+                        purchaseList : 'application/fixture/purchaseList.json'
                         
                 },{
                         inventoryList : '',
@@ -117,27 +118,19 @@ app.constant('CONSTANTS', {
         Paymentfields :[
                 { field: 'vendorName',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                        '<span>{{grid.getCellValue(row, col)}}</span>'+
+                        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                         '<img height="15" width="15" '+
                                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                         '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                        '<img height="15" width="15" '+
-                                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                        '</span>'+
-                        '<span>{{grid.getCellValue(row, col)}}</span>'+
                         '</div>' },
                 { field: 'amount',
                 width : '15%',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
                         '<span>{{grid.getCellValue(row, col)}}</span>'+
-                        '<span class="productInactive" ng-if="!row.isSelected">'+
+                        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
                         '<img height="20" width="20" '+
                                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected">'+
-                        '<img height="20" width="20" '+
-                                'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
                         '</span>'+
                         '</div>' },
                 { field: 'date' },
@@ -146,27 +139,19 @@ app.constant('CONSTANTS', {
         Expensefields :[
                 { field: 'vendorName',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                        '<span>{{grid.getCellValue(row, col)}}</span>'+
+                        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                         '<img height="15" width="15" '+
                                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                         '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                        '<img height="15" width="15" '+
-                                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                        '</span>'+
-                        '<span>{{grid.getCellValue(row, col)}}</span>'+
                         '</div>' },
                 { field: 'amount',
                 width : '15%',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
                         '<span>{{grid.getCellValue(row, col)}}</span>'+
-                        '<span class="productInactive" ng-if="!row.isSelected">'+
+                        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
                         '<img height="20" width="20" '+
                                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected">'+
-                        '<img height="20" width="20" '+
-                                'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
                         '</span>'+
                         '</div>' },
                 { field: 'date' },
@@ -176,13 +161,9 @@ app.constant('CONSTANTS', {
                 { field: 'referance',
                 width : '20%',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
                         '<img height="15" width="15" '+
                                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                        '<img height="15" width="15" '+
-                                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
                         '</span>'+
                         '<span>{{grid.getCellValue(row, col)}}</span>'+
                         '</div>' },
@@ -452,5 +433,17 @@ BRSfields : [
         {field : "note"},
         {field : "date"}
 
+],
+Purchasefields : [
+        {field : "sno" , width: "5%"},
+        {field : "particulars"},
+        {field : "batchNo"},
+        {field : "quantity",width : "10%"},
+        {field : "rate" , width : "7%"},
+        {field : "value"},
+        {field : "rateOfGst"},
+        {field : "inputGstValue"},
+        {field : "rateOfGst"},
+        {field : "inputGstValue"}
 ]
 });

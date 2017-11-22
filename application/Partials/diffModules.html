@@ -5,49 +5,67 @@
         </div>
         <div class="topPadding20 fontNormal col-xs-11 organizationLevelRoute" ng-if="addNewUserPanel">
                 <md-content>
-                        <form name="addUserForm" style="background-color:#f5f6f8">
+                        <form name="orgUser.addUserForm" style="background-color:#f5f6f8">
                                 <div layout="row" >
                                         <md-input-container flex="25">
-                                                <label>First Name*</label>
-                                                <input name="fname" ng-model="fname">
+                                                <label>First Name</label>
+                                                <input name="fname" ng-model="user.fname" required>
+                                                <div ng-messages="orgUser.addUserForm.fname.$error" ng-if="orgUser.addUserForm.fname.$touched">
+                                                     <div ng-message="required">This is required.</div>
+                                                </div>
                                             </md-input-container>
                                         <md-input-container flex="25" flex-offset="10">
                                             <label>Middle Name</label>
-                                            <input name="mname" ng-model="mname">
+                                            <input name="mname" ng-model="user.mname">
                                         </md-input-container>
-                                        <md-input-container flex="25"  flex-offset="10">
+                                        <md-input-container flex="25"  flex-offset="10" >
                                                 <label>Last Name</label>
-                                                <input name="lname" ng-model="lname">
+                                                <input name="lname" ng-model="user.lname" required>
+                                                <div ng-messages="orgUser.addUserForm.lname.$error" ng-if="orgUser.addUserForm.lname.$touched">
+                                                        <div ng-message="required">This is required.</div>
+                                                   </div>
                                         </md-input-container>
                                 </div>
                                 <div layout="row" >
                                         <md-input-container flex="25">
                                                 <label>e-mail ID</label>
-                                                <input name="email" ng-model="email">
+                                                <input name="email" ng-model="user.email" required>
+                                                <div ng-messages="orgUser.addUserForm.email.$error" ng-if="orgUser.addUserForm.email.$touched">
+                                                        <div ng-message="required">This is required.</div>
+                                                   </div>
                                             </md-input-container>
                                         <md-input-container flex="25" flex-offset="10">
                                             <label>Mobile</label>
-                                            <input name="mobile" ng-model="mobile">
+                                            <input name="mobile" ng-model="user.mobile" required>
+                                            <div ng-messages="orgUser.addUserForm.mobile.$error" ng-if="orgUser.addUserForm.mobile.$touched">
+                                                    <div ng-message="required">This is required.</div>
+                                               </div>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="10">
                                                 <label>Role</label>
-                                                <md-select name="role" ng-model="role">
+                                                <md-select name="role" ng-model="user.role" required>
                                                     <md-option value="Product 1">Role 1</md-option>
                                                     <md-option value="Product 2">Role 2</md-option>
                                                 </md-select>
+                                                <div ng-messages="orgUser.addUserForm.role.$error" ng-if="orgUser.addUserForm.role.$touched">
+                                                        <div ng-message="required">This is required.</div>
+                                                   </div>
                                             </md-input-container>
                                 </div>
                                 <div layout="row" >
                                         <md-input-container flex="25">
                                                 <label>Status</label>
-                                                <md-select name="status" ng-model="status">
+                                                <md-select name="status" ng-model="user.status" required>
                                                     <md-option value="Product 1">Status 1</md-option>
                                                     <md-option value="Product 2">Status 2</md-option>
                                                 </md-select>
+                                                <div ng-messages="orgUser.addUserForm.status.$error" ng-if="orgUser.addUserForm.status.$touched">
+                                                        <div ng-message="required">This is required.</div>
+                                                   </div>
                                             </md-input-container>
                                 </div>
                                 <div layout="row" class="addPaddingButtons">
-                                        <md-button class="md-raised ifBold" flex-offset="65" ng-if="usertypeBtn != 'Update'">Reset</md-button>
+                                        <md-button class="md-raised ifBold" flex-offset="65" ng-if="usertypeBtn != 'Update'" ng-click="reset()">Reset</md-button>
                                         <md-button class="md-raised md-primary ifBold" ng-if="usertypeBtn != 'Update'">{{usertypeBtn}}</md-button>
                                         <md-button class="md-raised md-primary ifBold" flex-offset="75" ng-if="usertypeBtn == 'Update'">{{usertypeBtn}}</md-button>
                                         <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>

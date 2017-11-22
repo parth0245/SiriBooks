@@ -245,11 +245,11 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     $urlRouterProvider.otherwise('/PageNotFound');
 
     $mdDateLocaleProvider.formatDate = function(date) {
-        return date ? moment(date).format('DD-MM-YYYY') : '';
+        return date ? moment(date).format('DD/MM/YYYY') : '';
       };
       
       $mdDateLocaleProvider.parseDate = function(dateString) {
-        var m = moment(dateString, 'DD-MM-YYYY', true);
+        var m = moment(dateString, 'DD/MM/YYYY', true);
         return m.isValid() ? m.toDate() : new Date(NaN);
       };
 
@@ -284,7 +284,8 @@ app.constant('CONSTANTS', {
                         companyLedgers : 'application/fixture/companyLedger.json',
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
-                        searchInventoryList : 'application/fixture/searchInventory.json'
+                        searchInventoryList : 'application/fixture/searchInventory.json',
+                        purchaseList : 'application/fixture/purchaseList.json'
                         
                 },{
                         inventoryList : '',
@@ -381,27 +382,19 @@ app.constant('CONSTANTS', {
         Paymentfields :[
                 { field: 'vendorName',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                        '<span>{{grid.getCellValue(row, col)}}</span>'+
+                        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                         '<img height="15" width="15" '+
                                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                         '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                        '<img height="15" width="15" '+
-                                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                        '</span>'+
-                        '<span>{{grid.getCellValue(row, col)}}</span>'+
                         '</div>' },
                 { field: 'amount',
                 width : '15%',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
                         '<span>{{grid.getCellValue(row, col)}}</span>'+
-                        '<span class="productInactive" ng-if="!row.isSelected">'+
+                        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
                         '<img height="20" width="20" '+
                                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected">'+
-                        '<img height="20" width="20" '+
-                                'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
                         '</span>'+
                         '</div>' },
                 { field: 'date' },
@@ -410,27 +403,19 @@ app.constant('CONSTANTS', {
         Expensefields :[
                 { field: 'vendorName',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                        '<span>{{grid.getCellValue(row, col)}}</span>'+
+                        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
                         '<img height="15" width="15" '+
                                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                         '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                        '<img height="15" width="15" '+
-                                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
-                        '</span>'+
-                        '<span>{{grid.getCellValue(row, col)}}</span>'+
                         '</div>' },
                 { field: 'amount',
                 width : '15%',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
                         '<span>{{grid.getCellValue(row, col)}}</span>'+
-                        '<span class="productInactive" ng-if="!row.isSelected">'+
+                        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
                         '<img height="20" width="20" '+
                                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected">'+
-                        '<img height="20" width="20" '+
-                                'src="application/Images/Assets/INVENTORY_page/ladger_active.png"/>'+
                         '</span>'+
                         '</div>' },
                 { field: 'date' },
@@ -440,13 +425,9 @@ app.constant('CONSTANTS', {
                 { field: 'referance',
                 width : '20%',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                        '<span class="productInactive" ng-if="!row.isSelected" style="float:left;margin-left:20px;">'+
+                        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
                         '<img height="15" width="15" '+
                                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-                        '</span>'+
-                        '<span class="productInactive" ng-if="row.isSelected" style="float:left;margin-left:20px;">'+
-                        '<img height="15" width="15" '+
-                                'src="application/Images/Assets/INVENTORY_page/edit_active.png"/>'+
                         '</span>'+
                         '<span>{{grid.getCellValue(row, col)}}</span>'+
                         '</div>' },
@@ -716,6 +697,18 @@ BRSfields : [
         {field : "note"},
         {field : "date"}
 
+],
+Purchasefields : [
+        {field : "sno" , width: "5%"},
+        {field : "particulars"},
+        {field : "batchNo"},
+        {field : "quantity",width : "10%"},
+        {field : "rate" , width : "7%"},
+        {field : "value"},
+        {field : "rateOfGst"},
+        {field : "inputGstValue"},
+        {field : "rateOfGst"},
+        {field : "inputGstValue"}
 ]
 });
 app.controller('addContraCtrl',function($rootScope , $scope , $stateParams , $state){
@@ -750,8 +743,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-
-
+    $scope.location = {};
+    $scope.location.country = 'india';
     $scope.additionalData = [
         { name: "", value: "" }
     ];
@@ -776,9 +769,9 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
 
     $scope.resetForm1 = function(){
         $scope.location = {};
-        $scope.addCustomerForm1.$setUntouched();
         $scope.addCustomerForm1.$setPristine();
-    }
+        $scope.addCustomerForm1.$setUntouched();
+        }
     $scope.resetForm2 = function(){
         $scope.identity = {};
         $scope.addCustomerForm2.$setUntouched();
@@ -821,7 +814,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
     }
 
 });
-app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams){
+app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $state){
     console.log('Inside Add Expense Controller');
     $rootScope.isActive = 'Expense';
 
@@ -834,9 +827,19 @@ app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams){
         $scope.btnLabel = "Save";
     }
 
-    $scope.panelShow1 = false;
+    $scope.panelShow1 = true;
     $scope.togglePannel1 = function(){
         $scope.panelShow1 = !$scope.panelShow1;
+    }
+
+    $scope.expenses = function(){
+        $state.go('Home.Expense');
+    }
+
+    $scope.reset = function(){
+        $scope.expenseDetails = {};
+        $scope.addExpensesForm.$setUntouched();
+        $scope.addExpensesForm.$setPristine();
     }
 });
 app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state){
@@ -886,7 +889,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.panelShow = !$scope.panelShow;
     }
 });
-app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams){
+app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams , $state){
     console.log('Inside Add Journal Controller');
     $rootScope.isActive = 'Journal';
 
@@ -899,6 +902,44 @@ app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams){
         $scope.btnLabel = "Save";
     }
     
+    $scope.cancel = function(){
+        $state.go('Home.Journal');
+    }
+
+    $scope.journalFromData = [
+        {from : '' , debit : ''}
+    ];
+
+    $scope.Add = function(){
+        $scope.journal = {};
+        $scope.journal.name = "";
+        $scope.journal.value = "";
+        $scope.journalFromData.push($scope.journal);
+    };
+
+    $scope.Remove = function(index){
+        if($scope.journalFromData.length !== 1) {
+           $scope.journalFromData.splice(index, 1);
+        }
+    }
+
+
+    $scope.journalToData = [
+        {to : '' , credit : ''}
+    ];
+
+    $scope.AddTo = function(){
+        $scope.journalTo = {};
+        $scope.journalTo.name = "";
+        $scope.journalTo.value = "";
+        $scope.journalToData.push($scope.journalTo);
+    };
+
+    $scope.RemoveTo = function(index){
+        if($scope.journalToData.length !== 1) {
+           $scope.journalToData.splice(index, 1);
+        }
+    }
 
 });
 app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
@@ -949,7 +990,8 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-
+    $scope.location = {};
+    $scope.location.country = 'india';
     $scope.vendorsData = [
         { name: "", value: "" }
     ];
@@ -1079,7 +1121,7 @@ app.controller('bankBRSCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     console.log('Inside Bank BRS Controller');
     $rootScope.isActive = 'CASH/BANKING';
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('BRS');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
@@ -1301,7 +1343,7 @@ app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , C
     console.log('Inside Ledger CASH/BANKING Controller');
     $rootScope.isActive = 'CASH/BANKING';
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('BankLedger');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
@@ -1377,7 +1419,7 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
-
+    $scope.group1 = "day";
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -1694,7 +1736,7 @@ app.controller('expenseCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
 
     $scope.myObj = {};
@@ -1704,11 +1746,16 @@ app.controller('expenseCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Expense');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
+        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
             $state.go('Home.addExpense' , { data: row.entity });
-        });
+        });*/
     }
-
+    $scope.editData = function(row){
+        $state.go('Home.addExpense', {data : row.entity});
+    }
+    $scope.editLedger = function(row){
+        $state.go('Home.companyLedgers', {data : row.entity});
+    }
     $scope.search = {
         searchString : ''
     }
@@ -2101,13 +2148,15 @@ app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.add = function(){
         $state.go('Home.addJournal', { data: $scope.myObj });
     }
-
+    $scope.editData = function(row){
+        $state.go('Home.addJournal' , { data: row.entity });
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Journal');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
-            $state.go('Home.addJournal' , { data: row.entity });
-        });
+        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
+           
+        });*/
     }
     $scope.search = {
         searchString : ''
@@ -2399,7 +2448,12 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
     $rootScope.isSubActive = 'User';
     $rootScope.showNavigations = false;
     $scope.$parent.organizationNavigation = CONSTANTS.organizationNavigation;
-
+    $scope.orgUser = {};
+    $scope.reset = function(){
+        $scope.user ={};
+       $scope.orgUser.addUserForm.$setPristine();
+        $scope.orgUser.addUserForm.$setUntouched();
+    }
     $scope.addNewUserPanel = false;
     $scope.add = function(){
         $scope.addNewUserPanel = true;
@@ -2664,19 +2718,26 @@ app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.myObj = {};
     $scope.add = function(){
         $state.go('Home.addPayments', { data: $scope.myObj });
     }
 
+    $scope.editData = function(row){
+        $state.go('Home.addPayments', {data : row.entity});
+    }
+    $scope.editLedger = function(row){
+        $state.go('Home.companyLedgers', {data : row.entity});
+    }
+
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Payment');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
+        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
             $state.go('Home.addPayments' , { data: row.entity });
-        });
+        });*/
     }
     $scope.search = {
         searchString : ''
@@ -2766,17 +2827,110 @@ app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
 
 
 });
-app.controller('purchaseCtrl',function($rootScope , $scope , $filter){
+app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
-    $scope.panelShow = false;
+    $scope.panelShow = true;
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
     }
     var today = new Date();
-    $scope.date = today; //$filter('date')(today , 'dd-MM-yyyy');
+    $scope.purchase = {};
+    $scope.purchase.date = today;
+    
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('Purchase');
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+    $scope.pdfDownload = function(){
+         $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+    }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 0);
+    }
 
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
+    purchaseService.purchaseList().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }
+          },function(error){
+        console.log('error',error);
+   });
+
+    $scope.changeHeight(0);
+
+    $scope.getMatches = function(searchText) {
+        var deferred = $q.defer();
+            var data = $scope.getData().filter(function(data) {
+                return (data.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1);
+            });
+            deferred.resolve(data);
+            return deferred.promise;
+    }
+
+    
+$scope.getData = function() {
+    return [{"name": "1234"}
+    ,{"name": "1289"}
+    ,{"name": "9658"}
+    ,{"name": "4585"}
+    ,{"name": "6852"}
+    ,{"name": "2547"}
+    ,{"name": "2058"}]
+}
 });
 app.controller('purchaseOrderCtrl',function($rootScope){
     console.log('Inside Purchase Order Controller');
@@ -2894,7 +3048,7 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $state.go('Home.addReceipt', {data : row.entity});
 }
 $scope.editLedger = function(row){
-   // $state.go('Home.addReceipt', {data : row.entity});
+    $state.go('Home.companyLedgers', {data : row.entity});
 }
    $scope.changeHeight(0);
 });
@@ -3159,6 +3313,11 @@ app.service('paymentServices',function($http , CONSTANTS){
             return $http.get(CONSTANTS.service[CONSTANTS.appLevel].paymentList);
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
+});
+app.service('purchaseService',function($http , CONSTANTS){
+    this.purchaseList = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].purchaseList);
     }
 });
 app.service('receiptServices',function($http , CONSTANTS){

@@ -14,12 +14,15 @@
             <form name="addVendorForm1" style="background-color:#f5f6f8">
                 <div layout="row" class="topPadding10">
                     <md-input-container flex="25">
-                        <label>Name*</label>
-                        <input name="name" ng-model="location.name">
+                        <label>Name</label>
+                        <input name="name" ng-model="location.name" ng-disabled="btnLabel == 'Update'">
                     </md-input-container>
-                    <md-input-container flex="25"  flex-offset="5">
+                    <md-input-container flex="25"  flex-offset="5" >
                             <label>Address 1</label>
-                            <input name="address1" ng-model="location.address1">
+                            <input name="address1" ng-model="location.address1" required>
+                            <div ng-messages="addVendorForm1.address1.$error" ng-if="addVendorForm1.address1.$touched">
+                                <div ng-message="required">This is required.</div>
+                            </div>
                     </md-input-container>
                     <md-input-container flex="25"  flex-offset="5">
                         <label>Address 2</label>
@@ -29,27 +32,40 @@
                  <div layout="row" class="topPadding10">
                     <md-input-container flex="25">
                         <label>City</label>
-                        <input name="city" ng-model="location.city">
+                        <input name="city" ng-model="location.city" required>
+                        <div ng-messages="addVendorForm1.city.$error" ng-if="addVendorForm1.city.$touched">
+                                <div ng-message="required">This is required.</div>
+                            </div>
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                         <label>State</label>
-                        <md-select name="state" ng-model="location.state">
+                        <md-select name="state" ng-model="location.state" required>
                             <md-option value="one">State 1</md-option>
                             <md-option value="two">State 2</md-option>
                         </md-select>
+                        <div ng-messages="addVendorForm1.state.$error" ng-if="addVendorForm1.state.$touched">
+                                <div ng-message="required">This is required.</div>
+                            </div>
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                         <label>Country</label>
-                        <md-select name="country" ng-model="location.country">
-                            <md-option value="one">Country 1</md-option>
+                        <md-select name="country" ng-model="location.country" required>
+                                <md-option value="india">India</md-option>
+                                <md-option value="one">Country 1</md-option>
                             <md-option value="two">Country 2</md-option>
                         </md-select>
+                        <div ng-messages="addVendorForm1.country.$error" ng-if="addVendorForm1.country.$touched">
+                                <div ng-message="required">This is required.</div>
+                            </div>
                     </md-input-container>
                 </div>
                 <div layout="row">
                     <md-input-container flex="25">
                         <label>PIN</label>
-                        <input name="pin" ng-model="location.pin">
+                        <input name="pin" ng-model="location.pin" required>
+                        <div ng-messages="addVendorForm1.pin.$error" ng-if="addVendorForm1.pin.$touched">
+                                <div ng-message="required">This is required.</div>
+                            </div>
                     </md-input-container>
                 </div>
                 <div layout="row" ng-if="heading=='New'">

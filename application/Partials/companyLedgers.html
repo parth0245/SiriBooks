@@ -8,20 +8,20 @@
                         <div layout="row" class="topPadding10">
                                 <md-input-container flex="55">
                                     <label>Address</label>
-                                    <input name="add" ng-model="add">
+                                    <input name="add" ng-model="add" ng-readonly="true">
                                 </md-input-container>
                                 <md-input-container flex="25"  flex-offset="5">
                                         <label>Contact</label>
-                                        <input name="contact" ng-model="contact">
+                                        <input name="contact" ng-model="contact" ng-readonly="true">
                                 </md-input-container>
                         </div>
                         <div layout="row" class="sectionSubHeading">
                             <h3>Select View</h3>
                         </div>
                         <div class="topPadding20">
-                            <md-radio-group ng-model="group1" layout="row" flex="85">
-                                <md-radio-button value="day"  class="md-primary">Day Wise</md-radio-button>
-                                <md-radio-button value="month" flex-offset="10" class="md-primary">Consolidated by Month</md-radio-button>
+                            <md-radio-group ng-model="group1" layout="row" md-no-ink>
+                                <md-radio-button value="day" md-no-ink class="md-primary">Day Wise</md-radio-button>
+                                <md-radio-button value="month" md-no-ink flex-offset="10" class="md-primary">Month Wise</md-radio-button>
                             </md-radio-group>
                         </div>
                         <div layout="row" class="topPadding30">

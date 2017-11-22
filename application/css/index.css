@@ -642,11 +642,12 @@
 .journalTable tbody tr td label{
 	margin-top:25px;
 }
-.journalTable tbody tr td:first-child md-input-container {
-	width: 90%;
-	float: right;
+.journalTable tbody tr td:first-child .onlySelect {
+	width: 65%;
+	/*float: right;*/
+	margin-left:15px;
 }
-.journalTable tbody tr:first-child td{
+.journalTable tbody tr td{
 	border-bottom: 1px solid #d4d4d4;
 }
 .journalTable tbody tr td:first-child {
@@ -744,13 +745,16 @@
 	color:white !important;
   }
   .flex-16, .layout-row>.flex-16 {
-	  width:16%;
-  }
+	width:16%;
+}
+.flex-offset-57 {
+	margin-left:57%;
+}
   .savedRecords {
 	background-color: #0935ae;
-	color:white;
-	font-size: 12px;
-    padding: 10px 70px 10px 15px;
+    color: #fff;
+    font-size: 11px;
+    padding: 7px 30px 7px 5px;
     font-family: Montserrat-Regular;
   }
   .downloadSample{
@@ -772,4 +776,24 @@
 .moduleDownload .dropdown-menu {
 	left:initial;
 	right:160px !important;
+}
+.journalLabels {
+	width:35px;
+}
+md-radio-button .md-container:before {
+    display: none;
+}
+._md-datepicker-floating-label._md-datepicker-has-calendar-icon .md-input-message-animation {
+	margin-left: 0px;
+}
+md-autocomplete.md-default-theme, md-autocomplete {
+	background-color: initial !important;
+}
+.md-whiteframe-1dp, .md-whiteframe-z1 {
+	     box-shadow: none;
+}
+md-autocomplete > md-autocomplete-wrap > md-progress-linear { display: none; }
+md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
+#searchinput {
+	color:black;
 }

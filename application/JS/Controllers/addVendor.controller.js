@@ -11,7 +11,8 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-
+    $scope.location = {};
+    $scope.location.country = 'india';
     $scope.vendorsData = [
         { name: "", value: "" }
     ];

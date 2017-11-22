@@ -9,7 +9,7 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
-
+    $scope.group1 = "day";
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {

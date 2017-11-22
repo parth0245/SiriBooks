@@ -8,19 +8,26 @@ app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.myObj = {};
     $scope.add = function(){
         $state.go('Home.addPayments', { data: $scope.myObj });
     }
 
+    $scope.editData = function(row){
+        $state.go('Home.addPayments', {data : row.entity});
+    }
+    $scope.editLedger = function(row){
+        $state.go('Home.companyLedgers', {data : row.entity});
+    }
+
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Payment');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
+        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
             $state.go('Home.addPayments' , { data: row.entity });
-        });
+        });*/
     }
     $scope.search = {
         searchString : ''

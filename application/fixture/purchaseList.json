@@ -1,0 +1,10 @@
+[{
+    "sno" : "1",
+    "particulars" : "particular",
+    "batchNo" : "123",
+    "quantity" : "11",
+    "rate" : "12",
+    "value" : "543",
+    "rateOfGst" : "12",
+    "inputGstValue" : "12"
+}]

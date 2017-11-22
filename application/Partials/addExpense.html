@@ -4,11 +4,11 @@
         </div>
         <div class="topPadding20">
             <md-content>
-                <form name="addInventoryForm" style="background-color:#f5f6f8">
+                <form name="addExpensesForm" style="background-color:#f5f6f8">
                         <div layout="row">
                                 <md-input-container flex="55">
-                                    <label>Vendor Name *</label>
-                                    <md-select name="vname" ng-model="vname">
+                                    <label>Vendor Name</label>
+                                    <md-select name="vname" ng-model="vname" ng-disabled="btnLabel == 'Update'">
                                         <md-option value="Product 1">Product 1</md-option>
                                         <md-option value="Product 2">Product 2</md-option>
                                     </md-select>
@@ -24,107 +24,125 @@
                             <div layout="row" class="topPadding10" ng-hide="panelShow1">
                                     <md-input-container flex="25" >
                                             <label>Address 1</label>
-                                            <input name="add1" ng-model="add1">
+                                            <input name="add1" ng-model="add1" disabled>
                                         </md-input-container>
                                         <md-input-container flex="25"  flex-offset="5">
                                                 <label>Address 2</label>
-                                                <input name="add2" ng-model="add2">
+                                                <input name="add2" ng-model="add2" disabled>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
                                                 <label>City</label>
-                                                <input name="city" ng-model="city">
+                                                <input name="city" ng-model="city" disabled>
                                             </md-input-container>
                             </div>
                             <div layout="row" ng-hide="panelShow1">
                                     <md-input-container flex="25" >
                                             <label>State</label>
-                                            <input name="state" ng-model="state">
+                                            <input name="state" ng-model="state" disabled>
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Country</label>
-                                            <input name="country" ng-model="country">
+                                            <input name="country" ng-model="country" disabled>
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>PIN</label>
-                                            <input name="pin" ng-model="pin">
+                                            <input name="pin" ng-model="pin" disabled>
                                     </md-input-container>
                             </div>
                             <div layout="row" ng-hide="panelShow1">
                                     <md-input-container flex="25">
                                             <label>GST Number</label>
-                                            <md-select name="gst" ng-model="gst">
+                                            <md-select name="gst" ng-model="gst" disabled>
                                                 <md-option value="Product 1">GST 1</md-option>
                                                 <md-option value="Product 2">GST 2</md-option>
                                             </md-select>
                                         </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>PAN</label>
-                                            <input name="pan" ng-model="pan">
+                                            <input name="pan" ng-model="pan" disabled>
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Aadhar</label>
-                                            <input name="aadhar" ng-model="aadhar">
+                                            <input name="aadhar" ng-model="aadhar" disabled>
                                     </md-input-container>
                             </div>
                             <div layout="row" class="" ng-hide="panelShow1">
                                     <md-input-container flex="25">
                                             <label>Mobile</label>
-                                            <input name="mobile" ng-model="mobile">
+                                            <input name="mobile" ng-model="mobile" disabled>
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>E-Mail</label>
-                                            <md-select name="gst" ng-model="gst">
+                                            <md-select name="gst" ng-model="gst" disabled>
                                                 <md-option value="Product 1">GST 1</md-option>
                                                 <md-option value="Product 2">GST 2</md-option>
                                             </md-select>
                                         </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Registration Number</label>
-                                            <input name="aadhar" ng-model="aadhar">
+                                            <input name="aadhar" ng-model="aadhar" disabled>
                                     </md-input-container>
                             </div>
-                            <div layout="row" class="topPadding20" ng-hide="panelShow1">
+                            <div layout="row" class="topPadding20">
                                     <md-input-container flex="25">
                                             <label>Invoice Number</label>
-                                            <input name="invoice" ng-model="invoice">
+                                            <input name="invoice" ng-model="expenseDetails.invoice">
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>Head of Expenses</label>
-                                            <md-select name="gst" ng-model="gst">
+                                            <md-select name="expensesHead" ng-model="expenseDetails.expensesHead" required>
                                                 <md-option value="Product 1">Head 1</md-option>
                                                 <md-option value="Product 2">Head 2</md-option>
                                             </md-select>
+                                            <div ng-messages="addExpensesForm.expensesHead.$error" ng-if="addExpensesForm.expensesHead.$touched">
+                                                <div ng-message="required">This is required.</div>
+                                                </div>
                                         </md-input-container>
                             </div>
-                            <div layout="row" ng-hide="panelShow1">
+                            <div layout="row">
                                         <md-input-container flex="25">
                                                         <label>Date</label>
-                                                        <md-datepicker ng-model="date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                                                        <md-datepicker required name="date" ng-model="expenseDetails.date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                                                        <div ng-messages="addExpensesForm.date.$error" ng-if="addExpensesForm.date.$touched">
+                                                                        <div ng-message="required">This is required.</div>
+                                                                        </div>
                                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>Amount</label>
-                                            <input name="amt" ng-model="amt">
+                                            <input name="amount" ng-model="expenseDetails.amt" required>
+                                            <div ng-messages="addExpensesForm.amount.$error" ng-if="addExpensesForm.amount.$touched">
+                                        <div ng-message="required">This is required.</div>
+                                        </div>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
                                                 <label>Payment Mode</label>
-                                                <input name="mode" ng-model="mode">
+                                                <input name="mode" ng-model="expenseDetails.mode" required>
+                                                <div ng-messages="addExpensesForm.mode.$error" ng-if="addExpensesForm.mode.$touched">
+                                                                <div ng-message="required">This is required.</div>
+                                                                </div>
                                             </md-input-container>
                                        
                             </div>
-                            <div layout="row" ng-hide="panelShow1">
+                            <div layout="row">
                                     <md-input-container flex="25" >
                                         <label>TDS Section</label>
-                                        <md-select name="tdsSec" ng-model="tdsSec">
+                                        <md-select name="tdsSec" ng-model="expenseDetails.tdsSec" required>
                                             <md-option value="Product 1">tdsSec 1</md-option>
                                             <md-option value="Product 2">tdsSec 2</md-option>
                                         </md-select>
+                                        <div ng-messages="addExpensesForm.tdsSec.$error" ng-if="addExpensesForm.tdsSec.$touched">
+                                                        <div ng-message="required">This is required.</div>
+                                                        </div>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
                                                 <label>Tax Amount</label>
-                                                <input name="amt" ng-model="amt">
+                                                <input name="taxAmount" ng-model="expenseDetails.amt" required>
+                                                <div ng-messages="addExpensesForm.taxAmount.$error" ng-if="addExpensesForm.taxAmount.$touched">
+                                                                <div ng-message="required">This is required.</div>
+                                                                </div>
                                         </md-input-container>
                             </div>
-                            <div layout="row" ng-hide="panelShow1">
+                            <div layout="row">
                                     <md-input-container flex="85">
                                             <label>Narration</label>
                                             <input name="narration" ng-model="narration">
@@ -135,8 +153,9 @@
             </md-content>
         </div>
         <div layout="row" class="addPaddingButtons">
-                        <md-button class="md-raised ifBold" flex-offset="45">Reset All</md-button>
-                        <md-button class="md-raised md-primary ifBold">{{btnLabel}}</md-button>
-                        <md-button class="md-raised ifBold">Cancel</md-button>
+                        <md-button class="md-raised ifBold" ng-if="btnLabel != 'Update'" flex-offset="50" ng-click="reset()">Reset All</md-button>
+                        <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
+                        <md-button class="md-raised md-primary ifBold" flex-offset="65" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+                        <md-button class="md-raised ifBold" ng-click="expenses()">Cancel</md-button>
                 </div>
     </div>

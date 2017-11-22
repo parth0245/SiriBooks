@@ -9,10 +9,13 @@
                         <div layout="row" class="topPadding10">
                                 <md-input-container flex="55">
                                         <label>Customer Name</label>
-                                        <md-select name="cust_name" ng-model="receipt.cust_name">
+                                        <md-select name="cust_name" ng-model="receipt.cust_name" required ng-disabled="btnLabel == 'Update'">
                                             <md-option value="Product 1">Customer 1</md-option>
                                             <md-option value="Product 2">Customer 2</md-option>
                                         </md-select>
+                                        <div ng-messages="addReceiptForm.cust_name.$error" ng-if="addReceiptForm.cust_name.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
                                     </md-input-container>
                         </div>
                         <div layout="row" class="topPadding10">
@@ -83,7 +86,7 @@
                         <div layout="row" class="topPadding30">
                                 <md-input-container flex="25">
                                         <label>Receipt Number</label>
-                                        <input name="receipt" ng-model="receipt.receipt">
+                                        <input name="receipt" ng-model="receipt.receipt" ng-readonly="true">
                                 </md-input-container>
                                 <md-input-container flex="25" flex-offset="5">
                                         <label>Against</label>

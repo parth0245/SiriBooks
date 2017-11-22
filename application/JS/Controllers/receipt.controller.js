@@ -110,7 +110,7 @@ app.controller('receiptCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $state.go('Home.addReceipt', {data : row.entity});
 }
 $scope.editLedger = function(row){
-   // $state.go('Home.addReceipt', {data : row.entity});
+    $state.go('Home.companyLedgers', {data : row.entity});
 }
    $scope.changeHeight(0);
 });

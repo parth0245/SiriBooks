@@ -245,11 +245,11 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     $urlRouterProvider.otherwise('/PageNotFound');
 
     $mdDateLocaleProvider.formatDate = function(date) {
-        return date ? moment(date).format('DD-MM-YYYY') : '';
+        return date ? moment(date).format('DD/MM/YYYY') : '';
       };
       
       $mdDateLocaleProvider.parseDate = function(dateString) {
-        var m = moment(dateString, 'DD-MM-YYYY', true);
+        var m = moment(dateString, 'DD/MM/YYYY', true);
         return m.isValid() ? m.toDate() : new Date(NaN);
       };
 

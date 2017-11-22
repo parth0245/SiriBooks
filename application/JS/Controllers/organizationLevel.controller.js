@@ -27,7 +27,12 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
     $rootScope.isSubActive = 'User';
     $rootScope.showNavigations = false;
     $scope.$parent.organizationNavigation = CONSTANTS.organizationNavigation;
-
+    $scope.orgUser = {};
+    $scope.reset = function(){
+        $scope.user ={};
+       $scope.orgUser.addUserForm.$setPristine();
+        $scope.orgUser.addUserForm.$setUntouched();
+    }
     $scope.addNewUserPanel = false;
     $scope.add = function(){
         $scope.addNewUserPanel = true;

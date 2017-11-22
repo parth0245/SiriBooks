@@ -14,13 +14,15 @@ app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.add = function(){
         $state.go('Home.addJournal', { data: $scope.myObj });
     }
-
+    $scope.editData = function(row){
+        $state.go('Home.addJournal' , { data: row.entity });
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Journal');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        $scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
-            $state.go('Home.addJournal' , { data: row.entity });
-        });
+        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
+           
+        });*/
     }
     $scope.search = {
         searchString : ''

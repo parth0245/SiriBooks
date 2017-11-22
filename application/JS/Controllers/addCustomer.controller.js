@@ -10,8 +10,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-
-
+    $scope.location = {};
+    $scope.location.country = 'india';
     $scope.additionalData = [
         { name: "", value: "" }
     ];
@@ -36,9 +36,9 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
 
     $scope.resetForm1 = function(){
         $scope.location = {};
-        $scope.addCustomerForm1.$setUntouched();
         $scope.addCustomerForm1.$setPristine();
-    }
+        $scope.addCustomerForm1.$setUntouched();
+        }
     $scope.resetForm2 = function(){
         $scope.identity = {};
         $scope.addCustomerForm2.$setUntouched();

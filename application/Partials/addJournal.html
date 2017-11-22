@@ -10,10 +10,10 @@
                                             <label>Date</label>
                                             <md-datepicker ng-model="date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
                                         </md-input-container>
-                                        <md-input-container flex="55"  flex-offset="5">
+                                        <!--<md-input-container flex="55"  flex-offset="5">
                                                 <label>Reference</label>
                                                 <input name="ref" ng-model="ref">
-                                        </md-input-container>
+                                        </md-input-container>-->
                             </div>
                            
                            
@@ -27,50 +27,66 @@
                                         </tr>
                                        </thead>
                                        <tbody>
-                                            <tr>
-                                                    <td >
-                                                            <label>From</label>
-                                                        <md-input-container>
-                                                          
-                                                            <md-select name="vname" ng-model="vname">
-                                                                <md-option value="Product 1">Product 1</md-option>
-                                                                <md-option value="Product 2">Product 2</md-option>
-                                                            </md-select>
-                                                        </md-input-container>
-                                                    </td>
-                                                    <td>
-                                                            <md-input-container>
-                                                                    <input name="name" ng-model="name">
-                                                                </md-input-container>
-                                                    </td>
-                                                    <td></td>
-                                            </tr>
-                                            <tr>
-                                                    <td>
-                                                            <label>To</label>
-                                                            <md-input-container>
-                                                                
-                                                                <md-select name="vname" ng-model="vname">
-                                                                    <md-option value="Product 1">Product 1</md-option>
-                                                                    <md-option value="Product 2">Product 2</md-option>
-                                                                </md-select>
-                                                            </md-input-container>
-                                                    </td>
-                                                    <td></td>
-                                                    <td>
-                                                            <md-input-container>
-                                                                    <input name="name" ng-model="name">
-                                                                </md-input-container>
-                                                    </td>
-                                            </tr>
+    <tr ng-repeat="journal in journalFromData" >
+        <td>
+            <label class="journalLabels">From</label>
+            <md-input-container class="onlySelect">
+                <md-select name="from" ng-model="journal.from">
+                    <md-option value="Product 1">Product 1</md-option>
+                    <md-option value="Product 2">Product 2</md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex="5"  flex-offset="5">
+                    <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="Remove($index)"/>
+            </md-input-container>
+            <md-input-container flex="5"  flex-offset="5">
+                    <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/plus.png" ng-click="Add()" ng-if="$last"/>
+            </md-input-container>
+        </td>
+        <td>
+            <md-input-container>
+                <input name="debit" ng-model="journal.debit">
+            </md-input-container>
+        </td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="journalTo in journalToData">
+            <td>
+                    <label class="journalLabels">To</label>
+                    <md-input-container class="onlySelect">
+                        
+                        <md-select name="vname" ng-model="journalTo.to">
+                            <md-option value="Product 1">Product 1</md-option>
+                            <md-option value="Product 2">Product 2</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex="5"  flex-offset="5">
+                            <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="RemoveTo($index)"/>
+                    </md-input-container>
+                    <md-input-container flex="5"  flex-offset="5">
+                            <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/plus.png" ng-click="AddTo()" ng-if="$last"/>
+                    </md-input-container>
+            </td>
+            <td></td>
+            <td>
+                    <md-input-container>
+                            <input name="name" ng-model="journalTo.credit">
+                        </md-input-container>
+            </td>
+    </tr>
 
                                        </tbody>
                                    </table>
                             </div>
                             <div layout="row" class="addPaddingButtons" flex="85">
-                                    <md-button class="md-raised ifBold" flex-offset="65">Reset All</md-button>
-                                    <md-button class="md-raised md-primary ifBold">{{btnLabel}}</md-button>
-                                    <md-button class="md-raised ifBold">Cancel</md-button>
+                                    <md-input-container flex="55">
+                                            <label>Narration</label>
+                                            <input name="narration" ng-model="narration">
+                                    </md-input-container>
+                                    <md-button class="md-raised ifBold" flex-offset="10" ng-if="btnLabel != 'Update'">Reset All</md-button>
+                                    <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
+                                    <md-button class="md-raised md-primary ifBold" flex-offset="25" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+                                    <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
                             </div>
                 </form>
             </md-content>

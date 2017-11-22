@@ -2,7 +2,7 @@ app.controller('bankBRSCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     console.log('Inside Bank BRS Controller');
     $rootScope.isActive = 'CASH/BANKING';
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('BRS');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
