@@ -1,0 +1,17 @@
+[
+    {
+        "cust_name" : "customer1",
+        "add1" : "Kothaguda Signal",
+        "add2" : "Kothaguda",
+        "pin" : "500018",
+        "city" : "Hyderabad",
+        "state" : "Telangana",
+        "country" : "India",
+        "gst" : "1234",
+        "pan" : "copp3455",
+        "aadhar" : "1231231234",
+        "mobile" : "9999965235",
+        "email" : "parth.pandey@gmail.com",
+        "registration" : "yth556"
+    }
+]

@@ -1,4 +1,4 @@
-var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ui.grid.exporter','ngMessages','flow','ngFileUpload']);
+var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ui.grid.exporter','ngMessages','flow','ngFileUpload','ui.grid.edit']);
 
 app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , flowFactoryProvider , $mdDateLocaleProvider) {
     $stateProvider
@@ -69,7 +69,8 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     .state('Home.addLedgers', {
         url: '/addLedgers',
         templateUrl: 'application/Partials/addLedger.html',
-        controller: 'addLedgerCtrl'
+        controller: 'addLedgerCtrl',
+        params: {data : ''}
     })
     .state('Home.companyLedgers', {
         url: '/companyLedgers',

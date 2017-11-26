@@ -30,7 +30,7 @@
                                             <div ng-message="required">This is required.</div>
                                         </div>
                                 </md-input-container>
-                                <md-input-container flex="25" flex-offset="5">
+                                <!--<md-input-container flex="25" flex-offset="5">
                                     <label>GST Reverse Charge  Applicability</label>
                                     <md-select name="gstCharge" ng-model="purchase.gstCharge" required>
                                         <md-option value="one">One</md-option>
@@ -39,6 +39,10 @@
                                     <div ng-messages="purchaseForm.gstCharge.$error" ng-if="purchaseForm.gstCharge.$touched">
                                             <div ng-message="required">This is required.</div>
                                         </div>
+                                </md-input-container>-->
+                                <md-input-container flex="25"  flex-offset="5">
+                                        <label>Sales Person</label>
+                                        <input name="salesPerson" ng-model="salesPerson">
                                 </md-input-container>
                         </div>
                         <div layout="row">
@@ -86,13 +90,43 @@
                                 </md-input-container>
                         </div>
                         <div layout="row">
+                                <md-input-container flex="25" >
+                                        <label>Place Supply</label>
+                                        <input name="place" ng-model="place">
+                                </md-input-container>
+                                <md-input-container flex="25"  flex-offset="5">
+                                        <label>Inclusive of GST</label>
+                                        <input name="inclusiveGst" ng-model="inclusiveGst">
+                                </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                        <label>GST Reverse Charge  Applicability</label>
+                                        <md-select name="gstCharge" ng-model="purchase.gstCharge" required>
+                                            <md-option value="one">One</md-option>
+                                            <md-option value="two">Two</md-option>
+                                        </md-select>
+                                        <div ng-messages="purchaseForm.gstCharge.$error" ng-if="purchaseForm.gstCharge.$touched">
+                                                <div ng-message="required">This is required.</div>
+                                            </div>
+                                    </md-input-container>
+                        </div>
+                        <div layout="row">
                                 <md-input-container flex="25">
-                                    <label>Due Date of Payment</label>
-                                    <md-select name="vendor" ng-model="purchase.vendor">
-                                        <md-option value="one">Vendor 1</md-option>
-                                        <md-option value="two">Vendor 2</md-option>
+                                    <label>Payment timeline</label>
+                                    <md-select name="timeline" ng-model="purchase.timeline">
+                                        <md-option value="one">Timeline 1</md-option>
+                                        <md-option value="two">Timeline 2</md-option>
                                     </md-select>
                                 </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                        <label>Payment Duedate</label>
+                                        <md-datepicker name="dueDate" ng-model="purchase.dueDate" md-hide-icons="triangle" md-open-on-focus="">
+                                        </md-datepicker>
+                                        <!--<div ng-messages="purchaseForm.dueDate.$error">
+                                                <div ng-message="valid">The entered value is not a date!</div>
+                                                <div ng-message="required">This date is required!</div>
+                                            </div>-->
+                                    </md-input-container>
+
                         </div>
                         <div layout="row" class="topPadding20">
                                 <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
@@ -176,7 +210,7 @@
         <md-button class="md-raised md-primary ifBold" flex="15">Save & Purchase</md-button>
         <md-button class="md-raised ifBold">Cancel</md-button>
 </div>-->
-                    <div class="sectionSubHeading">
+                   <!-- <div class="sectionSubHeading">
                         <h3>Enter Line Item</h3>
                     </div>
                     <div layout="row">
@@ -218,52 +252,82 @@
                      </md-input-container>
                     </div>
 
-
+                -->
             </form>
         </md-content>
     </div>
 </div>
 <div class="addInventory fontNormal">
 
-        <div class="panel panel-default col-xs-11 marginLeft5Cent paddingLeft45 topPadding20">
+        <div class="panel panel-default col-xs-11 marginLeft5Cent paddingLeft45 topPadding20" style="margin-top:10px;background-color:initial;">
                 <div class="panel-body">
-                    <div layout="row" class="">
-                        <md-input-container flex="25">
-                            <label>Specification Name</label>
-                            <input name="gst" ng-model="qtyty">
-                        </md-input-container>
-                    <md-input-container flex="25" flex-offset="5">
-                            <label>Value</label>
-                            <input name="pan" ng-model="rate">
-                    </md-input-container>
-                    <md-checkbox class="md-primary" style="margin-left:5%;">
-                        <label class="paddingTop28">Print</label>
-                    </md-checkbox>
-                    </div>
-                    <div layout="row" class="">
-                        <md-input-container flex="25">
-                            <label>Specification Name</label>
-                            <input name="gst" ng-model="qtyty">
-                        </md-input-container>
-                    <md-input-container flex="25" flex-offset="5">
-                            <label>Value</label>
-                            <input name="pan" ng-model="rate">
-                    </md-input-container>
-                    <md-checkbox class="md-primary" style="margin-left:5%;">
-                            <label class="paddingTop28">Print</label>
-                    </md-checkbox>
-                    <md-button class="md-raised md-primary ifBold" flex="10" flex-offset="10">Add</md-button>
-
-                    </div>
-                    <div layout="row" class="purchaseSpecification">
+                        <div class="sectionSubHeading" style="padding-top:0px;">
+                                <h3>Enter Line Item</h3>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex="85">
+                                    <label>Product</label>
+                                    <md-select name="prod" ng-model="prod">
+                                        <md-option value="Product 1">prod 1</md-option>
+                                        <md-option value="Product 2">prod 2</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div layout="row" class="topPadding20">
+                                <md-input-container flex="25">
+                                    <label>Quantity</label>
+                                    <input name="gst" ng-model="qtyty">
+                                </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
+                                    <label>Rate</label>
+                                    <input name="pan" ng-model="rate">
+                            </md-input-container>
+                            <md-input-container flex="25"  flex-offset="5">
+                                    <label>Discount</label>
+                                    <input name="aadhar" ng-model="discount">
+                            </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex="25">
+                                    <label>Batch No.</label>
+                                    <input name="gst" ng-model="bno">
+                                </md-input-container>
+                            </div>
+                            <!--<div layout="row" class="topPadding20 purchaseSpecification">
+                                <div>Add Additional Specification for each Item of Quantity</div>
+                            </div>
+                            <div layout="row" class="topPadding20">
+                                <md-input-container flex="25">
+                                    <label>How many specification per item ?</label>
+                                    <input name="aadhar" ng-model="spec">
+                             </md-input-container>
+                            </div>-->
+                            <div class="sectionSubHeading" style="padding-top:0px;">
+                                    <h3>Enter Specifications</h3>
+                                </div>
+                                <div layout="row" class="">
+                                    <md-input-container flex="25">
+                                        <label>Specification Name</label>
+                                        <input name="gst" ng-model="qtyty">
+                                    </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                        <label>Value</label>
+                                        <input name="pan" ng-model="rate">
+                                </md-input-container>
+                                <!--<md-checkbox class="md-primary" style="margin-left:5%;">
+                                    <label class="paddingTop28">Print</label>
+                                </md-checkbox>-->
+                                <md-button class="md-raised md-primary ifBold" flex="15" flex-offset="25">Add Line Item</md-button>
+                                </div>
+                    <!--<div layout="row" class="purchaseSpecification">
                             <div>Adding Specification for 1/10 quantity</div>
-                    </div>
+                    </div>-->
 
                 </div>
               </div>
     <div class="col-xs-12 text-right pagingPart paddingTop100 paddingBottom10 paddingRight30 paddingLeft30" ng-class="moduleHeading == 'Application Users' || moduleHeading == 'Role List'  ? '' : ''">
         <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
-        <span ng-if="moduleHeading == 'Customers List'" class="moduleDownload">
+        <!--<span ng-if="moduleHeading == 'Customers List'" class="moduleDownload">
             <img src="application/Images/Assets/download.png" id="dropdownMenu1" data-toggle="dropdown" height="25" width="25"/>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                 <li><a ng-click="pdfDownload()">PDF</a></li>
@@ -286,11 +350,35 @@
             ng-change="seek(paging.pageSelected)"
                 ng-options="o for o in pageNumber">
             </select>
-        </span>
+        </span>-->
 </div>
-<div class="col-xs-12 inventorySection paddingRight30 paddingLeft30 paddingBottom30" style="overflow:hidden">
+<div class="col-xs-12 inventorySection paddingRight15 paddingLeft15" style="overflow:hidden">
     <div id="grid1" ui-grid="gridOptions" ui-grid-pagination class="grid">
         <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
     </div>
+</div>
+<div class="col-xs-12 inventorySection paddingRight15 paddingLeft15 paddingBottom30">
+        <div class="col-xs-12 noPadding purchaseGridFooter">
+                <div class="col-xs-11 text-right">SUB TOTAL</div>
+                <div class="col-xs-1 text-right">1234</div>
+        </div>
+        <div class="col-xs-12 noPadding purchaseGridFooter secondChild">
+                <div class="col-xs-10 text-right">
+                    <span style="display : block;">
+                        <input type="radio" name="discount"/>Percent
+                        <input type="radio" name="discount"/>Value
+                    </span>
+                    <div>
+                            <span>Less : Discount</span>
+                            <span>Percent / Value</span>
+                    </div>
+                </div>
+                <div class="col-xs-1 text-right">Discount</div>
+                <div class="col-xs-1 text-right">1234</div>
+        </div>
+        <div class="col-xs-12 noPadding purchaseGridFooter">
+                <div class="col-xs-11 text-right">Total</div>
+                <div class="col-xs-1 text-right">1234</div>
+        </div>
 </div>
 </div>

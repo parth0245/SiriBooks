@@ -89,12 +89,14 @@
                                             <label>Value</label>
                                             <input name="value" ng-model="desc.value">
                                     </md-input-container>
-                                    <md-input-container flex="5"  flex-offset="5">
+                                    <md-checkbox class="md-primary checkBoxForInventory" style="margin-left:5%;width:16%;">Value Specified during sale & purchase</md-checkbox>
+                                    <md-input-container flex="5"  style="margin-left:2%">
                                             <img class="marginTop12" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="Remove($index)"/>
                                     </md-input-container>
                                     <md-input-container flex="5"  flex-offset="2">
                                             <img class="marginTop12" height="30" width="30" src="application/Images/Assets/INVENTORY_page/plus.png" ng-click="Add()" ng-if="$last"/>
                                     </md-input-container>
+                                    
                             </div>
                             <div layout="row" class="topPadding30 imageUpload">
                                 

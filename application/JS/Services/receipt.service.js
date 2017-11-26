@@ -6,4 +6,7 @@ app.service('receiptServices',function($http , CONSTANTS){
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
     }
+    this.getCustomerDetails = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCustomerDetails);
+    }
 });

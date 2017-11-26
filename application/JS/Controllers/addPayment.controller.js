@@ -10,6 +10,9 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-
+    $scope.panelShow = true ;
+    $scope.togglePannel = function(){
+        $scope.panelShow = !$scope.panelShow;
+    }
 
 });

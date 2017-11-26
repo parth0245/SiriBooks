@@ -1,4 +1,4 @@
-var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ui.grid.exporter','ngMessages','flow','ngFileUpload']);
+var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ui.grid.exporter','ngMessages','flow','ngFileUpload','ui.grid.edit']);
 
 app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , flowFactoryProvider , $mdDateLocaleProvider) {
     $stateProvider
@@ -69,7 +69,8 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     .state('Home.addLedgers', {
         url: '/addLedgers',
         templateUrl: 'application/Partials/addLedger.html',
-        controller: 'addLedgerCtrl'
+        controller: 'addLedgerCtrl',
+        params: {data : ''}
     })
     .state('Home.companyLedgers', {
         url: '/companyLedgers',
@@ -285,7 +286,8 @@ app.constant('CONSTANTS', {
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : 'application/fixture/searchInventory.json',
-                        purchaseList : 'application/fixture/purchaseList.json'
+                        purchaseList : 'application/fixture/purchaseList.json',
+                        getCustomerDetails : 'application/fixture/customer.json'
                         
                 },{
                         inventoryList : '',
@@ -341,7 +343,7 @@ app.constant('CONSTANTS', {
                 {url : 'Home.Accounting', name : 'Accounting' , SelimgSrc:'application/Images/Assets/Admin-Settings inside/Accounting_active.png' , imgSrc : 'application/Images/Assets/Admin-Settings inside/Accounting_inactive.png', glyphClasses : 'glyphicon glyphicon-home'}
         ],
         gridOptionsConstants : function(gridName){
-                if(gridName == 'Ledger' || gridName == 'Banking'){
+                if(gridName == 'Banking'){
                         return {
                                 enableSorting: true,
                                 rowHeight: 40,
@@ -689,27 +691,17 @@ BankLedgerfields : [
         {field : "netBalance"}
 ],
 BRSfields : [
-        {field : "date"},
-        {field : "particulars"},
-        {field : "voucherType"},
-        {field : "debit"},
-        {field : "credit"},
-        {field : "note"},
-        {field : "date"}
+        {field : "date" ,enableCellEdit: false ,cellFilter: 'date:"dd-MM-yyyy"',},
+        {field : "particulars" ,enableCellEdit: false},
+        {field : "voucherType" ,enableCellEdit: false},
+        {field : "debit" ,enableCellEdit: false},
+        {field : "credit" ,enableCellEdit: false},
+        {field : "date" , headerCellClass: 'headColor',
+        editableCellTemplate: 'application/Partials/dateTemplate.html' },
+        {field : "notes" , width:"20%" , headerCellClass : 'headColor'}
 
 ],
-Purchasefields : [
-        {field : "sno" , width: "5%"},
-        {field : "particulars"},
-        {field : "batchNo"},
-        {field : "quantity",width : "10%"},
-        {field : "rate" , width : "7%"},
-        {field : "value"},
-        {field : "rateOfGst"},
-        {field : "inputGstValue"},
-        {field : "rateOfGst"},
-        {field : "inputGstValue"}
-]
+Purchasefields : []
 });
 app.controller('addContraCtrl',function($rootScope , $scope , $stateParams , $state){
     console.log('Inside Add Contra Controller');
@@ -954,10 +946,13 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-
+    $scope.panelShow = true ;
+    $scope.togglePannel = function(){
+        $scope.panelShow = !$scope.panelShow;
+    }
 
 });
-app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state){
+app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices){
     console.log('Inside Add Receipt Controller');
     $rootScope.isActive = 'Receipt';
     if(angular.isDefined($stateParams.data.customerName)) {
@@ -968,13 +963,26 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
+    $scope.ifCustomer = true;
+    $scope.getCustomer = function(){
+        //$scope.ifCustomer = true;
+        receiptServices.getCustomerDetails($scope.receipt.cust_name).then(function(response){
+            console.log('response',response.data[0]);
+            $scope.receipt = response.data[0];
+        },function(err){
 
+        });
+    }
     $scope.cancel = function(){
         $state.go('Home.Receipt');
     }
     $scope.resetAll = function(){
         $scope.receipt = {};
         $scope.addReceiptForm.setPristine();
+    }
+    $scope.panelShow = true ;
+    $scope.togglePannel = function(){
+        $scope.panelShow = !$scope.panelShow;
     }
 });
 app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state){
@@ -1127,7 +1135,9 @@ app.controller('bankBRSCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
-
+    $scope.cancel = function(){
+        $state.go('Home.bankLedger');
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -2244,7 +2254,7 @@ app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
    $scope.changeHeight(0);
 
 });
-app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter){
+app.controller('ledgerCtrlPriviors',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter){
     console.log('Inside Ledgers Controller');
     $rootScope.isActive = 'LEDGERS';
 
@@ -2397,6 +2407,368 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'LEDGERS';
 
+
+    $scope.resetAll = function(){
+        $scope.ledger ={};
+        $scope.addLedgerForm.$setPristine();
+    }
+
+    $scope.cancel = function(){
+        $state.go('Home.Ledgers');
+    }
+
+});
+
+app.controller('ledgerCtrdddl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter){
+    console.log('Inside Ledgers Controller');
+    $rootScope.isActive = 'LEDGERS';
+
+    $scope.add = function(){
+        $state.go('Home.addLedgers');
+    }
+
+    $scope.checkModule = function(){
+        return true;
+    }
+    
+    $scope.moduleHeading = 'Ledgers';
+    $scope.btn1 = 'Search';
+    $scope.btn2 = 'Add New';
+    $scope.ifThreeBtn = false;
+
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 0);
+    }
+
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('Ledger');
+    $scope.gridOptions.columnDefs = [
+        { field: 'ledgerName',
+        cellTemplate : '<div>'+
+        '<div ng-click="grid.appScope.getCompanyLedger(row,col)" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div>'+
+           '</div>'
+        },
+        { field: 'balance',category:"Balance Amount" }
+];
+$scope.search = {
+    searchString : ''
+}
+$scope.search = function(searchterm){
+    if(searchterm == '') {
+    return;
+    }
+    var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+    $scope.gridOptions.data = temp;
+    if(temp.length == 0) {
+        $scope.totalPages = 1;
+        $scope.changeHeight(200);
+    }
+    else {
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }       
+}
+$scope.removeSearchFilter = function() {
+    $scope.gridOptions.data =  $scope.dataForGrid;
+    $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+    $scope.search.searchString = '';
+    $scope.changeHeight(0);
+}
+
+
+$scope.getCompanyLedger = function(row,column){
+    $state.go('Home.companyLedgers');
+}
+
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+     
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        $scope.changeHeight(0);
+    }
+
+    ledgerServices.getLedgers().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+          },function(error){
+        console.log('error',error);
+   });
+      
+   $scope.changeHeight(0);
+});
+
+app.controller('addLedgerCtrl',function($rootScope , $scope , $state){
+    console.log('Inside Add Inventory Controller');
+    $rootScope.isActive = 'LEDGERS';
+
+
+    $scope.resetAll = function(){
+        $scope.ledger ={};
+        $scope.addLedgerForm.$setPristine();
+    }
+
+    $scope.cancel = function(){
+        $state.go('Home.Ledgers');
+    }
+
+});
+/*[
+    {
+        "primaryGroup": "Assets",
+        "majorGroupName": "Plant & Machinary",
+        "subGroupName": "",
+        "ledgerName": "",
+        "balance": "5000"
+    },
+    {
+        "primaryGroup": "Assets",
+        "majorGroupName": "Furniture & Fixtures",
+        "subGroupName": "",
+        "ledgerName": "",
+        "balance": "5000"
+    },
+    {
+        "primaryGroup": "Assets",
+        "majorGroupName": "Office Equipment",
+        "subGroupName": "",
+        "ledgerName": "",
+        "balance": "5000"
+    },
+    {
+        "primaryGroup": "Assets",
+        "majorGroupName": "Vehicles",
+        "subGroupName": "Subgroup-2",
+        "ledgerName": "op",
+        "balance": "5000"
+    }
+    ,
+    {
+        "primaryGroup": "Assets",
+        "majorGroupName": "Intengible",
+        "subGroupName": "Subgroup-2",
+        "ledgerName": "Abc Ledger",
+        "balance": "5000"
+    }
+    ,
+    {
+        "primaryGroup": "Assets",
+        "majorGroupName": "Intengible",
+        "subGroupName": "Subgroup-2",
+        "ledgerName": "Abc Ledger - 2",
+        "balance": "5000"
+    }
+    ,
+    {
+        "primaryGroup": "Liabilities",
+        "majorGroupName": "Deferred Tax Liabilities",
+        "subGroupName": "",
+        "ledgerName": "",
+        "balance": "5000"
+    }
+    ,
+    {
+        "primaryGroup": "Liabilities",
+        "majorGroupName": "Capital Account",
+        "subGroupName": "Capital",
+        "ledgerName": "Capital",
+        "balance": "5000"
+    }
+    ,
+    {
+        "primaryGroup": "Liabilities",
+        "majorGroupName": "Capital Account",
+        "subGroupName": "Capital",
+        "ledgerName": "Reserve & Surplus",
+        "balance": "5000"
+    }
+    ,
+    {
+        "primaryGroup": "Liabilities",
+        "majorGroupName": "Capital Account",
+        "subGroupName": "Capital",
+        "ledgerName": "Profit & Loss A/C",
+        "balance": "5000"
+    }
+   
+]*/
+app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter , uiGridExporterConstants){
+    console.log('Inside Ledgers Controller');
+    $rootScope.isActive = 'LEDGERS';
+
+    $scope.add = function(){
+        $state.go('Home.addLedgers');
+    }
+
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
+        }
+        return false;
+    }
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+       $scope.pdfDownload = function(){
+        $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+    $scope.moduleHeading = 'Ledgers';
+    $scope.btn1 = 'Search';
+    $scope.btn2 = 'Add New';
+    $scope.ifThreeBtn = false;
+
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 20);
+    }
+    $scope.editData = function(row){
+        $state.go('Home.addLedgers' , { data: row.entity });
+    }    
+    $scope.editLedger = function(row){
+        $state.go('Home.bankLedger' , { data: row.entity });
+    }
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('Ledger');
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
+    $scope.gridOptions.columnDefs = [
+        { field: 'ledgerName',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '</div>' 
+        },
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+];
+$scope.search = {
+    searchString : ''
+}
+$scope.search = function(searchterm){
+    if(searchterm == '') {
+    return;
+    }
+    var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+    $scope.gridOptions.data = temp;
+    if(temp.length == 0) {
+        $scope.totalPages = 1;
+        $scope.changeHeight(200);
+    }
+    else {
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }       
+}
+$scope.removeSearchFilter = function() {
+    $scope.gridOptions.data =  $scope.dataForGrid;
+    $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+    $scope.search.searchString = '';
+    $scope.changeHeight(0);
+}
+
+
+$scope.getCompanyLedger = function(row,column){
+    $state.go('Home.companyLedgers');
+}
+
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+     
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
+    ledgerServices.getLedgers().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+          },function(error){
+        console.log('error',error);
+   });
+      
+   $scope.changeHeight(0);
+});
+
+app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $stateParams){
+    console.log('Inside Add Inventory Controller');
+    $rootScope.isActive = 'LEDGERS';
+
+    console.log("#sdatet" , $stateParams.data);
+    if(angular.isDefined($stateParams.data.ledgerName)) {
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+    }
+    else {
+        $scope.heading = "New";
+        $scope.btnLabel = "Create";
+    }
 
     $scope.resetAll = function(){
         $scope.ledger ={};
@@ -2827,7 +3199,7 @@ app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
 
 
 });
-app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log){
+app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
@@ -2840,6 +3212,23 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
     $scope.purchase.date = today;
     
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Purchase');
+    $scope.gridOptions.columnDefs = [
+        {field : "sno" , width: "5%"},
+        {field : "productName"},
+        {field : "productCode"},
+        {field : "hsnCode"},
+        {field : "batchNo" , width : "7%"},
+        {field : "productIdentifier"},
+        {field : "rate"},
+        {field : "quantity"},
+        {field : "discount"},
+        {field : "taxableValue"},
+        {field : "gstRate"},
+        {field : "outputGst"},
+        {field : "netAmount"}
+]
+//$scope.gridOptions.showGridFooter = true;
+//$scope.gridOptions.gridFooterTemplate = '<div style="z-index:99">pink floyd</div>';
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
@@ -3060,7 +3449,7 @@ app.controller('salesOrderCtrl',function($rootScope){
     console.log('Inside Sales Order Controller');
     $rootScope.isActive = 'Sales Order';
 });
-app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,heightCalc , vendorServices , $filter){
+app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,heightCalc , vendorServices , $filter , uiGridExporterConstants){
     console.log('Inside Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -3082,7 +3471,13 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
     $scope.editLedger = function(row){
         $state.go('Home.companyLedgers' , { data: row.entity });
     }
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+    }
     
+    $scope.pdfDownload = function(){
+        $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Vendor');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
@@ -3327,6 +3722,9 @@ app.service('receiptServices',function($http , CONSTANTS){
             return $http.get(CONSTANTS.service[CONSTANTS.appLevel].receiptList);
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
+    this.getCustomerDetails = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCustomerDetails);
     }
 });
 app.service('vendorServices',function($http , CONSTANTS){

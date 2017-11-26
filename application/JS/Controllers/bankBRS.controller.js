@@ -8,7 +8,9 @@ app.controller('bankBRSCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
-
+    $scope.cancel = function(){
+        $state.go('Home.bankLedger');
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {

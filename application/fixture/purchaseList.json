@@ -1,10 +1,17 @@
-[{
-    "sno" : "1",
-    "particulars" : "particular",
-    "batchNo" : "123",
-    "quantity" : "11",
-    "rate" : "12",
-    "value" : "543",
-    "rateOfGst" : "12",
-    "inputGstValue" : "12"
-}]
+[
+    {
+        "sno":"1",
+        "productName":"Product 1",
+        "productCode":"Pro_Item",
+        "hsnCode":"1234",
+        "batchNo":"23",
+        "productIdentifier":"barCode",
+        "rate":"5%",
+        "quantity":"20",
+        "discount":"2",
+        "taxableValue":"10",
+        "outputGst":"10",
+        "gstRate":"10",
+        "netAmount":"5240"
+    }
+]

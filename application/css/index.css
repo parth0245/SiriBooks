@@ -441,8 +441,14 @@
 .paddingBottom200 {
 	padding-bottom: 200px !important;
 }
+.paddingRight15 {
+	padding-right:15px !important;
+}
 .paddingRight30 {
 	padding-right:30px !important;
+}
+.paddingRight45 {
+	padding-right:45px !important;
 }
 .paddingRight60 {
 	padding-right:60px !important;
@@ -796,4 +802,57 @@ md-autocomplete > md-autocomplete-wrap > md-progress-linear { display: none; }
 md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 #searchinput {
 	color:black;
+}
+.checkBoxForInventory .md-label {
+	margin-top: 20px;
+	font-weight: 400!important;
+    font-family: Montserrat-Medium;
+	color: #000;
+	font-size:12px;
+}
+.headColor {
+	background-color: #d4d4d4 !important;
+	border-right-color: #CBD;
+}
+.brsSubSections div {
+	border:1px solid grey;
+	text-align: center;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	padding: 10px 0px;
+	color: #d4d4d4;
+	font-weight: 400!important;
+    font-family: Montserrat-Medium;
+	font-size:14px;
+}
+.brsSubSections .col-xs-8 {
+	width: 64.666667%;
+	background-color: #525252;
+	border-right:none;
+}
+.brsSubSections .col-xs-4 {
+	width: 32.333333%;
+	background-color: #717171;
+}
+.inlineDateTemplate md-input-container .md-input {
+	border-width:0px !important;
+	font-family: Montserrat-Regular;
+}
+.inlineDateTemplate md-input-container button md-icon {
+	height: 20px;
+	width: 20px;
+	min-height: 20px;
+	min-width: 20px;
+	margin-top:-10px;
+}
+.purchaseGridFooter {
+	border:1px solid #ccc;
+	border-top: none;
+    background-color: white;
+}
+.purchaseGridFooter div:not(:last-child) {
+	border-right:1px solid #ccc;
+}
+.secondChild {
+	background-color: initial;
 }

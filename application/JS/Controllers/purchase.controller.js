@@ -1,4 +1,4 @@
-app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log){
+app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
@@ -11,6 +11,23 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
     $scope.purchase.date = today;
     
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Purchase');
+    $scope.gridOptions.columnDefs = [
+        {field : "sno" , width: "5%"},
+        {field : "productName"},
+        {field : "productCode"},
+        {field : "hsnCode"},
+        {field : "batchNo" , width : "7%"},
+        {field : "productIdentifier"},
+        {field : "rate"},
+        {field : "quantity"},
+        {field : "discount"},
+        {field : "taxableValue"},
+        {field : "gstRate"},
+        {field : "outputGst"},
+        {field : "netAmount"}
+]
+//$scope.gridOptions.showGridFooter = true;
+//$scope.gridOptions.gridFooterTemplate = '<div style="z-index:99">pink floyd</div>';
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }

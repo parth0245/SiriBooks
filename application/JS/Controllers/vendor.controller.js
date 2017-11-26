@@ -1,4 +1,4 @@
-app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,heightCalc , vendorServices , $filter){
+app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,heightCalc , vendorServices , $filter , uiGridExporterConstants){
     console.log('Inside Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -20,7 +20,13 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
     $scope.editLedger = function(row){
         $state.go('Home.companyLedgers' , { data: row.entity });
     }
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+    }
     
+    $scope.pdfDownload = function(){
+        $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Vendor');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;

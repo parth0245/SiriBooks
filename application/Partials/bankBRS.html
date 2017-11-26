@@ -28,7 +28,8 @@
                                 <md-datepicker ng-model="date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
                             </md-input-container>
                             <md-button class="md-raised md-primary ifBold" flex-offset="5">View</md-button>
-                            <md-button class="md-raised ifBold" flex-offset="5">Reset</md-button>
+                            <md-button class="md-raised ifBold" style="margin-left:1.5%">Reset</md-button>
+                            <md-button class="md-raised ifBold" ng-click="cancel()" style="margin-left:1.5%">Cancel</md-button>
                         </div>
             </form>
         </md-content>
@@ -54,8 +55,12 @@
             </select>
         </span>
 </div>
+<div class="col-xs-11 noPadding brsSubSections">
+    <div class="col-xs-8">Ledger</div>
+    <div class="col-xs-4">Reconcil</div>
+</div>
     <div class="col-xs-11 inventorySection paddingRight30 paddingLeft0 paddingBottom30">
-        <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
+        <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-edit ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
             <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
         </div>
 </div>

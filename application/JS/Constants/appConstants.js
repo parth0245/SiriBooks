@@ -21,7 +21,8 @@ app.constant('CONSTANTS', {
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : 'application/fixture/searchInventory.json',
-                        purchaseList : 'application/fixture/purchaseList.json'
+                        purchaseList : 'application/fixture/purchaseList.json',
+                        getCustomerDetails : 'application/fixture/customer.json'
                         
                 },{
                         inventoryList : '',
@@ -77,7 +78,7 @@ app.constant('CONSTANTS', {
                 {url : 'Home.Accounting', name : 'Accounting' , SelimgSrc:'application/Images/Assets/Admin-Settings inside/Accounting_active.png' , imgSrc : 'application/Images/Assets/Admin-Settings inside/Accounting_inactive.png', glyphClasses : 'glyphicon glyphicon-home'}
         ],
         gridOptionsConstants : function(gridName){
-                if(gridName == 'Ledger' || gridName == 'Banking'){
+                if(gridName == 'Banking'){
                         return {
                                 enableSorting: true,
                                 rowHeight: 40,
@@ -425,25 +426,15 @@ BankLedgerfields : [
         {field : "netBalance"}
 ],
 BRSfields : [
-        {field : "date"},
-        {field : "particulars"},
-        {field : "voucherType"},
-        {field : "debit"},
-        {field : "credit"},
-        {field : "note"},
-        {field : "date"}
+        {field : "date" ,enableCellEdit: false ,cellFilter: 'date:"dd-MM-yyyy"',},
+        {field : "particulars" ,enableCellEdit: false},
+        {field : "voucherType" ,enableCellEdit: false},
+        {field : "debit" ,enableCellEdit: false},
+        {field : "credit" ,enableCellEdit: false},
+        {field : "date" , headerCellClass: 'headColor',
+        editableCellTemplate: 'application/Partials/dateTemplate.html' },
+        {field : "notes" , width:"20%" , headerCellClass : 'headColor'}
 
 ],
-Purchasefields : [
-        {field : "sno" , width: "5%"},
-        {field : "particulars"},
-        {field : "batchNo"},
-        {field : "quantity",width : "10%"},
-        {field : "rate" , width : "7%"},
-        {field : "value"},
-        {field : "rateOfGst"},
-        {field : "inputGstValue"},
-        {field : "rateOfGst"},
-        {field : "inputGstValue"}
-]
+Purchasefields : []
 });
