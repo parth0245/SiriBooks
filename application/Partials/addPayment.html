@@ -18,7 +18,7 @@
                             </div>
                             <div layout="row" class="topPadding20">
                                 <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
-                                            Detailes
+                                            Identity
                                             <span ng-hide="!panelShow" class="pull-right description">+</span>
                                             <span ng-hide="panelShow" class="pull-right description">-</span>
                                 </md-button>
@@ -107,9 +107,9 @@
                             <div layout="row">
                                     <md-input-container flex="25">
                                             <label>Payment Mode</label>
-                                            <md-select name="mode" ng-model="mode" required>
-                                                <md-option value="Product 1">Customer 1</md-option>
-                                                <md-option value="Product 2">Customer 2</md-option>
+                                            <md-select name="mode" ng-model="paymentMode" required>
+                                                <md-option value="credit">Credit</md-option>
+                                                <md-option value="debit">Debit</md-option>
                                             </md-select>
                                             <div ng-messages="addPaymentForm.mode.$error" ng-if="addPaymentForm.mode.$touched">
                                                     <div ng-message="required">This is required.</div>
@@ -133,11 +133,11 @@
                             <div layout="row">
                                     <md-input-container flex="25">
                                             <label>Bank Name</label>
-                                            <input name="bnkName" ng-model="bnkName">
+                                            <input name="bnkName" ng-model="bnkName" ng-disabled="paymentMode == 'credit'">
                                         </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                         <label>Branch</label>
-                                        <input name="branch" ng-model="branch">
+                                        <input name="branch" ng-model="branch" ng-disabled="paymentMode == 'credit'">
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Reference Number</label>
