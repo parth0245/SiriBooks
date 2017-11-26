@@ -9,4 +9,24 @@ app.service('vendorServices',function($http , CONSTANTS){
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
     }
+
+    this.saveVendor = function(location , identity , additionalData , books){
+        var data = {};
+        console.log(data);
+        return $http({
+            method: "post",
+            url: "CONSTANTS.service[CONSTANTS.appLevel].saveVendor",
+            data: data
+            })
+    }
+
+    this.updateVendor = function(location , identity , additionalData , books){
+        var data = {};
+        console.log(data);
+        return $http({
+            method: "post",
+            url: "CONSTANTS.service[CONSTANTS.appLevel].updateVendor",
+            data: data
+            })
+    }
 });

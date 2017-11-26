@@ -1,20 +1,25 @@
-app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state){
+app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state , customerServices , $filter){
     console.log('Inside Add Customer Controller');
     $rootScope.isActive = 'CUSTOMERS';
 
-    if(angular.isDefined($stateParams.data.name)) {
+    if(angular.isDefined($stateParams.data.customername)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.location = $stateParams.data;
+        $scope.identity = $stateParams.data;
+        $scope.books = $stateParams.data.orgledger;
+        $scope.books.updateddate = new Date($stateParams.data.orgledger.updateddate);
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.location = {};
+        $scope.identity = {};
+        $scope.books = {};
     }
-    $scope.location = {};
+    
     $scope.location.country = 'india';
-    $scope.additionalData = [
-        { name: "", value: "" }
-    ];
+    $scope.additionalData = $scope.location.customeraddtldata || [{ keyname: "", keyvalue: "" }];
 
     $scope.cancel = function(){
         $state.go('Home.Customers');
@@ -22,7 +27,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
 
     $scope.reserAll =function() {
         $scope.additionalData = [
-            { name: "", value: "" }
+            { customerid : "" , customeraddtldataid: "" , keyname: "", keyvalue: "" }
         ];
         $scope.addCustomerForm4.$setUntouched();
         $scope.addCustomerForm4.$setPristine();
@@ -52,8 +57,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
 
     $scope.Add = function(){
         $scope.addData = {};
-        $scope.addData.name = "";
-        $scope.addData.value = "";
+        $scope.addData.keyname = "";
+        $scope.addData.keyvalue = "";
         $scope.additionalData.push($scope.addData);
     };
 
@@ -80,4 +85,18 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.panelShow4 = !$scope.panelShow4;
     }
 
+    $scope.save = function(){
+        customerServices.saveCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('Customer save Successfully');
+        },function(error){
+            console.log('Customer save Failure');
+        });
+    }
+    $scope.update = function(){
+        customerServices.updateCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('Customer update Successfully');
+        },function(error){
+            console.log('Customer update Failure');
+        });
+    }
 });

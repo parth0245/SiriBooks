@@ -1,4 +1,4 @@
-app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state){
+app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices){
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -6,23 +6,27 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
     if(angular.isDefined($stateParams.data.name)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.location = $stateParams.data;
+        $scope.identity = $stateParams.data;
+        $scope.books = $stateParams.data.orgledger;
+        $scope.books.updateddate = new Date($stateParams.data.orgledger.updateddate);
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.location = {};
+        $scope.identity = {};
+        $scope.books = {};
     }
-    $scope.location = {};
     $scope.location.country = 'india';
-    $scope.vendorsData = [
-        { name: "", value: "" }
-    ];
+$scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: "", additionalkeyvalue: "" }];
     $scope.cancel = function(){
         $state.go('Home.Vendors');
     }
     
     $scope.reserAll =function() {
         $scope.vendorsData = [
-            { name: "", value: "" }
+            { addionalkeyname: "", additionalkeyvalue: "" }
         ];
         $scope.addVendorForm4.$setUntouched();
         $scope.addVendorForm4.$setPristine();
@@ -51,8 +55,8 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
 
     $scope.Add = function(){
         $scope.desc = {};
-        $scope.desc.name = "";
-        $scope.desc.value = "";
+        $scope.desc.addionalkeyname = "";
+        $scope.desc.additionalkeyvalue = "";
         $scope.vendorsData.push($scope.desc);
     };
 
@@ -77,5 +81,20 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
     }
     $scope.togglePannel4 = function(){
         $scope.panelShow4 = !$scope.panelShow4;
+    }
+
+    $scope.save = function(){
+        vendorServices.saveVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('success');
+        },function(error){
+            console.log('error');
+        });
+    }
+    $scope.update = function(){
+        vendorServices.updateVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('success');
+        },function(error){
+            console.log('error');
+        });
     }
 });

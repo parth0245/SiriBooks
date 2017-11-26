@@ -15,21 +15,21 @@
                 <div layout="row" class="topPadding10">
                     <md-input-container flex="25">
                         <label>Name</label>
-                        <input name="name" ng-model="location.name" required ng-disabled="btnLabel == 'Update'">
+                        <input name="name" ng-model="location.customername" required ng-disabled="btnLabel == 'Update'">
                         <div ng-messages="addCustomerForm1.name.$error" ng-if="addCustomerForm1.name.$touched">
                                 <div ng-message="required">This is required.</div>
                             </div>
                     </md-input-container>
                     <md-input-container flex="25"  flex-offset="5">
                             <label>Address 1</label>
-                            <input name="address1" ng-model="location.address1" required>
+                            <input name="address1" ng-model="location.corporateaddress1" required>
                             <div ng-messages="addCustomerForm1.address1.$error" ng-if="addCustomerForm1.address1.$touched">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                     </md-input-container>
                     <md-input-container flex="25"  flex-offset="5">
                         <label>Address 2</label>
-                        <input name="address2" ng-model="location.address2">
+                        <input name="address2" ng-model="location.corporateaddress2">
                      </md-input-container>
                  </div>
                  <div layout="row" class="topPadding10">
@@ -42,9 +42,9 @@
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                         <label>State</label>
-                        <md-select name="state" ng-model="location.state" required>
-                            <md-option value="one">State 1</md-option>
-                            <md-option value="two">State 2</md-option>
+                        <md-select name="state" ng-model="location.lkupstate" required>
+                            <md-option value="1">State 1</md-option>
+                            <md-option value="2">State 2</md-option>
                         </md-select>
                         <div ng-messages="addCustomerForm1.state.$error" ng-if="addCustomerForm1.state.$touched">
                                 <div ng-message="required">This is required.</div>
@@ -53,9 +53,8 @@
                     <md-input-container flex="25" flex-offset="5">
                         <label>Country</label>
                         <md-select name="country" ng-model="location.country" required>
-                                <md-option value="one">Country 1</md-option>
+                                <md-option value="us">United States</md-option>
                                 <md-option value="india">India</md-option>
-                            <md-option value="two">Country 2</md-option>
                         </md-select>
                         <div ng-messages="addCustomerForm1.country.$error" ng-if="addCustomerForm1.country.$touched">
                                 <div ng-message="required">This is required.</div>
@@ -65,7 +64,7 @@
                 <div layout="row">
                     <md-input-container flex="25">
                         <label>PIN</label>
-                        <input name="pin" ng-model="location.pin" required>
+                        <input name="pin" ng-model="location.pincode" required>
                         <div ng-messages="addCustomerForm1.pin.$error" ng-if="addCustomerForm1.pin.$touched">
                                 <div ng-message="required">This is required.</div>
                             </div>
@@ -99,7 +98,7 @@
                     </md-input-container>
                     <md-input-container flex="25"  flex-offset="5">
                         <label>Aadhar</label>
-                        <input name="aadhar" ng-model="identity.aadhar">
+                        <input name="aadhar" ng-model="identity.aadharnum">
                      </md-input-container>
                  </div>
                  <div layout="row" class="topPadding10">
@@ -119,7 +118,7 @@
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                         <label>Registration Number</label>
-                        <input name="RN" ng-model="identity.RN">
+                        <input name="RN" ng-model="identity.regnumber">
                     </md-input-container>
                 </div>
                 <div layout="row" ng-if="heading=='New'">
@@ -142,11 +141,11 @@
                 <div layout="row" class="topPadding10">
                     <md-input-container flex="25">
                         <label>Opening Balance</label>
-                        <input name="balance" ng-model="books.balance">
+                        <input name="balance" ng-model="books.balanceamount">
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                             <label>Date</label>
-                            <md-datepicker ng-model="books.date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                            <md-datepicker ng-model="books.updateddate" md-hide-icons="triangle" md-open-on-focus="" mo-date-input="{{books.updateddate}}"></md-datepicker>
                         </md-input-container>
                  </div>
                 <div layout="row" ng-if="heading=='New'">
@@ -170,11 +169,11 @@
                 <div layout="row" class="topPadding10" ng-repeat="addData in additionalData">
                     <md-input-container flex="25">
                             <label>Name</label>
-                            <input name="name" ng-model="addData.name">
+                            <input name="name" ng-model="addData.keyname">
                     </md-input-container>
                     <md-input-container flex="25"  flex-offset="5">
                             <label>Value</label>
-                            <input name="value" ng-model="addData.value">
+                            <input name="value" ng-model="addData.keyvalue">
                     </md-input-container>
                     <md-input-container flex="5"  flex-offset="5">
                         <img class="marginTop12" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="Remove($index)"/>
@@ -189,8 +188,8 @@
 
     <div layout="row" class="addPaddingButtons">
             <md-button class="md-raised ifBold" flex-offset="35" ng-if="btnLabel != 'Update'" ng-click="reserAll()">Reset All</md-button>
-            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold" flex-offset="45" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'" ng-click="save()">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex-offset="45" ng-if="btnLabel == 'Update'" ng-click="update()">{{btnLabel}}</md-button>
             <md-button class="md-raised md-primary ifBold"  flex="16">{{btnLabel}} & Sell</md-button>
             <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
         </div>

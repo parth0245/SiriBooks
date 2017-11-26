@@ -1,10 +1,15 @@
 app.constant('CONSTANTS', {
         appLevel : 0,
+        uuid : "d9f7617a-6117-4d7e-b71e-b4a337f8b545",
         service : [
                 {
                         inventoryList : 'application/fixture/inventoryList.json',
                         customerList : 'application/fixture/customerList.json',
+                        saveCustomer : '',
+                        updateCustomer : '',
                         vendorList : 'application/fixture/vendorList.json',
+                        saveVendor : '',
+                        updateVendor : '',
                         importVendor : 'application/fixture/importVendors.json',
                         receiptList : 'application/fixture/receiptList.json',
                         paymentList : 'application/fixture/paymentList.json',
@@ -22,12 +27,15 @@ app.constant('CONSTANTS', {
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : 'application/fixture/searchInventory.json',
                         purchaseList : 'application/fixture/purchaseList.json',
-                        getCustomerDetails : 'application/fixture/customer.json'
-                        
+                        getCustomerDetails : 'application/fixture/customer.json'                        
                 },{
                         inventoryList : '',
-                        customerList : '',
-                        vendorList : '',
+                        customerList : 'http://localhost:8080/api/fasmain/VCPL/Customers/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        saveCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
+                        updateCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
+                        vendorList : 'http://localhost:8080/api/fasmain/VCPL/Vendors/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        saveVendor: 'http://localhost:8080/api/fasmain/VCPL/Vendors',
+                        updateVendor: 'http://localhost:8080/api/fasmain/VCPL/Vendors',
                         importVendor :'',
                         receiptList :'',
                         paymentList : '',
@@ -249,7 +257,8 @@ app.constant('CONSTANTS', {
               '</div>' },
         ],
 Customerfields : [
-        { field: 'name',
+        { field: 'customername',
+        displayName :'Name',
         width : '35%',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
                 '<span>{{grid.getCellValue(row, col)}}</span>'+
@@ -258,10 +267,11 @@ Customerfields : [
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
                 '</div>' },
-        { field: 'address',
+        { field: 'corporateaddress1',displayName:'Address',
         width : '15%' },
-        { field: 'type'},
-        { field: 'contact'},
+        { field: 'customertype',
+displayName : 'Type'},
+        { field: 'contactphone' , displayName : 'Contact'},
         { field: 'debit' ,category:"Balance Amount" ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
@@ -290,8 +300,8 @@ Vendorfields : [
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
                 '</div>' },
-        { field: 'address' },
-        { field: 'contact'},
+        { field: 'address1' , displayName : "Address"},
+        { field: 'contactphone' , displayName : "Contact"},
         { field: 'debit' ,category:"Balance Amount" ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+

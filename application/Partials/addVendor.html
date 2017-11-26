@@ -88,7 +88,7 @@
                 <div layout="row" class="topPadding10">
                     <md-input-container flex="25">
                         <label>GST</label>
-                        <input name="gst" ng-model="identity.gst">
+                        <input name="gst" ng-model="identity.gstnnumber">
                     </md-input-container>
                     <md-input-container flex="25"  flex-offset="5">
                             <label>PAN</label>
@@ -139,11 +139,11 @@
                 <div layout="row" class="topPadding10">
                     <md-input-container flex="25">
                         <label>Opening Balance</label>
-                        <input name="balance" ng-model="books.balance">
+                        <input name="balance" ng-model="books.balanceamount">
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                             <label>Date</label>
-                            <md-datepicker ng-model="books.date" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
+                            <md-datepicker ng-model="books.updateddate" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
                         </md-input-container>
                  </div>
                 <div layout="row" ng-if="heading=='New'">
@@ -167,11 +167,11 @@
                 <div layout="row" class="topPadding10" ng-repeat="vendorData in vendorsData">
                     <md-input-container flex="25">
                             <label>Name</label>
-                            <input name="name" ng-model="vendorData.name">
+                            <input name="name" ng-model="vendorData.addionalkeyname">
                     </md-input-container>
                     <md-input-container flex="25"  flex-offset="5">
                             <label>Value</label>
-                            <input name="value" ng-model="vendorData.value">
+                            <input name="value" ng-model="vendorData.additionalkeyvalue">
                     </md-input-container>
                     <md-input-container flex="5"  flex-offset="5">
                         <img class="marginTop12" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="Remove($index)"/>
@@ -186,8 +186,8 @@
     </div>
     <div layout="row" class="addPaddingButtons">
             <md-button class="md-raised ifBold" flex-offset="30" ng-if="btnLabel != 'Update'" ng-click="reserAll()">Reset All</md-button>
-            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold"flex-offset="40" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'" ng-click="save()">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold"flex-offset="40" ng-click="update()" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
             <md-button class="md-raised md-primary ifBold" flex="20">{{btnLabel}} & Purchase</md-button>
             <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
         </div>

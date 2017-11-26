@@ -265,11 +265,16 @@ app.run(function($rootScope) {
   });
 app.constant('CONSTANTS', {
         appLevel : 0,
+        uuid : "d9f7617a-6117-4d7e-b71e-b4a337f8b545",
         service : [
                 {
                         inventoryList : 'application/fixture/inventoryList.json',
                         customerList : 'application/fixture/customerList.json',
+                        saveCustomer : '',
+                        updateCustomer : '',
                         vendorList : 'application/fixture/vendorList.json',
+                        saveVendor : '',
+                        updateVendor : '',
                         importVendor : 'application/fixture/importVendors.json',
                         receiptList : 'application/fixture/receiptList.json',
                         paymentList : 'application/fixture/paymentList.json',
@@ -287,12 +292,15 @@ app.constant('CONSTANTS', {
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : 'application/fixture/searchInventory.json',
                         purchaseList : 'application/fixture/purchaseList.json',
-                        getCustomerDetails : 'application/fixture/customer.json'
-                        
+                        getCustomerDetails : 'application/fixture/customer.json'                        
                 },{
                         inventoryList : '',
-                        customerList : '',
-                        vendorList : '',
+                        customerList : 'http://localhost:8080/api/fasmain/VCPL/Customers/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        saveCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
+                        updateCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
+                        vendorList : 'http://localhost:8080/api/fasmain/VCPL/Vendors/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        saveVendor: 'http://localhost:8080/api/fasmain/VCPL/Vendors',
+                        updateVendor: 'http://localhost:8080/api/fasmain/VCPL/Vendors',
                         importVendor :'',
                         receiptList :'',
                         paymentList : '',
@@ -514,7 +522,8 @@ app.constant('CONSTANTS', {
               '</div>' },
         ],
 Customerfields : [
-        { field: 'name',
+        { field: 'customername',
+        displayName :'Name',
         width : '35%',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
                 '<span>{{grid.getCellValue(row, col)}}</span>'+
@@ -523,10 +532,11 @@ Customerfields : [
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
                 '</div>' },
-        { field: 'address',
+        { field: 'corporateaddress1',displayName:'Address',
         width : '15%' },
-        { field: 'type'},
-        { field: 'contact'},
+        { field: 'customertype',
+displayName : 'Type'},
+        { field: 'contactphone' , displayName : 'Contact'},
         { field: 'debit' ,category:"Balance Amount" ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
@@ -555,8 +565,8 @@ Vendorfields : [
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
                 '</div>' },
-        { field: 'address' },
-        { field: 'contact'},
+        { field: 'address1' , displayName : "Address"},
+        { field: 'contactphone' , displayName : "Contact"},
         { field: 'debit' ,category:"Balance Amount" ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
@@ -723,23 +733,28 @@ app.controller('addContraCtrl',function($rootScope , $scope , $stateParams , $st
         $state.go('Home.Contra');
     }
 });
-app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state){
+app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state , customerServices , $filter){
     console.log('Inside Add Customer Controller');
     $rootScope.isActive = 'CUSTOMERS';
 
-    if(angular.isDefined($stateParams.data.name)) {
+    if(angular.isDefined($stateParams.data.customername)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.location = $stateParams.data;
+        $scope.identity = $stateParams.data;
+        $scope.books = $stateParams.data.orgledger;
+        $scope.books.updateddate = new Date($stateParams.data.orgledger.updateddate);
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.location = {};
+        $scope.identity = {};
+        $scope.books = {};
     }
-    $scope.location = {};
+    
     $scope.location.country = 'india';
-    $scope.additionalData = [
-        { name: "", value: "" }
-    ];
+    $scope.additionalData = $scope.location.customeraddtldata || [{ keyname: "", keyvalue: "" }];
 
     $scope.cancel = function(){
         $state.go('Home.Customers');
@@ -747,7 +762,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
 
     $scope.reserAll =function() {
         $scope.additionalData = [
-            { name: "", value: "" }
+            { customerid : "" , customeraddtldataid: "" , keyname: "", keyvalue: "" }
         ];
         $scope.addCustomerForm4.$setUntouched();
         $scope.addCustomerForm4.$setPristine();
@@ -777,8 +792,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
 
     $scope.Add = function(){
         $scope.addData = {};
-        $scope.addData.name = "";
-        $scope.addData.value = "";
+        $scope.addData.keyname = "";
+        $scope.addData.keyvalue = "";
         $scope.additionalData.push($scope.addData);
     };
 
@@ -805,6 +820,20 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.panelShow4 = !$scope.panelShow4;
     }
 
+    $scope.save = function(){
+        customerServices.saveCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('Customer save Successfully');
+        },function(error){
+            console.log('Customer save Failure');
+        });
+    }
+    $scope.update = function(){
+        customerServices.updateCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('Customer update Successfully');
+        },function(error){
+            console.log('Customer update Failure');
+        });
+    }
 });
 app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $state){
     console.log('Inside Add Expense Controller');
@@ -985,7 +1014,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         $scope.panelShow = !$scope.panelShow;
     }
 });
-app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state){
+app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices){
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -993,23 +1022,27 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
     if(angular.isDefined($stateParams.data.name)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.location = $stateParams.data;
+        $scope.identity = $stateParams.data;
+        $scope.books = $stateParams.data.orgledger;
+        $scope.books.updateddate = new Date($stateParams.data.orgledger.updateddate);
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.location = {};
+        $scope.identity = {};
+        $scope.books = {};
     }
-    $scope.location = {};
     $scope.location.country = 'india';
-    $scope.vendorsData = [
-        { name: "", value: "" }
-    ];
+$scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: "", additionalkeyvalue: "" }];
     $scope.cancel = function(){
         $state.go('Home.Vendors');
     }
     
     $scope.reserAll =function() {
         $scope.vendorsData = [
-            { name: "", value: "" }
+            { addionalkeyname: "", additionalkeyvalue: "" }
         ];
         $scope.addVendorForm4.$setUntouched();
         $scope.addVendorForm4.$setPristine();
@@ -1038,8 +1071,8 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
 
     $scope.Add = function(){
         $scope.desc = {};
-        $scope.desc.name = "";
-        $scope.desc.value = "";
+        $scope.desc.addionalkeyname = "";
+        $scope.desc.additionalkeyvalue = "";
         $scope.vendorsData.push($scope.desc);
     };
 
@@ -1064,6 +1097,21 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
     }
     $scope.togglePannel4 = function(){
         $scope.panelShow4 = !$scope.panelShow4;
+    }
+
+    $scope.save = function(){
+        vendorServices.saveVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('success');
+        },function(error){
+            console.log('error');
+        });
+    }
+    $scope.update = function(){
+        vendorServices.updateVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+            console.log('success');
+        },function(error){
+            console.log('error');
+        });
     }
 });
 app.controller('applicationLevelCtrl',function($rootScope){
@@ -3617,6 +3665,68 @@ app.service('customerServices',function($http , CONSTANTS){
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
     }
+    this.saveCustomer = function(location , identity , additionalData , books){
+        var data = {
+            "aadharnum": identity.aadharnum,
+            "city": location.city,
+            "contactemail": location.contactemail,
+            "contactemail2": location.contactemail2,
+            "contactphone": location.contactphone,
+            "contactphone2": location.contactphone2,
+            "corporateaddress1": location.corporateaddress1,
+            "corporateaddress2": location.corporateaddress2,
+            "customername": location.customername,
+            "customertype": location.customertype,
+            "gst": identity.gst,
+            "lkupnatbus": location.lkupnatbus,
+            "lkupstate": location.lkupstate,
+            "pincode": location.pincode,
+            "regnumber": identity.regnumber,
+            "status": location.status,
+            "uorgid": CONSTANTS.uuid,
+            "customeraddtldata": additionalData,
+            "createdby": CONSTANTS.uuid,
+            "updatedby": CONSTANTS.uuid
+            };
+            console.log(data);
+            return $http({
+                method: "post",
+                url: "CONSTANTS.service[CONSTANTS.appLevel].saveCustomer",
+                data: data
+                })
+    }
+    this.updateCustomer = function(location , identity , additionalData , books){
+       var data = {
+        "aadharnum": identity.aadharnum,
+        "city": location.city,
+        "contactemail": location.contactemail,
+        "contactemail2": location.contactemail2,
+        "contactphone": location.contactphone,
+        "contactphone2": location.contactphone2,
+        "corporateaddress1": location.corporateaddress1,
+        "corporateaddress2": location.corporateaddress2,
+        "customername": location.customername,
+        "customertype": location.customertype,
+        "gst": identity.gst,
+        "lkupnatbus": location.lkupnatbus,
+        "lkupstate": location.lkupstate,
+        "pincode": location.pincode,
+        "regnumber": identity.regnumber,
+        "status": location.status,
+        "uorgid": CONSTANTS.uuid,
+        "customeraddtldata": additionalData,
+        "createddate": "21/11/2017 20:24:15",
+        "createdby": CONSTANTS.uuid,
+        "updatedby": CONSTANTS.uuid
+        }
+        console.log(data);
+        return $http({
+            method: "put",
+            url: "CONSTANTS.service[CONSTANTS.appLevel].updateCustomer",
+            data: data
+            })
+    }
+
 });
 app.service('expenseServices',function($http , CONSTANTS){
     this.searchExpense = function(search){
@@ -3737,5 +3847,25 @@ app.service('vendorServices',function($http , CONSTANTS){
             return $http.get(CONSTANTS.service[CONSTANTS.appLevel].vendorList);
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+    }
+
+    this.saveVendor = function(location , identity , additionalData , books){
+        var data = {};
+        console.log(data);
+        return $http({
+            method: "post",
+            url: "CONSTANTS.service[CONSTANTS.appLevel].saveVendor",
+            data: data
+            })
+    }
+
+    this.updateVendor = function(location , identity , additionalData , books){
+        var data = {};
+        console.log(data);
+        return $http({
+            method: "post",
+            url: "CONSTANTS.service[CONSTANTS.appLevel].updateVendor",
+            data: data
+            })
     }
 });
