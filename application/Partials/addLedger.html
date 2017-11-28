@@ -54,7 +54,7 @@
                                         <input name="desc" ng-model="ledger.descript">
                                 </md-input-container>
                         </div>
-                        <div layout="row" class="topPadding25 paddingBottom30 addLedger flex-25 borderRadio">
+                        <div ng-if="heading != 'Update'"  layout="row" class="topPadding25 paddingBottom30 addLedger flex-25 borderRadio">
                             <span class="marginRight20">Opening Balance</span> 
                             <md-radio-group ng-model="ledger.group1" layout="row" flex="25">
                                 <md-radio-button ng-disabled="btnLabel == 'Update'" value="Apple" class="md-primary">Debit</md-radio-button>
@@ -65,8 +65,9 @@
                             <hr />
                         </div>
 <div layout="row" class="addPaddingButtons">
-        <md-button class="md-raised ifBold" flex-offset="50" ng-click="resetAll()">Reset All</md-button>
-        <md-button class="md-raised md-primary ifBold">{{btnLabel}}</md-button>
+    <md-button class="md-raised ifBold" flex-offset="50" ng-if="heading != 'Update'" ng-click="resetAll()">Reset All</md-button>
+    <md-button class="md-raised md-primary ifBold" ng-if="heading != 'Update'">{{btnLabel}}</md-button>
+    <md-button class="md-raised md-primary ifBold" flex-offset="65" ng-if="heading == 'Update'">{{btnLabel}}</md-button>
         <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
 </div>
             </form>

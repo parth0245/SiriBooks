@@ -61,7 +61,7 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
         $scope.changeHeight(0);
     }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 20);
+        heightCalc.calculateGridHeight(val , 32);
     }
 
     $scope.nextPage = function(){

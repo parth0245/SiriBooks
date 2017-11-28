@@ -62,7 +62,7 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
         $scope.changeHeight(0);
     }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 20);
+        heightCalc.calculateGridHeight(val , 32);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();

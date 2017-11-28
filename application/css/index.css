@@ -360,6 +360,9 @@
 .topPadding10{
 	padding-top:10px !important;
 }
+.topPadding15{
+	padding-top:15px !important;
+}
 .topPadding20{
 	padding-top:20px !important;
 }
@@ -470,6 +473,12 @@
 .marginLeft0 {
 	margin-left: 0px;
 }
+.marginLeft10{
+	margin-left: 10px;
+}
+.marginRight15 {
+	margin-right: 15px;
+}
 .marginRight20 {
 	margin-right: 20px;
 }
@@ -508,6 +517,15 @@
 	text-align: center;	
 	margin-top:5px;
 	font-family: "Montserrat-Regular";
+}
+.ui-grid-cell-contents.ifCenter{
+	text-align: left;	
+}
+.LedgerHead {
+	padding-left: 40px !important;
+}
+.LedgerHead .ui-grid-cell-contents{
+	text-align:left !important;
 }
 .pagingPart {
 	font-family: "Montserrat-Regular";
@@ -804,11 +822,16 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 	color:black;
 }
 .checkBoxForInventory .md-label {
-	margin-top: 20px;
 	font-weight: 400!important;
     font-family: Montserrat-Medium;
 	color: #000;
 	font-size:12px;
+}
+.checkBoxForInventory.smallLabel .md-label {
+	font-size:9px;
+}
+.checkBoxForInventory.flex-offset-30 {
+	margin-left:30% !important;
 }
 .headColor {
 	background-color: #d4d4d4 !important;

@@ -20,11 +20,11 @@
         "orgledgerid": "eb324d7b-bf01-44cc-9d1c-3b7e062cb317",
         "balanceamount": 0,
         "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
-        "createddate": "21/11/2017 20:24:15",
+        "createddate": "19/11/2017 20:24:15",
         "drcr": "na",
         "name": "hasystech A/c",
         "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
-        "updateddate": "21/11/2017 20:24:15",
+        "updateddate": "19/11/2017 20:24:15",
         "primaryledgerid": null,
         "ledgernetries": null
     },
@@ -34,7 +34,7 @@
         "keyvalue": "this customer created successfully"
     }],
     "createddate": "21/11/2017 20:24:15",
-    "updateddate": "21/11/2017 20:24:15",
+    "updateddate": "19/11/2017 20:24:15",
     "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
     "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341"
 }, {
@@ -60,7 +60,7 @@
         "balanceamount": 0,
         "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
         "createddate": "21/11/2017 20:10:40",
-        "drcr": "na",
+        "drcr": "dr",
         "name": "soware A/c",
         "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
         "updateddate": "21/11/2017 20:10:40",

@@ -54,7 +54,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
         $scope.changeHeight(0);
     }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val,20);
+        heightCalc.calculateGridHeight(val,32);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();

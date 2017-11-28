@@ -1,4 +1,4 @@
-app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices){
+app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices , CONSTANTS){
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -9,7 +9,7 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
         $scope.location = $stateParams.data;
         $scope.identity = $stateParams.data;
         $scope.books = $stateParams.data.orgledger;
-        $scope.books.updateddate = new Date($stateParams.data.orgledger.updateddate);
+        $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
     }
     else {
         $scope.heading = "New";

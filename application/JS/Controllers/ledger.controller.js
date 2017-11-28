@@ -25,7 +25,7 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 20);
+        heightCalc.calculateGridHeight(val , 32);
     }
     $scope.editData = function(row){
         $state.go('Home.addLedgers' , { data: row.entity });
@@ -38,12 +38,13 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
     $scope.gridOptions.columnDefs = [
         { field: 'ledgerName',
-        cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        headerCellClass : 'LedgerHead topPadding15',
+        cellTemplate: '<div class="ui-grid-cell-contents ifCenter" >'+
+        '<span class="marginRight15 marginLeft10" ng-click="grid.appScope.editData(row)">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
         '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' 
         },
         { field: 'debit' ,category:"Balance Amount" ,

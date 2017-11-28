@@ -3,7 +3,7 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
     $rootScope.isActive = 'VENDORS';
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
 
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('ImportVendor');
@@ -71,6 +71,6 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
     }
     $scope.downloadSample = function(){
         window.open('application/fixture/Files/download.csv');
-    }
+    } 
    $scope.changeHeight(0);
 });

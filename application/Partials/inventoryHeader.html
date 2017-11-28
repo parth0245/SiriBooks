@@ -1,5 +1,4 @@
-<div role="rowgroup"
-class="ui-grid-header">
+<div role="rowgroup" class="ui-grid-header">
 <div class="ui-grid-top-panel">
    <div class="ui-grid-header-viewport">
        <div class="ui-grid-header-canvas">
@@ -15,7 +14,7 @@ class="ui-grid-header">
                  </div>
                    <div class="ui-grid-header-cell ui-grid-clearfix ui-grid-category" ng-repeat="cat in grid.options.category"
                         ng-if="(colContainer.renderedColumns | filter:{ colDef:{category: cat.name} }).length > 0">
-                       {{cat.name}}
+                       <div style="border-bottom: 1px solid #ccc;padding: 5px 0px;">{{cat.name}}</div>
                        <div class="ui-grid-header-cell ui-grid-clearfix" 
                             ng-repeat="col in colContainer.renderedColumns | filter:{ colDef:{category: cat.name} }"
                             ui-grid-header-cell

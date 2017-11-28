@@ -1,82 +1,73 @@
 [
     {
-        "product": "Product 1",
-        "credit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
+  "productid": "ee345680-d01f-11e7-abc4-cec278b6b50a",
+  "barcode": "aksjhdaskj5667",
+  "createddate": "23/11/2017 13:43:51",
+  "description": "LED 42 inchs",
+  "group": true,
+  "hsncode": "hns7656757",
+  "lkupproducttype": 2,
+  "lkupunitofmeasure": 1,
+  "modifieddate": "23/11/2017 13:43:51",
+  "productname": "Smart tv",
+  "sku": "sku",
+  "status": 1,
+  "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
+  "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "orgledger": {
+  "orgledgerid": "900bf6df-b3d6-4fb9-88ab-4731f4f5ddb8",
+  "balanceamount": 0,
+  "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "createddate": "21/11/2017 12:47:31",
+  "drcr": "1",
+  "name": "hasys",
+  "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "updateddate": "21/11/2017 12:47:31",
+  "primaryledgerid": null,
+  "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
+  "ledgernetries": null
+  },
+  "productspecs": [
     {
-        "product": "Product 2",
-        "debit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
+  "productspecid": 1,
+  "createddate": "23/11/2017 14:18:13",
+  "modifieddate": "23/11/2017 14:18:13",
+  "specnamekey": "tv",
+  "specvalue": "LED tv",
+  "visibleinsale": true
+  }
+  ]
+  },
     {
-        "product": "Product 3",
-        "debit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
-    {
-        "product": "Product 4",
-        "debit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
-    {
-        "product": "Product 5",
-        "debit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
-    {
-        "product": "Product 6",
-        "credit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
-    {
-        "product": "Product 7",
-        "credit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
-    {
-        "product": "Product 8",
-        "credit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
-    {
-        "product": "Product 9",
-        "debit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    },
-    {
-        "product": "Product 10",
-        "debit": "Rs 5000/-",
-        "specification": "Red, 100cc,",
-        "stockCount": "100",
-        "vendor": "Vendor 1",
-        "status": "Active"
-    }
-]
+  "productid": "1155e9b8-659e-4f10-8a91-5a03d4b9add8",
+  "barcode": "asdas867683",
+  "createddate": "22/11/2017 16:00:32",
+  "description": "iphone5s",
+  "group": true,
+  "hsncode": "asdasd87687",
+  "lkupproducttype": 1,
+  "lkupunitofmeasure": 1,
+  "modifieddate": "22/11/2017 16:00:32",
+  "productname": "Mobilephone",
+  "sku": "suk",
+  "status": 1,
+  "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
+  "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "orgledger": {
+  "orgledgerid": "900bf6df-b3d6-4fb9-88ab-4731f4f5ddb8",
+  "balanceamount": 0,
+  "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "createddate": "21/11/2017 12:47:31",
+  "drcr": "dr",
+  "name": "hasys",
+  "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+  "updateddate": "21/11/2017 12:47:31",
+  "primaryledgerid": null,
+  "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
+  "ledgernetries": null
+  },
+  "productspecs": []
+  }
+  ]

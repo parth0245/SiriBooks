@@ -1,18 +1,18 @@
-app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state){
+app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state , inventoryServices){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'INVENTORY';
-    if(angular.isDefined($stateParams.data.product)) {
+    if(angular.isDefined($stateParams.data.productname)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.inventory = $stateParams.data;
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.inventory = {};
     }
 
-    $scope.Description = [
-        { name: "", value: "" }
-    ];
+    $scope.Description = $scope.inventory.productspecs || [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
 
     $scope.cancel = function(){
         $state.go('Home.Inventory');
@@ -20,15 +20,16 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     $scope.reserAll =function() {
         $scope.inventory = {};
         $scope.Description = [
-            { name: "", value: "" }
+            { specnamekey: "", specvalue: "" , visibleinsale : "" }
         ];
         $scope.addInventoryForm.$setUntouched();
         $scope.addInventoryForm.$setPristine();
     }
     $scope.Add = function(){
         $scope.desc = {};
-        $scope.desc.name = "";
-        $scope.desc.value = "";
+        $scope.desc.specnamekey = "";
+        $scope.desc.specvalue = "";
+        $scope.desc.visibleinsale = "";
         $scope.Description.push($scope.desc);
         console.log($scope.Description);
     };
@@ -43,5 +44,20 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
 
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
+    }
+
+    $scope.save = function(){
+        inventoryServices.save($scope.inventory).then(function(success){
+            console.log('save Successfully');
+        },function(error){
+            console.log('save Failure');
+        });
+    }
+    $scope.update = function(){
+        inventoryServices.update($scope.inventory).then(function(success){
+            console.log('update Successfully');
+        },function(error){
+            console.log('update Failure');
+        });
     }
 });

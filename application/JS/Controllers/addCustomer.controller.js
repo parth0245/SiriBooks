@@ -1,14 +1,18 @@
-app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state , customerServices , $filter){
+app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state , customerServices , $filter , CONSTANTS){
     console.log('Inside Add Customer Controller');
     $rootScope.isActive = 'CUSTOMERS';
-
+   /* function updateDate(d){
+        var onlydate = d.split(" ");
+        var splitedArray = onlydate[0].split("/")
+        return new Date(splitedArray[1]+'/'+splitedArray[0]+'/'+splitedArray[2]);
+    }*/
     if(angular.isDefined($stateParams.data.customername)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.location = $stateParams.data;
         $scope.identity = $stateParams.data;
         $scope.books = $stateParams.data.orgledger;
-        $scope.books.updateddate = new Date($stateParams.data.orgledger.updateddate);
+        $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
     }
     else {
         $scope.heading = "New";
