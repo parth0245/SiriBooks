@@ -153,14 +153,14 @@
         </md-content>
     </div>
 
-    <div layout="row" class="topPadding20">
+    <div layout="row" class="topPadding20" ng-hide="btnLabel == 'Update'">
             <md-button ng-click="togglePannel5()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                     Products Supplied
                     <span ng-hide="!panelShow5" class="pull-right description">+</span>
                     <span ng-hide="panelShow5" class="pull-right description">-</span>
         </md-button>
     </div>
-    <div class="topPadding20 col-xs-6 noPadding" ng-hide="panelShow5">
+    <div class="topPadding20 col-xs-6 noPadding" ng-hide="panelShow5 || btnLabel == 'Update'">
             <table class="journalTable withRole">
                     <thead>
                         <tr>
