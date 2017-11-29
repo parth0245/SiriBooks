@@ -79,24 +79,34 @@
                                             <span ng-hide="panelShow" class="pull-right description">-</span>
                                 </md-button>
                             </div>
-                            <div ng-hide="panelShow" class="topPadding30" ng-repeat="desc in Description">
-                                   <div layout="row">
-                                           <md-checkbox  flex-offset="30" class="md-primary checkBoxForInventory smallLabel">Specification value will be provided during sale and purchase</md-checkbox>
-                                </div>
+                            <div ng-hide="panelShow"  flex="95" class="topPadding30" ng-repeat="desc in Description">
+                                 
                                 <div layout="row">
-                                    <md-input-container flex="25">
+
+
+
+                                    <div layout="column" flex="25" flex-offset="5">
+                                            <md-checkbox class="md-primary checkBoxForInventory smallLabel" style="visibility: hidden;">Specification value will be provided during sale and purchase</md-checkbox>
+                                    <md-input-container>
                                             <label>Name</label>
                                             <input name="wew" ng-model="desc.specnamekey">
                                     </md-input-container>
-                                    <md-input-container flex="25"  flex-offset="5">
+                                </div>
+                                    <div layout="column" flex="25" flex-offset="5">
+                                            <md-checkbox  class="md-primary checkBoxForInventory smallLabel">Specification value will be provided during sale and purchase</md-checkbox>
+                                        <md-input-container  >
                                             <label>Value</label>
                                             <input name="value" ng-model="desc.specvalue">
                                     </md-input-container>
+                                     </div>
+                                    
                                     <div layout="column" flex-offset="5">
                                     <md-checkbox class="md-primary checkBoxForInventory" ng-model="desc.visibleinsale">Print on Sale bill</md-checkbox>
                                     <md-checkbox  class="md-primary checkBoxForInventory" ng-model="desc.visibleinpurchase">Print on Purchase bill</md-checkbox>
                                 </div>
-                                <div layout="column" flex-offset="5" style="margin-top:-20px;">
+
+                                
+                                <div layout="column" flex-offset="5" style="">
                                     <md-input-container style="margin-top:5px;margin-bottom:5px;">
                                             <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="Remove($index)"/>
                                     </md-input-container>
@@ -105,7 +115,7 @@
                                     </md-input-container>
                                     </div>
                                 </div>
-                                <div layout="row" flex="85" style="border-bottom:1px solid #0935ae;"></div>
+                                <div layout="row" flex="85" style="border-bottom:1px solid #ccc;"></div>
                             </div>
                             <div layout="row" class="topPadding30 imageUpload">
                                 

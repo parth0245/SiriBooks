@@ -306,6 +306,9 @@
 	font-size: 25px;
 	width:14px;
 }
+.md-raised {
+	text-transform: capitalize !important;
+}
 .addInventory button.md-raised {
 	color: #0935ae;
 	font-family: "Montserrat-Regular";
@@ -832,6 +835,9 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 }
 .checkBoxForInventory.flex-offset-30 {
 	margin-left:30% !important;
+}
+.checkBoxForInventory.flex-offset-35 {
+	margin-left:35% !important;
 }
 .headColor {
 	background-color: #d4d4d4 !important;

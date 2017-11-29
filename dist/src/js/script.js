@@ -510,24 +510,7 @@ app.constant('CONSTANTS', {
                                     'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                               '</span>'+
                               '</div>' },
-                              { field: 'debit' ,category:"Balance Amount" ,
-                              cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                              '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
-                              '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
-                              '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
-                              '<img height="20" width="20" '+
-                                      'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                              '</span>'+
-                              '</div>' },
-                              { field: 'credit' ,category:"Balance Amount" ,
-                              cellTemplate: '<div class="ui-grid-cell-contents" >'+
-                              '<span ng-if="row.entity.orgledger.drcr != \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
-                              '<span ng-if="row.entity.orgledger.drcr == \'dr\' "> &nbsp; </span>'+
-                              '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
-                              '<img height="20" width="20" '+
-                                      'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-                              '</span>'+
-                              '</div>' },
+                             
              { field: 'specification',
              headerCellClass : 'topPadding15',
               width : '20%' ,
@@ -535,7 +518,25 @@ app.constant('CONSTANTS', {
               '<span>{{row.entity.productspecs[0].productspecid}}</span>'+
               '</div>' },
               { field: 'stockCount' , 
-              headerCellClass : 'topPadding15'},
+              headerCellClass : 'topPadding15'}, { field: 'debit' ,category:"Balance Amount" ,
+              cellTemplate: '<div class="ui-grid-cell-contents" >'+
+              '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+              '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
+              '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
+              '<img height="20" width="20" '+
+                      'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+              '</span>'+
+              '</div>' },
+              { field: 'credit' ,category:"Balance Amount" ,
+              cellTemplate: '<div class="ui-grid-cell-contents" >'+
+              '<span ng-if="row.entity.orgledger.drcr != \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+              '<span ng-if="row.entity.orgledger.drcr == \'dr\' "> &nbsp; </span>'+
+              '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
+              '<img height="20" width="20" '+
+                      'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+              '</span>'+
+              '</div>' },
+        
         ],
 Customerfields : [
         { field: 'customername',
