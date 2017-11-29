@@ -70,6 +70,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     $scope.panelShow2 = false;
     $scope.panelShow3 = false;    
     $scope.panelShow4 = false;    
+    $scope.panelShow5 = false;    
     $scope.togglePannel1 = function(){
         $scope.panelShow1 = !$scope.panelShow1;
     }
@@ -81,6 +82,9 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     }
     $scope.togglePannel4 = function(){
         $scope.panelShow4 = !$scope.panelShow4;
+    }
+    $scope.togglePannel5 = function(){
+        $scope.panelShow5 = !$scope.panelShow5;
     }
 
     $scope.save = function(){
@@ -97,4 +101,63 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
             console.log('error');
         });
     }
+
+    
+
+    $scope.selectFaIndex = 0;
+    $scope.SelectedAvailItems = [];
+    $scope.SelectedSelectedListItems = [];
+    $scope.SelectedListItems = [
+        []
+    ];
+    $scope.AvailableListItems = [
+        []
+    ];
+
+    $scope.DefaultListItems = [
+       [{
+            email: 'Product 1'
+        }, {
+            email: 'Product 2'
+        }, {
+            email: 'Product 3'
+        }]
+    ];
+
+    angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
+
+    $scope.btnRight = function () {
+        //move selected.
+        angular.forEach($scope.SelectedAvailItems, function (value, key) {
+            this.push(value);
+        }, $scope.SelectedListItems[$scope.selectFaIndex]);
+
+        //remove the ones that were moved.
+        angular.forEach($scope.SelectedAvailItems, function (value, key) {
+            for (var i = $scope.AvailableListItems[$scope.selectFaIndex].length - 1; i >= 0; i--) {
+                if ($scope.AvailableListItems[$scope.selectFaIndex][i].email == value.email) {
+                    $scope.AvailableListItems[$scope.selectFaIndex].splice(i, 1);
+                }
+            }
+        });
+        $scope.SelectedAvailItems = [];
+
+    };
+
+    $scope.btnLeft = function () {
+        //move selected.
+        angular.forEach($scope.SelectedSelectedListItems, function (value, key) {
+            this.push(value);
+        }, $scope.AvailableListItems[$scope.selectFaIndex]);
+
+        //remove the ones that were moved from the source container.
+        angular.forEach($scope.SelectedSelectedListItems, function (value, key) {
+            for (var i = $scope.SelectedListItems[$scope.selectFaIndex].length - 1; i >= 0; i--) {
+                if ($scope.SelectedListItems[$scope.selectFaIndex][i].email == value.email) {
+                    $scope.SelectedListItems[$scope.selectFaIndex].splice(i, 1);
+                }
+            }
+        });
+        $scope.SelectedSelectedListItems = [];
+    };
 });

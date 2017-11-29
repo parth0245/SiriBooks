@@ -154,6 +154,43 @@
     </div>
 
     <div layout="row" class="topPadding20">
+            <md-button ng-click="togglePannel5()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
+                    Products Supplied
+                    <span ng-hide="!panelShow5" class="pull-right description">+</span>
+                    <span ng-hide="panelShow5" class="pull-right description">-</span>
+        </md-button>
+    </div>
+    <div class="topPadding20 col-xs-6 noPadding" ng-hide="panelShow5">
+            <table class="journalTable withRole">
+                    <thead>
+                        <tr>
+                         <th>Product List</th>
+                         <th>Selected Products</th>
+                     </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                    <td style="border-bottom:none;padding: 0px 0px !important;">
+                                        
+                                                                          
+                            
+                                        <div>
+                                            <select multiple id="availabelist" style="border:none;overflow:auto;width:100%;"
+                                             size="10" style="width:275px" ng-change="btnRight()" 
+                                             ng-model="SelectedAvailItems" ng-options="i as i.email for i in AvailableListItems[selectFaIndex] | orderBy:'email'"></select>
+                                        </div>
+                                    </td>
+                                    <td style="border-bottom:none;padding: 0px 0px !important;">
+                                            <div>
+                                                    <select ng-change="btnLeft()"   style="border:none;width:100%;overflow:auto" multiple id="selectedlist" size="10" style="width:275px" ng-model="SelectedSelectedListItems" ng-options="i as i.email for i  in SelectedListItems[selectFaIndex] | orderBy:'email'"></select>
+                                                </div>
+                                    </td>
+                            </tr>
+                    </tbody>
+                </table>
+        </div>
+
+    <div layout="row" class="topPadding20">
             <md-button ng-click="togglePannel4()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                     Additional Data
                     <span ng-hide="!panelShow4" class="pull-right description">+</span>
