@@ -39,9 +39,8 @@
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                         <label>State</label>
-                        <md-select name="state" ng-model="location.state" required>
-                            <md-option value="one">State 1</md-option>
-                            <md-option value="two">State 2</md-option>
+                        <md-select name="state" ng-model="location.lkupstate" required>
+                            <md-option ng-repeat="state in stateList" value="{{state.stateId}}">{{state.stateName}}</md-option>
                         </md-select>
                         <div ng-messages="addVendorForm1.state.$error" ng-if="addVendorForm1.state.$touched">
                                 <div ng-message="required">This is required.</div>
@@ -49,11 +48,9 @@
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                         <label>Country</label>
-                        <md-select name="country" ng-model="location.country" required>
-                                <md-option value="india">India</md-option>
-                                <md-option value="one">Country 1</md-option>
-                            <md-option value="two">Country 2</md-option>
-                        </md-select>
+                        <md-select name="country" ng-model="location.country" required ng-change="getState(location.country)">
+                            <md-option ng-repeat="country in countryList" value="{{country.country}}">{{country.country}}</md-option>
+                    </md-select>
                         <div ng-messages="addVendorForm1.country.$error" ng-if="addVendorForm1.country.$touched">
                                 <div ng-message="required">This is required.</div>
                             </div>
@@ -223,8 +220,8 @@
     </div>
     <div layout="row" class="addPaddingButtons">
             <md-button class="md-raised ifBold" flex-offset="30" ng-if="btnLabel != 'Update'" ng-click="reserAll()">Reset All</md-button>
-            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'" ng-click="save()">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold"flex-offset="40" ng-click="update()" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'" ng-click="save()" ng-disabled="!addVendorForm1.$valid" ng-class="{'hideCursor' : !addVendorForm1.$valid}">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold"flex-offset="40" ng-click="update()" ng-if="btnLabel == 'Update'" ng-disabled="!addVendorForm1.$valid" ng-class="{'hideCursor' : !addVendorForm1.$valid}">{{btnLabel}}</md-button>
             <md-button class="md-raised md-primary ifBold" flex="20">{{btnLabel}} & Purchase</md-button>
             <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
         </div>

@@ -8,9 +8,8 @@
                         <div layout="row">
                                 <md-input-container flex="25">
                                     <label>Product / Sevice</label>
-                                    <md-select class="mdSelect" name="product" ng-model="inventory.productname" required ng-disabled="btnLabel == 'Update'">
-                                        <md-option value="{{inventory.productname}}">{{inventory.productname || "Product 1"}}</md-option>
-                                        <md-option value="Product 2">Product 2</md-option>
+                                    <md-select class="mdSelect" name="product" ng-model="inventory.prodId" required ng-disabled="btnLabel == 'Update'">
+                                        <md-option ng-repeat="data in inventory.productService" ng-value="{{data.producttypeid}}">{{data.type}}</md-option>
                                     </md-select>
                                 </md-input-container>
                             </div>
@@ -18,22 +17,20 @@
                             <div layout="row" class="topPadding10">
                                     <md-input-container flex="25">
                                         <label>Name</label>
-                                        <input name="name" ng-model="inventory.orgledger.name" required>
-                                    </md-input-container>
-                                    <md-input-container flex="25"  flex-offset="5">
-                                            <label>Group</label>
-                                            <input name="group" ng-model="inventory.group">
-                                            <div ng-messages="addInventoryForm.group.$error">
-                                                <div ng-message="required">This is required.</div>
-                                            </div>
+                                        <input name="name" ng-model="inventory.productname" required>
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
+                                            <label>Group</label>
+                                            <md-select class="mdSelect" name="group" ng-model="inventory.group">
+ <md-option ng-repeat="data in inventory.groupService" ng-value="{{data.producttypeid}}">{{data.type}}</md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    <md-input-container flex="25" flex-offset="5">
                                         <label>Unit of Measure</label>
-                                        <md-select name="unit" ng-model="inventory.lkupunitofmeasure" required>
-                                            <md-option value="{{inventory.lkupunitofmeasure}}">{{inventory.lkupunitofmeasure || "one"}}</md-option>
-                                            <md-option value="two">Two</md-option>
+                                        <md-select class="mdSelect" name="unit" ng-model="inventory.lkupunitofmeasure" required>
+                                            <md-option ng-value="{{inventory.lkupunitofmeasure}}">{{inventory.lkupunitofmeasure}}</md-option>
                                         </md-select>
-                                        <div ng-messages="addInventoryForm.unit.$error">
+                                        <div ng-messages="addInventoryForm.unit.$error"  ng-if="addInventoryForm.unit.$touched">
                                                 <div ng-message="required">This is required.</div>
                                         </div>
                                     </md-input-container>
@@ -71,6 +68,11 @@
                                             <label>Description</label>
                                             <input name="desc" ng-model="inventory.description">
                                     </md-input-container>
+                            </div>
+                            <div layout="row" ng-if="btnLabel == 'Update'">
+
+                                    <md-checkbox class="md-primary checkBoxForInventory" ng-model="status">Status</md-checkbox>
+
                             </div>
                             <div layout="row" class="topPadding20">
                                 <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
@@ -148,8 +150,8 @@
                             </div>
     <div layout="row" class="addPaddingButtons">
             <md-button class="md-raised ifBold" flex-offset="30" ng-if="btnLabel != 'Update'" ng-click="reserAll()">Reset All</md-button>
-            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'" ng-click="save()">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold" flex-offset="40" ng-if="btnLabel == 'Update'" ng-click="update()">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'" ng-click="save()" ng-disabled="!addInventoryForm.$valid" ng-class="{'hideCursor' : !addInventoryForm.$valid}">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex-offset="40" ng-if="btnLabel == 'Update'" ng-click="update()" ng-disabled="!addInventoryForm.$valid" ng-class="{'hideCursor' : !addInventoryForm.$valid}">{{btnLabel}}</md-button>
             <md-button class="md-raised md-primary ifBold" flex="22">{{btnLabel}} & Purchase</md-button>
             <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
     </div>

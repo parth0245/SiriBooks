@@ -298,10 +298,12 @@ app.constant('CONSTANTS', {
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : 'application/fixture/searchInventory.json',
                         purchaseList : 'application/fixture/purchaseList.json',
-                        getCustomerDetails : 'application/fixture/customer.json'                        
+                        getCustomerDetails : 'application/fixture/customer.json',
+                        getCountries : 'application/fixture/contryState.json'                      
                 },{
                         inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
-                        saveInventory : '',
+                        saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        updateInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         customerList : 'http://localhost:8080/api/fasmain/VCPL/Customers/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         saveCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
                         updateCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
@@ -323,7 +325,8 @@ app.constant('CONSTANTS', {
                         companyLedgers : 'application/fixture/importCustomer.json',
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
-                        searchInventoryList : ''
+                        searchInventoryList : '',
+                        getCountries : 'application/fixture/contryState.json'                      
                 }
         ],
         headBarNavigator : [
@@ -756,7 +759,7 @@ app.controller('addContraCtrl',function($rootScope , $scope , $stateParams , $st
         $state.go('Home.Contra');
     }
 });
-app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state , customerServices , $filter , CONSTANTS){
+app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $state ,commonServices, customerServices , $filter , CONSTANTS){
     console.log('Inside Add Customer Controller');
     $rootScope.isActive = 'CUSTOMERS';
    /* function updateDate(d){
@@ -779,8 +782,40 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.identity = {};
         $scope.books = {};
     }
+    $scope.stateList = [];
+    /*$scope.$watch('stateList',function(newVal , oldVal){
+        $scope.stateList = newVal;
+    });*/
+    commonServices.getCountries().then(function(success){
+        var myArray = success.data;
+        var countries = {};
+        for (var i = 0; i < myArray.length; i++) {
+          var countryName = myArray[i].lkupcountry.countryname;
+          if (!countries[countryName]) {
+            countries[countryName] = [];
+          }
+          countries[countryName].push({"countryName": myArray[i].lkupcountry.countryname ,"stateName":myArray[i].statename , "stateId" : myArray[i].id ,"countryId":myArray[i].lkupcountry.countryid});
+        }
+        myArray = [];
+        for (var countryName in countries) {
+          myArray.push({country: countryName, state: [countries[countryName]]});
+        }
+        $scope.countryList = myArray;
+       $scope.getState('India');
+    },function(error){
+        console.log(error);
+    });
     
-    $scope.location.country = 'india';
+    $scope.location.country = 'India';
+    $scope.getState = function(country) {
+        var states;
+        angular.forEach($scope.countryList , function(key){
+            if(key.country == country){
+                states =  key.state;
+            }
+        });
+        $scope.stateList = states[0];
+    }
     $scope.additionalData = $scope.location.customeraddtldata || [{ keyname: "", keyvalue: "" }];
 
     $scope.cancel = function(){
@@ -897,13 +932,39 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.inventory = $stateParams.data;
-    }
+        $scope.inventory.prodId = 1;
+        }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.inventory = {};
-    }
+        $scope.inventory.lkupunitofmeasure = "1";
 
+    }
+    $scope.inventory.productService = [
+        {
+            "producttypeid": 1,
+            "description": "product description",
+            "type": "product"
+            },
+              {
+            "producttypeid": 2,
+            "description": "service description",
+            "type": "service"
+            }
+    ];
+    $scope.inventory.groupService = [
+          {
+            "description": "mobile phones",
+            "producttypeid": 1,
+            "type": "Mobiles"
+            },
+              {
+            "description": "tvs descption",
+            "producttypeid": 2,
+            "type": "Smart Tvs"
+            }
+    ];
     $scope.Description = $scope.inventory.productspecs || [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
 
     $scope.cancel = function(){
@@ -939,14 +1000,15 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     }
 
     $scope.save = function(){
-        inventoryServices.save($scope.inventory).then(function(success){
+        inventoryServices.save($scope.inventory , $scope.Description).then(function(success){
             console.log('save Successfully');
+            $state.go('Home.Inventory');   
         },function(error){
             console.log('save Failure');
         });
     }
     $scope.update = function(){
-        inventoryServices.update($scope.inventory).then(function(success){
+        inventoryServices.update($scope.inventory , $scope.Description).then(function(success){
             console.log('update Successfully');
         },function(error){
             console.log('update Failure');
@@ -1057,7 +1119,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         $scope.panelShow = !$scope.panelShow;
     }
 });
-app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices , CONSTANTS){
+app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices , CONSTANTS ,commonServices){
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -1159,6 +1221,41 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         },function(error){
             console.log('error');
         });
+    }
+
+    $scope.stateList = [];
+    /*$scope.$watch('stateList',function(newVal , oldVal){
+        $scope.stateList = newVal;
+    });*/
+    commonServices.getCountries().then(function(success){
+        var myArray = success.data;
+        var countries = {};
+        for (var i = 0; i < myArray.length; i++) {
+          var countryName = myArray[i].lkupcountry.countryname;
+          if (!countries[countryName]) {
+            countries[countryName] = [];
+          }
+          countries[countryName].push({"countryName": myArray[i].lkupcountry.countryname ,"stateName":myArray[i].statename , "stateId" : myArray[i].id ,"countryId":myArray[i].lkupcountry.countryid});
+        }
+        myArray = [];
+        for (var countryName in countries) {
+          myArray.push({country: countryName, state: [countries[countryName]]});
+        }
+        $scope.countryList = myArray;
+       $scope.getState('India');
+    },function(error){
+        console.log(error);
+    });
+    
+    $scope.location.country = 'India';
+    $scope.getState = function(country) {
+        var states;
+        angular.forEach($scope.countryList , function(key){
+            if(key.country == country){
+                states =  key.state;
+            }
+        });
+        $scope.stateList = states[0];
     }
 
     
@@ -3749,6 +3846,11 @@ app.service('bankingServices',function($http , CONSTANTS){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].bankBRS);
      };
 });
+app.service('commonServices',function($http , CONSTANTS){
+    this.getCountries = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCountries);
+    }
+});
 app.service('contraServices',function($http , CONSTANTS){
     this.getContraList = function(){
        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].contraList);
@@ -3793,7 +3895,7 @@ app.service('customerServices',function($http , CONSTANTS){
             "uorgid": CONSTANTS.uuid,
             "customeraddtldata": additionalData,
             "createdby": CONSTANTS.uuid,
-            "updatedby": CONSTANTS.uuid
+            "updatedby": CONSTANTS.uuid,
             };
             console.log(data);
             return $http({
@@ -3822,9 +3924,16 @@ app.service('customerServices',function($http , CONSTANTS){
         "status": location.status,
         "uorgid": CONSTANTS.uuid,
         "customeraddtldata": additionalData,
-        "createddate": "21/11/2017 20:24:15",
+        "createddate": new Date(),
         "createdby": CONSTANTS.uuid,
-        "updatedby": CONSTANTS.uuid
+        "updatedby": CONSTANTS.uuid,
+        "orgledger": {
+            "orgledgerid": "900bf6df-b3d6-4fb9-88ab-4731f4f5ddb8",
+            "balanceamount": location.orgledger.balanceamount,
+            "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+            "drcr": location.orgledger.drcr
+ 
+             }
         }
         console.log(data);
         return $http({
@@ -3878,23 +3987,25 @@ app.service('inventoryServices',function($http , CONSTANTS){
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
      };
-     this.save = function(inventory){
+     this.save = function(inventory , description){
        var data =  {
             "barcode": inventory.barcode,
             "description": inventory.description,
             "group": inventory.group,
             "hsncode": inventory.hsncode,
-            "lkupproducttype":inventory.lkupproducttype,
+            "lkupproducttype":inventory.prodId,
             "lkupunitofmeasure": inventory.lkupunitofmeasure,
             "productname": inventory.productname,
             "sku": inventory.sku,
-            "status": inventory.status,
+            "status": inventory.productname,
             "uorgid": inventory.uorgid,
             "createdby": inventory.createdby,
             "updatedby": inventory.updatedby,
             "vendor":  {
-            "vendorid": inventory.vendorid
-            }}
+            "vendorid": inventory.vendor
+            },
+        "productspecs" : description
+    }
             console.log(data);
             return $http({
                 method: "post",
@@ -3902,6 +4013,38 @@ app.service('inventoryServices',function($http , CONSTANTS){
                 data: data
                 })
     }
+
+    this.update = function(inventory , description){
+        var data = {
+            "barcode": inventory.barcode,
+            "description": inventory.description,
+            "group": inventory.group,
+            "hsncode": inventory.hsncode,
+            "lkupproducttype": inventory.prodId,
+            "lkupunitofmeasure": inventory.lkupunitofmeasure,
+            "productname": inventory.productname ,
+            "sku": inventory.sku,
+            "status": inventory.status,
+            "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
+            "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+            "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+            "vendor":  {
+            "vendorid": "ecc9ae1c-a4d6-4890-8072-8eedebe5b54a"
+            },
+            "orgledger": {
+                "orgledgerid": "900bf6df-b3d6-4fb9-88ab-4731f4f5ddb8",
+                "balanceamount": inventory.orgledger.balanceamount,
+                "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+                "drcr": inventory.orgledger.balanceamount     
+                 }
+        };
+         console.log(data);
+         return $http({
+             method: "put",
+             url: "CONSTANTS.service[CONSTANTS.appLevel].updateInventory",
+             data: data
+             })
+     }
 });
 app.service('journalServices',function($http , CONSTANTS){
     this.searchJournal = function(search) {
@@ -3975,7 +4118,31 @@ app.service('vendorServices',function($http , CONSTANTS){
     }
 
     this.saveVendor = function(location , identity , additionalData , books){
-        var data = {};
+        var data = 
+        {
+            "aadhar": identity.aadhar,
+            "address1": location.address1,
+            "address2": location.address2,
+            "city":location.city ,
+            "contactperson": location.contactperson,
+            "contactphone": location.contactphone,
+            "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+            "email":location.email ,
+            "gstnnumber":identity.gstnnumber ,
+            "lkupgsttreatment": location.lkupgsttreatment,
+            "lkupstatecountry": location.lkupstatecountry,
+            "mobile":location.mobile ,
+            "name": location.name,
+            "pan": location.pan,
+            "pin": identity.pin ,
+            "salesperson": location.salesperson,
+             "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
+             "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+             "orgledger": {
+              "orgledgerid": "900bf6df-b3d6-4fb9-88ab-4731f4f5ddb8",
+              "balanceamount": location.orgledger.balanceamount
+            }
+          };
         console.log(data);
         return $http({
             method: "post",
@@ -3985,7 +4152,31 @@ app.service('vendorServices',function($http , CONSTANTS){
     }
 
     this.updateVendor = function(location , identity , additionalData , books){
-        var data = {};
+        var data = 
+        {
+            "aadhar": identity.aadhar,
+            "address1": location.address1,
+            "address2": location.address2,
+            "city":location.city ,
+            "contactperson": location.contactperson,
+            "contactphone": location.contactphone,
+            "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+            "email":location.email ,
+            "gstnnumber":identity.gstnnumber ,
+            "lkupgsttreatment": location.lkupgsttreatment,
+            "lkupstatecountry": location.lkupstatecountry,
+            "mobile":location.mobile ,
+            "name": location.name,
+            "pan": location.pan,
+            "pin": identity.pin ,
+            "salesperson": location.salesperson,
+             "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
+             "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+             "orgledger": {
+              "orgledgerid": "900bf6df-b3d6-4fb9-88ab-4731f4f5ddb8",
+              "balanceamount": location.orgledger.balanceamount
+                        }
+          };
         console.log(data);
         return $http({
             method: "post",

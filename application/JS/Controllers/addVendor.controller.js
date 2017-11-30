@@ -1,4 +1,4 @@
-app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices , CONSTANTS){
+app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices , CONSTANTS ,commonServices){
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
@@ -100,6 +100,41 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         },function(error){
             console.log('error');
         });
+    }
+
+    $scope.stateList = [];
+    /*$scope.$watch('stateList',function(newVal , oldVal){
+        $scope.stateList = newVal;
+    });*/
+    commonServices.getCountries().then(function(success){
+        var myArray = success.data;
+        var countries = {};
+        for (var i = 0; i < myArray.length; i++) {
+          var countryName = myArray[i].lkupcountry.countryname;
+          if (!countries[countryName]) {
+            countries[countryName] = [];
+          }
+          countries[countryName].push({"countryName": myArray[i].lkupcountry.countryname ,"stateName":myArray[i].statename , "stateId" : myArray[i].id ,"countryId":myArray[i].lkupcountry.countryid});
+        }
+        myArray = [];
+        for (var countryName in countries) {
+          myArray.push({country: countryName, state: [countries[countryName]]});
+        }
+        $scope.countryList = myArray;
+       $scope.getState('India');
+    },function(error){
+        console.log(error);
+    });
+    
+    $scope.location.country = 'India';
+    $scope.getState = function(country) {
+        var states;
+        angular.forEach($scope.countryList , function(key){
+            if(key.country == country){
+                states =  key.state;
+            }
+        });
+        $scope.stateList = states[0];
     }
 
     

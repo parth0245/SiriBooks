@@ -5,13 +5,39 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.inventory = $stateParams.data;
-    }
+        $scope.inventory.prodId = 1;
+        }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.inventory = {};
-    }
+        $scope.inventory.lkupunitofmeasure = "1";
 
+    }
+    $scope.inventory.productService = [
+        {
+            "producttypeid": 1,
+            "description": "product description",
+            "type": "product"
+            },
+              {
+            "producttypeid": 2,
+            "description": "service description",
+            "type": "service"
+            }
+    ];
+    $scope.inventory.groupService = [
+          {
+            "description": "mobile phones",
+            "producttypeid": 1,
+            "type": "Mobiles"
+            },
+              {
+            "description": "tvs descption",
+            "producttypeid": 2,
+            "type": "Smart Tvs"
+            }
+    ];
     $scope.Description = $scope.inventory.productspecs || [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
 
     $scope.cancel = function(){
@@ -47,14 +73,15 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     }
 
     $scope.save = function(){
-        inventoryServices.save($scope.inventory).then(function(success){
+        inventoryServices.save($scope.inventory , $scope.Description).then(function(success){
             console.log('save Successfully');
+            $state.go('Home.Inventory');   
         },function(error){
             console.log('save Failure');
         });
     }
     $scope.update = function(){
-        inventoryServices.update($scope.inventory).then(function(success){
+        inventoryServices.update($scope.inventory , $scope.Description).then(function(success){
             console.log('update Successfully');
         },function(error){
             console.log('update Failure');

@@ -885,3 +885,6 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 .secondChild {
 	background-color: initial;
 }
+.hideCursor {
+	cursor: no-drop !important;
+}

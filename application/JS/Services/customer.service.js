@@ -30,7 +30,7 @@ app.service('customerServices',function($http , CONSTANTS){
             "uorgid": CONSTANTS.uuid,
             "customeraddtldata": additionalData,
             "createdby": CONSTANTS.uuid,
-            "updatedby": CONSTANTS.uuid
+            "updatedby": CONSTANTS.uuid,
             };
             console.log(data);
             return $http({
@@ -59,9 +59,16 @@ app.service('customerServices',function($http , CONSTANTS){
         "status": location.status,
         "uorgid": CONSTANTS.uuid,
         "customeraddtldata": additionalData,
-        "createddate": "21/11/2017 20:24:15",
+        "createddate": new Date(),
         "createdby": CONSTANTS.uuid,
-        "updatedby": CONSTANTS.uuid
+        "updatedby": CONSTANTS.uuid,
+        "orgledger": {
+            "orgledgerid": "900bf6df-b3d6-4fb9-88ab-4731f4f5ddb8",
+            "balanceamount": location.orgledger.balanceamount,
+            "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
+            "drcr": location.orgledger.drcr
+ 
+             }
         }
         console.log(data);
         return $http({

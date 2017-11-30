@@ -1,0 +1,373 @@
+[  {
+    "id": 1,
+    "statename": "US",
+    "lkupcountry": {
+    "countryid": 92,
+    "countryname": "US",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+    {
+        "id": 1,
+        "statename": "Andhra Pradesh",
+        "lkupcountry": {
+        "countryid": 91,
+        "countryname": "India",
+        "createddate": "2017-10-23",
+        "updateddate": "2017-10-23"
+        }
+        },
+      {
+    "id": 2,
+    "statename": "Arunachal Pradesh",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 3,
+    "statename": "Assam",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 4,
+    "statename": "Bihar",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 5,
+    "statename": "Chhattisgarh",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 6,
+    "statename": "Goa",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 7,
+    "statename": "Gujarat",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 8,
+    "statename": "Haryana",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 9,
+    "statename": "Himachal Pradesh",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 10,
+    "statename": "Jammu and Kashmir",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 11,
+    "statename": "Jharkhand",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 12,
+    "statename": "Karnataka",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 13,
+    "statename": "Kerala",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 14,
+    "statename": "Madhya Pradesh",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 15,
+    "statename": "Maharashtra",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 16,
+    "statename": "Manipur",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 17,
+    "statename": "Meghalaya",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 18,
+    "statename": "Mizoram",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 19,
+    "statename": "Nagaland",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 20,
+    "statename": "Odisha",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 21,
+    "statename": "Punjab",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 22,
+    "statename": "Rajasthan",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 23,
+    "statename": "Sikkim",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 24,
+    "statename": "Tamil Nadu",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 25,
+    "statename": "Telangana",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 26,
+    "statename": "Tripura",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 27,
+    "statename": "Uttar Pradesh",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 28,
+    "statename": "Uttarakhand",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 29,
+    "statename": "West Bengal",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 30,
+    "statename": "Andaman and Nicobar Islands",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 31,
+    "statename": "Chandigarh",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 32,
+    "statename": "Dadar and Nagar Haveli",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 33,
+    "statename": "Daman and Diu",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 34,
+    "statename": "Delhi",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 35,
+    "statename": "Lakshadweep",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    },
+      {
+    "id": 36,
+    "statename": "Pondicherry",
+    "lkupcountry": {
+    "countryid": 91,
+    "countryname": "India",
+    "createddate": "2017-10-23",
+    "updateddate": "2017-10-23"
+    }
+    }
+    ]
+    
+    

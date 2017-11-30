@@ -33,10 +33,12 @@ app.constant('CONSTANTS', {
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : 'application/fixture/searchInventory.json',
                         purchaseList : 'application/fixture/purchaseList.json',
-                        getCustomerDetails : 'application/fixture/customer.json'                        
+                        getCustomerDetails : 'application/fixture/customer.json',
+                        getCountries : 'application/fixture/contryState.json'                      
                 },{
                         inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
-                        saveInventory : '',
+                        saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        updateInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         customerList : 'http://localhost:8080/api/fasmain/VCPL/Customers/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         saveCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
                         updateCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
@@ -58,7 +60,8 @@ app.constant('CONSTANTS', {
                         companyLedgers : 'application/fixture/importCustomer.json',
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
-                        searchInventoryList : ''
+                        searchInventoryList : '',
+                        getCountries : 'application/fixture/contryState.json'                      
                 }
         ],
         headBarNavigator : [
