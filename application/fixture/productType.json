@@ -1,0 +1,11 @@
+[{
+    "producttypeid": 1,
+    "description": "product description",
+    "type": "product"
+    },
+      {
+    "producttypeid": 2,
+    "description": "service description",
+    "type": "service"
+    }
+    ]

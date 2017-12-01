@@ -1,4 +1,4 @@
-app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state , inventoryServices){
+app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state , inventoryServices , commonServices , vendorServices){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'INVENTORY';
     if(angular.isDefined($stateParams.data.productname)) {
@@ -14,30 +14,24 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.inventory.lkupunitofmeasure = "1";
 
     }
-    $scope.inventory.productService = [
-        {
-            "producttypeid": 1,
-            "description": "product description",
-            "type": "product"
-            },
-              {
-            "producttypeid": 2,
-            "description": "service description",
-            "type": "service"
-            }
-    ];
-    $scope.inventory.groupService = [
-          {
-            "description": "mobile phones",
-            "producttypeid": 1,
-            "type": "Mobiles"
-            },
-              {
-            "description": "tvs descption",
-            "producttypeid": 2,
-            "type": "Smart Tvs"
-            }
-    ];
+
+    commonServices.getProductType().then(function(success){
+        $scope.inventory.productService = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+    commonServices.getProductGroup().then(function(success){
+        $scope.inventory.groupService = success.data;   
+    },function(error){
+        console.log('Get - Failure Group');
+    });
+    vendorServices.searchVendor('').then(function(response){
+        $scope.inventory.vendorList = response.data;
+        $scope.inventory.vendor = "";
+          },function(error){
+        console.log('error',error);
+     });
+    
     $scope.Description = $scope.inventory.productspecs || [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
 
     $scope.cancel = function(){

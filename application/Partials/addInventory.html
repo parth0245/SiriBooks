@@ -8,7 +8,7 @@
                         <div layout="row">
                                 <md-input-container flex="25">
                                     <label>Product / Sevice</label>
-                                    <md-select class="mdSelect" name="product" ng-model="inventory.prodId" required ng-disabled="btnLabel == 'Update'">
+                                    <md-select class="mdSelect" name="product" ng-model="inventory.lkupproducttype" required ng-disabled="btnLabel == 'Update'">
                                         <md-option ng-repeat="data in inventory.productService" ng-value="{{data.producttypeid}}">{{data.type}}</md-option>
                                     </md-select>
                                 </md-input-container>
@@ -53,8 +53,7 @@
                                     <md-input-container flex="25">
                                         <label>Vendor</label>
                                         <md-select name="vendor" ng-model="inventory.vendor">
-                                            <md-option value="one">Vendor 1</md-option>
-                                            <md-option value="two">Vendor 2</md-option>
+                                            <md-option ng-repeat="data in inventory.vendorList" ng-value="{{data.name}}">{{data.name}}</md-option>
                                         </md-select>
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">

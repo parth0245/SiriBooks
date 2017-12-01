@@ -124,6 +124,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
     $scope.save = function(){
         customerServices.saveCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('Customer save Successfully');
+            $state.go('Home.Customers');
         },function(error){
             console.log('Customer save Failure');
         });
@@ -131,8 +132,23 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
     $scope.update = function(){
         customerServices.updateCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('Customer update Successfully');
+            $state.go('Home.Customers');
         },function(error){
             console.log('Customer update Failure');
         });
     }
+    commonServices.getNatureOfBusiness().then(function(success){
+        $scope.identity.nob = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+    $scope.identity.type = [
+        {id : "1" , type : "Retail"},
+        {id : "2" , type : "Dealer"}
+    ]
+    /*commonServices.getOrgType().then(function(success){
+        $scope.identity.type = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });*/
 });

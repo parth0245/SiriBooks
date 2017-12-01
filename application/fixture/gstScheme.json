@@ -1,0 +1,12 @@
+[
+    {
+  "description": "Composite scheme for small industries",
+  "gstschemeid": 1,
+  "scheme": "Composite"
+  },
+    {
+  "description": "Normal scheme for all industries",
+  "gstschemeid": 2,
+  "scheme": "Normal"
+  }
+  ]  

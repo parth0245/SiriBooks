@@ -1,0 +1,36 @@
+[{
+    "id": 1,
+    "description": "Private Ltd Company",
+    "type": "Private Ltd"
+    },
+      {
+    "id": 2,
+    "description": "Public Ltd Company",
+    "type": "Public Ltd"
+    },
+      {
+    "id": 3,
+    "description": "Limited liability firm",
+    "type": "LLP"
+    },
+      {
+    "id": 4,
+    "description": "Partnership Firm",
+    "type": "Partnership"
+    },
+      {
+    "id": 5,
+    "description": "Proprietorship Firm",
+    "type": "Proprietorship"
+    },
+      {
+    "id": 6,
+    "description": "Society",
+    "type": "Society"
+    },
+      {
+    "id": 7,
+    "description": "Trust",
+    "type": "Trust"
+    }
+    ]

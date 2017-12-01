@@ -1,0 +1,16 @@
+[{
+    "businesstype": "Trading",
+    "description": "Organization into Trading",
+    "nobid": 1
+    },
+      {
+    "businesstype": "Services",
+    "description": "Organization into Services or consulting - no products",
+    "nobid": 2
+    },
+      {
+    "businesstype": "Manufacturing",
+    "description": "Organization into manufacturing of products",
+    "nobid": 3
+    }
+    ]

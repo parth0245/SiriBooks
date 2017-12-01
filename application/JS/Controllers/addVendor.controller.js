@@ -90,6 +90,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     $scope.save = function(){
         vendorServices.saveVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('success');
+            $state.go('Home.Vendors');
         },function(error){
             console.log('error');
         });
@@ -97,15 +98,27 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     $scope.update = function(){
         vendorServices.updateVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('success');
+            $state.go('Home.Vendors');
         },function(error){
             console.log('error');
         });
     }
-
-    $scope.stateList = [];
-    /*$scope.$watch('stateList',function(newVal , oldVal){
-        $scope.stateList = newVal;
+    $scope.identity.type = [
+        {id : "1" , type : "Retail"},
+        {id : "2" , type : "Dealer"}
+    ]
+    /*commonServices.getOrgType().then(function(success){
+        $scope.identity.type = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
     });*/
+    commonServices.getNatureOfBusiness().then(function(success){
+        $scope.identity.nob = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+    $scope.stateList = [];
+
     commonServices.getCountries().then(function(success){
         var myArray = success.data;
         var countries = {};

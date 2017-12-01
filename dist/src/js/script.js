@@ -299,7 +299,19 @@ app.constant('CONSTANTS', {
                         searchInventoryList : 'application/fixture/searchInventory.json',
                         purchaseList : 'application/fixture/purchaseList.json',
                         getCustomerDetails : 'application/fixture/customer.json',
-                        getCountries : 'application/fixture/contryState.json'                      
+                        getCountries : 'application/fixture/contryState.json',
+                        productGroup : 'application/fixture/productGroup.json',
+                        userStatus : 'application/fixture/userStatus.json'             ,
+                        subscriptionStatus : 'application/fixture/subscriptionStatus.json',
+                        subscriptionPlan : 'application/fixture/subscriptionPlan.json',
+                        subscriptionOption : 'application/fixture/subscriptionOption.json',
+                        userRole : 'application/fixture/userRole.json',
+                        productType : 'application/fixture/productType.json',
+                        paymentMode : 'application/fixture/paymentMode.json',
+                        boardingStatus : 'application/fixture/boardingStatus.json',
+                        orgType : 'application/fixture/orgType.json',
+                        NOB : 'application/fixture/nob.json',
+                        gstScheme : 'application/fixture/gstScheme.json'
                 },{
                         inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
@@ -326,7 +338,19 @@ app.constant('CONSTANTS', {
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : '',
-                        getCountries : 'application/fixture/contryState.json'                      
+                        getCountries : 'application/fixture/contryState.json',
+                        productGroup : ''  ,
+                        userStatus : 'application/fixture/userStatus.json',
+                        subscriptionStatus : 'application/fixture/subscriptionStatus.json',
+                        subscriptionPlan : 'application/fixture/subscriptionPlan.json',
+                        subscriptionOption : 'application/fixture/subscriptionOption.json',
+                        userRole : 'application/fixture/userRole.json',
+                        productType : 'application/fixture/productType.json',
+                        paymentMode : 'application/fixture/paymentMode.json',
+                        boardingStatus : 'application/fixture/boardingStatus.json',
+                        orgType : 'application/fixture/orgType.json',
+                        NOB : 'application/fixture/nob.json',
+                        gstScheme : 'application/fixture/gstScheme.json'                                   
                 }
         ],
         headBarNavigator : [
@@ -885,6 +909,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
     $scope.save = function(){
         customerServices.saveCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('Customer save Successfully');
+            $state.go('Home.Customers');
         },function(error){
             console.log('Customer save Failure');
         });
@@ -892,10 +917,25 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
     $scope.update = function(){
         customerServices.updateCustomer($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('Customer update Successfully');
+            $state.go('Home.Customers');
         },function(error){
             console.log('Customer update Failure');
         });
     }
+    commonServices.getNatureOfBusiness().then(function(success){
+        $scope.identity.nob = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+    $scope.identity.type = [
+        {id : "1" , type : "Retail"},
+        {id : "2" , type : "Dealer"}
+    ]
+    /*commonServices.getOrgType().then(function(success){
+        $scope.identity.type = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });*/
 });
 app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $state){
     console.log('Inside Add Expense Controller');
@@ -925,7 +965,7 @@ app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $st
         $scope.addExpensesForm.$setPristine();
     }
 });
-app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state , inventoryServices){
+app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state , inventoryServices , commonServices , vendorServices){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'INVENTORY';
     if(angular.isDefined($stateParams.data.productname)) {
@@ -941,30 +981,24 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.inventory.lkupunitofmeasure = "1";
 
     }
-    $scope.inventory.productService = [
-        {
-            "producttypeid": 1,
-            "description": "product description",
-            "type": "product"
-            },
-              {
-            "producttypeid": 2,
-            "description": "service description",
-            "type": "service"
-            }
-    ];
-    $scope.inventory.groupService = [
-          {
-            "description": "mobile phones",
-            "producttypeid": 1,
-            "type": "Mobiles"
-            },
-              {
-            "description": "tvs descption",
-            "producttypeid": 2,
-            "type": "Smart Tvs"
-            }
-    ];
+
+    commonServices.getProductType().then(function(success){
+        $scope.inventory.productService = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+    commonServices.getProductGroup().then(function(success){
+        $scope.inventory.groupService = success.data;   
+    },function(error){
+        console.log('Get - Failure Group');
+    });
+    vendorServices.searchVendor('').then(function(response){
+        $scope.inventory.vendorList = response.data;
+        $scope.inventory.vendor = "";
+          },function(error){
+        console.log('error',error);
+     });
+    
     $scope.Description = $scope.inventory.productspecs || [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
 
     $scope.cancel = function(){
@@ -1211,6 +1245,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     $scope.save = function(){
         vendorServices.saveVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('success');
+            $state.go('Home.Vendors');
         },function(error){
             console.log('error');
         });
@@ -1218,15 +1253,27 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     $scope.update = function(){
         vendorServices.updateVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
             console.log('success');
+            $state.go('Home.Vendors');
         },function(error){
             console.log('error');
         });
     }
-
-    $scope.stateList = [];
-    /*$scope.$watch('stateList',function(newVal , oldVal){
-        $scope.stateList = newVal;
+    $scope.identity.type = [
+        {id : "1" , type : "Retail"},
+        {id : "2" , type : "Dealer"}
+    ]
+    /*commonServices.getOrgType().then(function(success){
+        $scope.identity.type = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
     });*/
+    commonServices.getNatureOfBusiness().then(function(success){
+        $scope.identity.nob = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+    $scope.stateList = [];
+
     commonServices.getCountries().then(function(success){
         var myArray = success.data;
         var countries = {};
@@ -3850,6 +3897,42 @@ app.service('commonServices',function($http , CONSTANTS){
     this.getCountries = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCountries);
     }
+    this.getProductGroup = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].productGroup);
+    }
+    this.getuserStatus = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].userStatus);
+    }
+    this.getSubscriptionStatus = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].subscriptionStatus);
+    }
+    this.getSubscriptionPlan = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].subscriptionPlan);
+    }
+    this.getSubscriptionOption  = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].subscriptionOption);
+    }
+    this.getRole = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].userRole);
+    }
+    this.getProductType = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].productType);
+    }
+    this.getpaymentMode = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].paymentMode);
+    }
+    this.getBoardingStatus = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].boardingStatus);
+    }
+    this.getOrgType = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].orgType);
+    }
+    this.getNatureOfBusiness = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].NOB);
+    }
+    this.getGstScheme = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].gstScheme);
+    }    
 });
 app.service('contraServices',function($http , CONSTANTS){
     this.getContraList = function(){
@@ -3993,7 +4076,7 @@ app.service('inventoryServices',function($http , CONSTANTS){
             "description": inventory.description,
             "group": inventory.group,
             "hsncode": inventory.hsncode,
-            "lkupproducttype":inventory.prodId,
+            "lkupproducttype":inventory.lkupproducttype,
             "lkupunitofmeasure": inventory.lkupunitofmeasure,
             "productname": inventory.productname,
             "sku": inventory.sku,
@@ -4020,7 +4103,7 @@ app.service('inventoryServices',function($http , CONSTANTS){
             "description": inventory.description,
             "group": inventory.group,
             "hsncode": inventory.hsncode,
-            "lkupproducttype": inventory.prodId,
+            "lkupproducttype": inventory.lkupproducttype,
             "lkupunitofmeasure": inventory.lkupunitofmeasure,
             "productname": inventory.productname ,
             "sku": inventory.sku,

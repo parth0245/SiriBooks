@@ -34,7 +34,19 @@ app.constant('CONSTANTS', {
                         searchInventoryList : 'application/fixture/searchInventory.json',
                         purchaseList : 'application/fixture/purchaseList.json',
                         getCustomerDetails : 'application/fixture/customer.json',
-                        getCountries : 'application/fixture/contryState.json'                      
+                        getCountries : 'application/fixture/contryState.json',
+                        productGroup : 'application/fixture/productGroup.json',
+                        userStatus : 'application/fixture/userStatus.json'             ,
+                        subscriptionStatus : 'application/fixture/subscriptionStatus.json',
+                        subscriptionPlan : 'application/fixture/subscriptionPlan.json',
+                        subscriptionOption : 'application/fixture/subscriptionOption.json',
+                        userRole : 'application/fixture/userRole.json',
+                        productType : 'application/fixture/productType.json',
+                        paymentMode : 'application/fixture/paymentMode.json',
+                        boardingStatus : 'application/fixture/boardingStatus.json',
+                        orgType : 'application/fixture/orgType.json',
+                        NOB : 'application/fixture/nob.json',
+                        gstScheme : 'application/fixture/gstScheme.json'
                 },{
                         inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
@@ -61,7 +73,19 @@ app.constant('CONSTANTS', {
                         bankLedgers : 'application/fixture/bankLedger.json',
                         bankBRS : 'application/fixture/bankLedger.json',
                         searchInventoryList : '',
-                        getCountries : 'application/fixture/contryState.json'                      
+                        getCountries : 'application/fixture/contryState.json',
+                        productGroup : ''  ,
+                        userStatus : 'application/fixture/userStatus.json',
+                        subscriptionStatus : 'application/fixture/subscriptionStatus.json',
+                        subscriptionPlan : 'application/fixture/subscriptionPlan.json',
+                        subscriptionOption : 'application/fixture/subscriptionOption.json',
+                        userRole : 'application/fixture/userRole.json',
+                        productType : 'application/fixture/productType.json',
+                        paymentMode : 'application/fixture/paymentMode.json',
+                        boardingStatus : 'application/fixture/boardingStatus.json',
+                        orgType : 'application/fixture/orgType.json',
+                        NOB : 'application/fixture/nob.json',
+                        gstScheme : 'application/fixture/gstScheme.json'                                   
                 }
         ],
         headBarNavigator : [

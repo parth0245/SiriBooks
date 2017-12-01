@@ -1,0 +1,21 @@
+[{
+    "description": "new user just added but yet to login for the first time",
+    "status": "New",
+    "userstatusid": 1
+    },
+      {
+    "description": "Active user - logged in and not new",
+    "status": "Active",
+    "userstatusid": 2
+    },
+      {
+    "description": "User deleted and cannot login",
+    "status": "Deleted",
+    "userstatusid": 3
+    },
+      {
+    "description": "Suspended for wrong number of login attempts",
+    "status": "Suspended",
+    "userstatusid": 4
+    }
+    ]

@@ -1,0 +1,11 @@
+[{
+    "description": "Not yet onboarded - just registered",
+    "onboardingstatusid": 1,
+    "status": "New"
+    },
+      {
+    "description": "onboarded - company admin signed in",
+    "onboardingstatusid": 2,
+    "status": "Onboarded"
+    }
+    ]

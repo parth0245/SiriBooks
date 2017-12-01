@@ -1,0 +1,11 @@
+[  {
+    "description": "mobile phones",
+    "producttypeid": 1,
+    "type": "Mobiles"
+    },
+      {
+    "description": "tvs descption",
+    "producttypeid": 2,
+    "type": "Smart Tvs"
+    }
+    ]

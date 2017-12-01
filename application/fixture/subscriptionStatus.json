@@ -1,0 +1,16 @@
+[ {
+    "description": "License is not valid or expired",
+    "status": "Expired",
+    "substatusid": 3
+    },
+      {
+    "description": "License is valid ",
+    "status": "Active",
+    "substatusid": 2
+    },
+      {
+    "description": "License is valid but in trial",
+    "status": "Trial ",
+    "substatusid": 1
+    }
+    ]

@@ -1,0 +1,16 @@
+[{
+    "description": "Saas application administrator",
+    "roleid": 3,
+    "rolename": "Saas Admininstrator"
+    },
+      {
+    "description": "Siri books super admin",
+    "roleid": 1,
+    "rolename": "Super Administrator"
+    },
+      {
+    "description": "Organization administrator",
+    "roleid": 2,
+    "rolename": "Organization Administrator"
+    }
+    ]

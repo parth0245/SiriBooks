@@ -1,0 +1,11 @@
+[{
+    "description": "accounting package only",
+    "fasmodid": 1,
+    "module": "Accounting"
+    },
+      {
+    "description": "accounting and inventory package",
+    "fasmodid": 2,
+    "module": "Accounting & Inventory"
+    }
+    ]

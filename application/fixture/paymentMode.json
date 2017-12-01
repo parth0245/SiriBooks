@@ -1,0 +1,16 @@
+[ {
+    "description": "cash mode of transaction",
+    "mode": "cash",
+    "paymentmodeid": 1
+    },
+      {
+    "description": "bank mode of transaction - NEFT/RTGS or cheque",
+    "mode": "bank",
+    "paymentmodeid": 2
+    },
+      {
+    "description": "Useful when no transaction happens eg:-trial",
+    "mode": "NA",
+    "paymentmodeid": 3
+    }
+    ]
