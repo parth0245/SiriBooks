@@ -6,4 +6,7 @@ app.service('journalServices',function($http , CONSTANTS){
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
     }
+    this.getCurrentJournal = function() {
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCurrentJournal);
+    }
 });

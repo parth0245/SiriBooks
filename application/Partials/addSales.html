@@ -1,0 +1,384 @@
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
+    <div class="sectionSubHeading">
+        <h3>{{heading}} Sales</h3>
+    </div>
+    <div class="topPadding20">
+        <md-content>
+            <form name="purchaseForm" style="background-color:#f5f6f8">
+                    <div layout="row">
+                            <md-input-container flex="85">
+                                <label>Customer Name*</label>
+                                <md-select name="name" ng-model="name">
+                                    <md-option value="Product 1">name 1</md-option>
+                                    <md-option value="Product 2">name 2</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <div layout="row" class="topPadding10">
+                            <md-input-container flex="25">
+                                <label>Date</label>
+                                <md-datepicker ng-model="purchase.date" md-hide-icons="triangle"></md-datepicker>
+                            </md-input-container>
+                                <md-input-container flex="25"  flex-offset="5">
+                                        <label>Sales Type</label>
+                                        <md-select name="option" ng-model="purchase.option" required>
+                                            <md-option value="one">option 1</md-option>
+                                            <md-option value="two">option 2</md-option>
+                                        </md-select>
+                                        <div ng-messages="purchaseForm.option.$error" ng-if="purchaseForm.option.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                </md-input-container>
+                                <!--<md-input-container flex="25" flex-offset="5">
+                                    <label>GST Reverse Charge  Applicability</label>
+                                    <md-select name="gstCharge" ng-model="purchase.gstCharge" required>
+                                        <md-option value="one">One</md-option>
+                                        <md-option value="two">Two</md-option>
+                                    </md-select>
+                                    <div ng-messages="purchaseForm.gstCharge.$error" ng-if="purchaseForm.gstCharge.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                        </div>
+                                </md-input-container>-->
+                                <md-input-container flex="25"  flex-offset="5">
+                                        <label>Sales Person</label>
+                                        <input name="salesPerson" ng-model="salesPerson">
+                                </md-input-container>
+                        </div>
+                        <div layout="row">
+    <md-input-container flex="25">
+        <!--<label>Invoice No.</label>
+        <input name="invoice" ng-model="purchase.invoice" required>
+        <div ng-messages="purchaseForm.invoice.$error" ng-if="purchaseForm.invoice.$touched">
+                <div ng-message="required">This is required.</div>
+            </div>-->
+            <md-autocomplete
+                md-selected-item="selectedItem" 
+                md-search-text="searchText" 
+                md-items="item in getMatches(searchText)" 
+                md-item-text="item.name"
+                md-clear-button="false"
+                md-no-cache="true"
+                md-input-id="searchinput"
+                md-floating-label="Invoice No."
+                md-input-name="invoice" required>
+                
+                    <md-item-template>
+                        <span>{{item.name}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No matches found.
+                    </md-not-found>
+                    <div ng-messages="purchaseForm.invoice.$error" ng-if="purchaseForm.invoice.$touched">
+                            <div ng-message="required">This is required.</div>
+                        </div>
+                </md-autocomplete>
+               
+    </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                    <label>Invoice Date</label>
+                                    <md-datepicker name="invoiceDate" ng-model="purchase.invoiceDate" md-hide-icons="triangle" md-open-on-focus="" ng-required="true">
+                                    </md-datepicker>
+                                    <div ng-messages="purchaseForm.invoiceDate.$error">
+                                            <div ng-message="valid">The entered value is not a date!</div>
+                                            <div ng-message="required">This date is required!</div>
+                                        </div>
+                                </md-input-container>
+                                <md-input-container flex="25"  flex-offset="5">
+                                        <label>Sales Order No.</label>
+                                        <input name="sku" ng-model="sku">
+                                </md-input-container>
+                        </div>
+                        <div layout="row">
+                                <md-input-container flex="25" >
+                                        <label>Place Supply</label>
+                                        <input name="place" ng-model="place">
+                                </md-input-container>
+                                <md-input-container flex="25"  flex-offset="5">
+                                        <label>Inclusive of GST</label>
+                                        <input name="inclusiveGst" ng-model="inclusiveGst">
+                                </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                        <label>GST Reverse Charge  Applicability</label>
+                                        <md-select name="gstCharge" ng-model="purchase.gstCharge" required>
+                                            <md-option value="one">One</md-option>
+                                            <md-option value="two">Two</md-option>
+                                        </md-select>
+                                        <div ng-messages="purchaseForm.gstCharge.$error" ng-if="purchaseForm.gstCharge.$touched">
+                                                <div ng-message="required">This is required.</div>
+                                            </div>
+                                    </md-input-container>
+                        </div>
+                        <div layout="row">
+                                <md-input-container flex="25">
+                                    <label>Payment timeline</label>
+                                    <md-select name="timeline" ng-model="purchase.timeline">
+                                        <md-option value="one">Timeline 1</md-option>
+                                        <md-option value="two">Timeline 2</md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                        <label>Payment Duedate</label>
+                                        <md-datepicker name="dueDate" ng-model="purchase.dueDate" md-hide-icons="triangle" md-open-on-focus="">
+                                        </md-datepicker>
+                                        <!--<div ng-messages="purchaseForm.dueDate.$error">
+                                                <div ng-message="valid">The entered value is not a date!</div>
+                                                <div ng-message="required">This date is required!</div>
+                                            </div>-->
+                                    </md-input-container>
+
+                        </div>
+                        <div layout="row" class="topPadding20">
+                                <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
+                                        Identity
+                                        <span ng-hide="!panelShow" class="pull-right description">+</span>
+                                        <span ng-hide="panelShow" class="pull-right description">-</span>
+                                </md-button>
+                        </div>
+                        <div layout="row" class="topPadding20" ng-hide="panelShow">
+                            <md-input-container flex="25">
+                                <label>Address 1</label>
+                                <input name="add1" ng-model="add1" ng-readonly="true">
+                            </md-input-container>
+                            <md-input-container flex="25"  flex-offset="5">
+                                    <label>Address 2</label>
+                                    <input name="add2" ng-model="add2" ng-readonly="true">
+                            </md-input-container>
+                            <md-input-container flex="25"  flex-offset="5">
+                                    <label>City</label>
+                                    <input name="city" ng-model="city" ng-readonly="true">
+                            </md-input-container>
+                        </div>
+                        <div layout="row" class="topPadding10" ng-hide="panelShow">
+                            <md-input-container flex="25">
+                                <label>State</label>
+                                <md-select name="state" ng-model="state" ng-readonly="true">
+                                    <md-option value="Product 1">state 1</md-option>
+                                    <md-option value="Product 2">state 2</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
+                                <label>Country</label>
+                                <md-select name="ctry" ng-model="ctry" ng-readonly="true">
+                                    <md-option value="Product 1">Country 1</md-option>
+                                    <md-option value="Product 2">Country 2</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex="25"  flex-offset="5">
+                                <label>PIN</label>
+                                <input name="pin" ng-model="pin" ng-readonly="true">
+                        </md-input-container>
+                        </div>
+                        <div layout="row" class="topPadding10" ng-hide="panelShow">
+                            <md-input-container flex="25">
+                                <label>GST</label>
+                                <input name="gst" ng-model="gst" ng-readonly="true">
+                            </md-input-container>
+                        <md-input-container flex="25" flex-offset="5">
+                                <label>PAN</label>
+                                <input name="pan" ng-model="pan" ng-readonly="true">
+                        </md-input-container>
+                        <md-input-container flex="25"  flex-offset="5">
+                                <label>Aadhar</label>
+                                <input name="aadhar" ng-model="aadhar" ng-readonly="true">
+                        </md-input-container>
+                        </div>
+                        <div layout="row" class="topPadding10" ng-hide="panelShow">
+                            <md-input-container flex="25">
+                                <label>Nature of Business</label>
+                                <md-select name="nob" ng-model="nob" ng-readonly="true">
+                                    <md-option value="Product 1">NOB 1</md-option>
+                                    <md-option value="Product 2">NOB 2</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
+                                <label>Type</label>
+                                <md-select name="type" ng-model="type" ng-readonly="true">
+                                    <md-option value="Product 1">Country 1</md-option>
+                                    <md-option value="Product 2">Country 2</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex="25"  flex-offset="5">
+                                <label>Registration Number</label>
+                                <input name="nopin" ng-model="nopin" ng-readonly="true">
+                        </md-input-container>
+                        </div>
+  <!--                     
+<div layout="row" class="addPaddingButtons">
+        <md-button class="md-raised ifBold" flex-offset="30">Reset All</md-button>
+        <md-button class="md-raised md-primary ifBold">Save</md-button>
+        <md-button class="md-raised md-primary ifBold" flex="15">Save & Purchase</md-button>
+        <md-button class="md-raised ifBold">Cancel</md-button>
+</div>-->
+                   <!-- <div class="sectionSubHeading">
+                        <h3>Enter Line Item</h3>
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex="85">
+                            <label>Product</label>
+                            <md-select name="prod" ng-model="prod">
+                                <md-option value="Product 1">prod 1</md-option>
+                                <md-option value="Product 2">prod 2</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" class="topPadding20">
+                        <md-input-container flex="25">
+                            <label>Quantity</label>
+                            <input name="gst" ng-model="qtyty">
+                        </md-input-container>
+                    <md-input-container flex="25" flex-offset="5">
+                            <label>Rate</label>
+                            <input name="pan" ng-model="rate">
+                    </md-input-container>
+                    <md-input-container flex="25"  flex-offset="5">
+                            <label>Discount</label>
+                            <input name="aadhar" ng-model="discount">
+                    </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex="25">
+                            <label>Batch No.</label>
+                            <input name="gst" ng-model="bno">
+                        </md-input-container>
+                    </div>
+                    <div layout="row" class="topPadding20 purchaseSpecification">
+                        <div>Add Additional Specification for each Item of Quantity</div>
+                    </div>
+                    <div layout="row" class="topPadding20">
+                        <md-input-container flex="25">
+                            <label>How many specification per item ?</label>
+                            <input name="aadhar" ng-model="spec">
+                     </md-input-container>
+                    </div>
+
+                -->
+            </form>
+        </md-content>
+    </div>
+</div>
+<div class="addInventory fontNormal">
+
+        <div class="panel panel-default col-xs-11 marginLeft5Cent paddingLeft45 topPadding20" style="margin-top:10px;background-color:initial;">
+                <div class="panel-body">
+                        <div class="sectionSubHeading" style="padding-top:0px;">
+                                <h3>Enter Line Item</h3>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex="85">
+                                    <label>Product</label>
+                                    <md-select name="prod" ng-model="prod">
+                                        <md-option value="Product 1">prod 1</md-option>
+                                        <md-option value="Product 2">prod 2</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <div layout="row" class="topPadding20">
+                                <md-input-container flex="25">
+                                    <label>Quantity</label>
+                                    <input name="gst" ng-model="qtyty">
+                                </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
+                                    <label>Rate</label>
+                                    <input name="pan" ng-model="rate">
+                            </md-input-container>
+                            <md-input-container flex="25"  flex-offset="5">
+                                    <label>Discount</label>
+                                    <input name="aadhar" ng-model="discount">
+                            </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex="25">
+                                    <label>Batch No.</label>
+                                    <input name="gst" ng-model="bno">
+                                </md-input-container>
+                            </div>
+                            <!--<div layout="row" class="topPadding20 purchaseSpecification">
+                                <div>Add Additional Specification for each Item of Quantity</div>
+                            </div>
+                            <div layout="row" class="topPadding20">
+                                <md-input-container flex="25">
+                                    <label>How many specification per item ?</label>
+                                    <input name="aadhar" ng-model="spec">
+                             </md-input-container>
+                            </div>-->
+                            <div class="sectionSubHeading" style="padding-top:0px;">
+                                    <h3>Enter Specifications</h3>
+                                </div>
+                                <div layout="row" class="">
+                                    <md-input-container flex="25">
+                                        <label>Specification Name</label>
+                                        <input name="gst" ng-model="qtyty">
+                                    </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                        <label>Value</label>
+                                        <input name="pan" ng-model="rate">
+                                </md-input-container>
+                                <!--<md-checkbox class="md-primary" style="margin-left:5%;">
+                                    <label class="paddingTop28">Print</label>
+                                </md-checkbox>-->
+                                <md-button class="md-raised md-primary ifBold" flex="15" flex-offset="25">Add Line Item</md-button>
+                                </div>
+                    <!--<div layout="row" class="purchaseSpecification">
+                            <div>Adding Specification for 1/10 quantity</div>
+                    </div>-->
+
+                </div>
+              </div>
+    <div class="col-xs-12 text-right pagingPart paddingTop100 paddingBottom10 paddingRight30 paddingLeft30" ng-class="moduleHeading == 'Application Users' || moduleHeading == 'Role List'  ? '' : ''">
+        <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+        <!--<span ng-if="moduleHeading == 'Customers List'" class="moduleDownload">
+            <img src="application/Images/Assets/download.png" id="dropdownMenu1" data-toggle="dropdown" height="25" width="25"/>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a ng-click="pdfDownload()">PDF</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a ng-click="csvDownload()">Excel</a></li>
+                </ul>
+        </span>
+        <span ng-if="moduleHeading == 'Customers List'" class="paddingLeft10 paddingRight10">
+            <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
+        </span>
+        <span class="buttonBorder" ng-click="prevPage()">
+            <img src="application/Images/Assets/pagination_left.png"/>
+        </span>
+        <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+        <span class="buttonBorder" ng-click="nextPage()">
+            <img src="application/Images/Assets/pagination_right.png"/>
+        </span>
+        <span class="ui-grid-pager-row-count-picker">
+            <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+            ng-change="seek(paging.pageSelected)"
+                ng-options="o for o in pageNumber">
+            </select>
+        </span>-->
+</div>
+<div class="col-xs-12 inventorySection paddingRight15 paddingLeft15" style="overflow:hidden">
+    <div id="grid1" ui-grid="gridOptions" ui-grid-pagination class="grid">
+        <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+    </div>
+</div>
+<div class="col-xs-12 inventorySection paddingRight15 paddingLeft15 paddingBottom30">
+        <div class="col-xs-12 noPadding purchaseGridFooter">
+                <div class="col-xs-11 text-right" style="width:90%;padding:10px;color:blue">SUB TOTAL</div>
+                <div class="col-xs-1 text-center" style="width:10%;padding:10px;">1234</div>
+        </div>
+        <div class="col-xs-12 noPadding purchaseGridFooter secondChild">
+                <div class="col-xs-10 text-right" style="width:80%;padding:10px;">
+                    <span style="display : block;">
+                        <input type="radio" name="discount"/>Percent
+                        <input type="radio" name="discount"/>Value
+                    </span>
+                    <div>
+                            <span>Less : Discount</span>
+                            <span>Percent / Value</span>
+                    </div>
+                </div>
+                <div class="col-xs-1 text-center" style="width:10%;padding:21px;">Discount</div>
+                <div class="col-xs-1 text-center" style="width:10%;padding:21px;">1234</div>
+        </div>
+        <div class="col-xs-12 noPadding purchaseGridFooter">
+                <div class="col-xs-11 text-right" style="width:90%;padding:10px;color:green;">TOTAL</div>
+                <div class="col-xs-1 text-center" style="width:10%;padding:10px;">1234</div>
+        </div>
+</div>
+</div>

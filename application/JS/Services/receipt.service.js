@@ -9,4 +9,7 @@ app.service('receiptServices',function($http , CONSTANTS){
     this.getCustomerDetails = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCustomerDetails);
     }
+    this.getPreviousReceipts = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getPreviousReceipts);
+    }
 });

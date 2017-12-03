@@ -1,0 +1,19 @@
+[
+    {
+        "customerName":"Customer 1",
+        "contact":"9898977644",
+        "date":"1/12/2017",
+        "orgledger": {
+            "balanceamount": 0,
+            "drcr": "dr"
+        }
+    },{
+        "customerName":"Customer 2",
+        "contact":"9898974444",
+        "date":"2/12/2017",
+        "orgledger": {
+            "balanceamount": 0,
+            "drcr": "1"
+        }
+    }
+]

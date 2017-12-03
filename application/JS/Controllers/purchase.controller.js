@@ -1,52 +1,61 @@
-app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants){
+app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $state){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
-    $scope.panelShow = true;
-    $scope.togglePannel = function(){
-        $scope.panelShow = !$scope.panelShow;
-    }
-    var today = new Date();
-    $scope.purchase = {};
-    $scope.purchase.date = today;
+    $scope.moduleHeading = 'Purchase List';
+    $scope.btn1 = 'Search';
+    $scope.btn2 = 'New Purchase'
+    $scope.ifThreeBtn = false;
+
+    $scope.myObj = {};
     
+    $scope.add = function() {
+        $state.go('Home.addPurchase' , { data: $scope.myObj });
+    }
+    $scope.editData = function(row){
+        $state.go('Home.addPurchase' , { data: row.entity });
+    }    
+    $scope.editLedger = function(row){
+        $state.go('Home.companyLedgers' , { data: row.entity });
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Purchase');
-    $scope.gridOptions.columnDefs = [
-        {field : "sno" , width: "5%"},
-        {field : "productName"},
-        {field : "productCode"},
-        {field : "hsnCode"},
-        {field : "batchNo" , width : "7%"},
-        {field : "productIdentifier"},
-        {field : "rate"},
-        {field : "quantity"},
-        {field : "discount"},
-        {field : "taxableValue"},
-        {field : "gstRate"},
-        {field : "outputGst"},
-        {field : "netAmount"}
-]
-//$scope.gridOptions.showGridFooter = true;
-//$scope.gridOptions.gridFooterTemplate = '<div style="z-index:99">pink floyd</div>';
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
     $scope.search = {
         searchString : ''
     }
-    $scope.csvDownload = function(){
-        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
-      }
-      
-    $scope.pdfDownload = function(){
-         $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
-    }
-    $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 0);
+    $scope.search = function(searchterm){
+        if(searchterm == '') {
+        return;
+        }
+        var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+        $scope.gridOptions.data = temp;
+        if(temp.length == 0) {
+            $scope.totalPages = 1;
+            $scope.changeHeight(200);
+        }
+        else {
+            $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+            $scope.paging.pageSelected=1;
+            $scope.changeHeight(0);
+        }       
     }
 
+    $scope.removeSearchFilter = function() {
+        $scope.gridOptions.data =  $scope.dataForGrid;
+        $scope.search.searchString = '';
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val,32);
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
+
         if($scope.paging.pageSelected != $scope.totalPages) {
             $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
         }
@@ -70,7 +79,6 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
         $scope.gridApi.pagination.seek($scope.paging.pageSelected);
         $scope.changeHeight(0);
     }
-
     $scope.totalPages = 0;
     $scope.paging = {
         pageSelected : 1
@@ -80,11 +88,12 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
         $scope.totalPages = newVal;
         var i = 0;
         $scope.pageNumber = [];
-        for(i=0;i<newVal;i++){
-            $scope.pageNumber[i] = i+1; 
-        }
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }        
     });
-    purchaseService.purchaseList().then(function(response){
+
+    purchaseService.searchPurchase('').then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
@@ -98,25 +107,12 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
         console.log('error',error);
    });
 
-    $scope.changeHeight(0);
-
-    $scope.getMatches = function(searchText) {
-        var deferred = $q.defer();
-            var data = $scope.getData().filter(function(data) {
-                return (data.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1);
-            });
-            deferred.resolve(data);
-            return deferred.promise;
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
+        }
+        return false;
     }
 
-    
-$scope.getData = function() {
-    return [{"name": "1234"}
-    ,{"name": "1289"}
-    ,{"name": "9658"}
-    ,{"name": "4585"}
-    ,{"name": "6852"}
-    ,{"name": "2547"}
-    ,{"name": "2058"}]
-}
+   $scope.changeHeight(0);
 });

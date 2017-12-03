@@ -1,43 +1,58 @@
-app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ){
-    console.log('Inside Add Receipt Controller');
-    $rootScope.isActive = 'Receipt';
+app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
+    console.log('Inside Add Sales Controller');
+    $rootScope.isActive = 'Sales';
+
     if(angular.isDefined($stateParams.data.customerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
-    }
+        }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
     }
-    $scope.ifCustomer = true;
-    $scope.getCustomer = function(){
-        //$scope.ifCustomer = true;
-        receiptServices.getCustomerDetails($scope.receipt.cust_name).then(function(response){
-            console.log('response',response.data[0]);
-            $scope.receipt = response.data[0];
-        },function(err){
 
-        });
-    }
-    $scope.cancel = function(){
-        $state.go('Home.Receipt');
-    }
-    $scope.resetAll = function(){
-        $scope.receipt = {};
-        $scope.addReceiptForm.setPristine();
-    }
-    $scope.panelShow = true ;
+    $scope.panelShow = true;
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
     }
+    var today = new Date();
+    $scope.purchase = {};
+    $scope.purchase.date = today;
+    
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('AddSales');
+    $scope.gridOptions.columnDefs = [
+        {field : "sno" , width: "5%"},
+        {field : "productName"},
+        {field : "productCode"},
+        {field : "hsnCode"},
+        {field : "batchNo" , width : "7%"},
+        {field : "productIdentifier"},
+        {field : "rate"},
+        {field : "quantity"},
+        {field : "discount"},
+        {field : "taxableValue"},
+        {field : "gstRate"},
+        {field : "outputGst"},
+        {field : "netAmount",width: "10%"}
+]
 
-    $scope.gridOptions = CONSTANTS.gridOptionsConstants('addReceipt');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
+    }
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+    $scope.pdfDownload = function(){
+         $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
     }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 0);
     }
+
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -63,6 +78,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         $scope.gridApi.pagination.seek($scope.paging.pageSelected);
         $scope.changeHeight(0);
     }
+
     $scope.totalPages = 0;
     $scope.paging = {
         pageSelected : 1
@@ -76,7 +92,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
             $scope.pageNumber[i] = i+1; 
         }
     });
-    receiptServices.getPreviousReceipts().then(function(response){
+    salesService.salesAllList().then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
@@ -85,12 +101,30 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         }
         else {
             $scope.changeHeight(200);
-        }   
-       
+        }
           },function(error){
         console.log('error',error);
    });
 
-   $scope.changeHeight(0);
+    $scope.changeHeight(0);
 
+    $scope.getMatches = function(searchText) {
+        var deferred = $q.defer();
+            var data = $scope.getData().filter(function(data) {
+                return (data.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1);
+            });
+            deferred.resolve(data);
+            return deferred.promise;
+    }
+
+    
+$scope.getData = function() {
+    return [{"name": "1234"}
+    ,{"name": "1289"}
+    ,{"name": "9658"}
+    ,{"name": "4585"}
+    ,{"name": "6852"}
+    ,{"name": "2547"}
+    ,{"name": "2058"}]
+}
 });

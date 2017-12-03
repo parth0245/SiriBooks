@@ -164,13 +164,29 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
 
     $scope.DefaultListItems = [
        [{
-            email: 'Product 1'
-        }, {
-            email: 'Product 2'
-        }, {
-            email: 'Product 3'
-        }]
-    ];
+        email: 'Product 1'
+    }, {
+        email: 'Product 2'
+    }, {
+        email: 'Product 3'
+    },
+    {
+        email: 'Product 5'
+    }, {
+        email: 'Product 4'
+    }, {
+        email: 'Product 6'
+    }
+    , {
+        email: 'Product 7'
+    }
+    , {
+        email: 'Product 8'
+    }
+    , {
+        email: 'Product 9'
+    }
+    ]];
 
     angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
 

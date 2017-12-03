@@ -1,0 +1,17 @@
+[
+    {
+        "ledgerEntry":"Customer 1",
+        "rows":"1",
+        "orgledger": {
+            "balanceamount": 0,
+            "drcr": "dr"
+        }
+    },{
+        "ledgerEntry":"Customer 2",
+        "rows":"2",
+        "orgledger": {
+            "balanceamount": 0,
+            "drcr": "1"
+        }
+    }
+]

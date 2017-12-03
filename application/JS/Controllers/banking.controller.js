@@ -3,7 +3,7 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $rootScope.isActive = 'CASH/BANKING';
 
     $scope.add = function(){
-       // $state.go('Home.addLedgers');
+        $state.go('Home.bankLedger');
     }
 
     $scope.checkModule = function(){

@@ -22,7 +22,8 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     $scope.moduleHeading = 'Ledgers';
     $scope.btn1 = 'Search';
     $scope.btn2 = 'Add New';
-    $scope.ifThreeBtn = false;
+    $scope.btn3 = 'Import';
+    $scope.ifThreeBtn = true;
 
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 32);
@@ -32,6 +33,9 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     }    
     $scope.editLedger = function(row){
         $state.go('Home.bankLedger' , { data: row.entity });
+    }
+    $scope.import = function(){
+        $state.go('Home.ImportLedger' , { data: "" });   
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Ledger');
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';

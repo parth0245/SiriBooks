@@ -46,7 +46,12 @@ app.constant('CONSTANTS', {
                         boardingStatus : 'application/fixture/boardingStatus.json',
                         orgType : 'application/fixture/orgType.json',
                         NOB : 'application/fixture/nob.json',
-                        gstScheme : 'application/fixture/gstScheme.json'
+                        gstScheme : 'application/fixture/gstScheme.json',
+                        getPreviousReceipts : 'application/fixture/getPreviousReceipts.json',
+                        allPurchseList : 'application/fixture/allPurshaseList.json',
+                        getCurrentJournal :'application/fixture/getCurrentJournal.json',
+                        salesList : 'application/fixture/salesList.json',
+                        importLedgers :'application/fixture/importLedgers.json'
                 },{
                         inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
@@ -85,7 +90,11 @@ app.constant('CONSTANTS', {
                         boardingStatus : 'application/fixture/boardingStatus.json',
                         orgType : 'application/fixture/orgType.json',
                         NOB : 'application/fixture/nob.json',
-                        gstScheme : 'application/fixture/gstScheme.json'                                   
+                        gstScheme : 'application/fixture/gstScheme.json',
+                        getPreviousReceipts : 'application/fixture/getPreviousReceipts.json',
+                        allPurchseList : 'application/fixture/getPreviousReceipts.json',
+                        getCurrentJournal :'application/fixture/allPurshaseList.json'     ,
+                        salesList : 'application/fixture/getCurrentJournal.json'                     
                 }
         ],
         headBarNavigator : [
@@ -496,5 +505,113 @@ BRSfields : [
         {field : "notes" , width:"20%" , headerCellClass : 'headColor'}
 
 ],
-Purchasefields : []
+AddPurchasefields : [] ,
+Purchasefields : [
+        {field : "VendorName",headerCellClass : 'topPadding15',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>' },
+        {field : "date",headerCellClass : 'topPadding15'},
+        {field : "contact",headerCellClass : 'topPadding15'},
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+] ,
+AddJournalfields : [
+        {field : "fromLedger"},
+        {field : "toLedger"},
+        {field : "amount"},
+        {field : "narration"},
+],
+addReceiptfields : [
+        {field : "name" , displayName : 'Customer Name',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>' },
+        {field : "amount"},
+        {field : "date"},
+        {field : "mode" ,displayName : 'Mode Of Payment',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+] , 
+Salesfields : [
+        {field : "customerName",headerCellClass : 'topPadding15',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>' },
+        {field : "date",headerCellClass : 'topPadding15'},
+        {field : "contact",headerCellClass : 'topPadding15'},
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+] ,
+ImportLedgerfields : [
+        {field : "ledgerEntry",headerCellClass : 'topPadding15'},
+        {field : "rows",headerCellClass : 'topPadding15'},
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+]
 });

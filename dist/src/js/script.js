@@ -72,6 +72,11 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         controller: 'addLedgerCtrl',
         params: {data : ''}
     })
+    .state('Home.ImportLedger', {
+        url: '/importLedger',
+        templateUrl: 'application/Partials/importLedger.html',
+        controller: 'importLedgerCtrl'
+    })
     .state('Home.companyLedgers', {
         url: '/companyLedgers',
         templateUrl: 'application/Partials/companyLedgers.html',
@@ -95,13 +100,25 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     })
     .state('Home.Sales', {
         url: '/sales',
-        templateUrl: 'application/Partials/sales.html',
+        templateUrl: 'application/Partials/diffModules.html',
         controller: 'salesCtrl'
+    })
+    .state('Home.addSales', {
+        url: '/addSales',
+        templateUrl: 'application/Partials/addSales.html',
+        controller: 'addSalesCtrl',
+        params: {data : ''}
     })
     .state('Home.Purchase', {
         url: '/purchase',
-        templateUrl: 'application/Partials/purchase.html',
+        templateUrl: 'application/Partials/diffModules.html',
         controller: 'purchaseCtrl'
+    })
+    .state('Home.addPurchase', {
+        url: '/addPurchase',
+        templateUrl: 'application/Partials/addPurchase.html',
+        controller: 'addPurchaseCtrl',
+        params: {data : ''}
     })
     .state('Home.Receipt', {
         url: '/receipt',
@@ -311,7 +328,12 @@ app.constant('CONSTANTS', {
                         boardingStatus : 'application/fixture/boardingStatus.json',
                         orgType : 'application/fixture/orgType.json',
                         NOB : 'application/fixture/nob.json',
-                        gstScheme : 'application/fixture/gstScheme.json'
+                        gstScheme : 'application/fixture/gstScheme.json',
+                        getPreviousReceipts : 'application/fixture/getPreviousReceipts.json',
+                        allPurchseList : 'application/fixture/allPurshaseList.json',
+                        getCurrentJournal :'application/fixture/getCurrentJournal.json',
+                        salesList : 'application/fixture/salesList.json',
+                        importLedgers :'application/fixture/importLedgers.json'
                 },{
                         inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
                         saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
@@ -350,7 +372,11 @@ app.constant('CONSTANTS', {
                         boardingStatus : 'application/fixture/boardingStatus.json',
                         orgType : 'application/fixture/orgType.json',
                         NOB : 'application/fixture/nob.json',
-                        gstScheme : 'application/fixture/gstScheme.json'                                   
+                        gstScheme : 'application/fixture/gstScheme.json',
+                        getPreviousReceipts : 'application/fixture/getPreviousReceipts.json',
+                        allPurchseList : 'application/fixture/getPreviousReceipts.json',
+                        getCurrentJournal :'application/fixture/allPurshaseList.json'     ,
+                        salesList : 'application/fixture/getCurrentJournal.json'                     
                 }
         ],
         headBarNavigator : [
@@ -761,7 +787,115 @@ BRSfields : [
         {field : "notes" , width:"20%" , headerCellClass : 'headColor'}
 
 ],
-Purchasefields : []
+AddPurchasefields : [] ,
+Purchasefields : [
+        {field : "VendorName",headerCellClass : 'topPadding15',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>' },
+        {field : "date",headerCellClass : 'topPadding15'},
+        {field : "contact",headerCellClass : 'topPadding15'},
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+] ,
+AddJournalfields : [
+        {field : "fromLedger"},
+        {field : "toLedger"},
+        {field : "amount"},
+        {field : "narration"},
+],
+addReceiptfields : [
+        {field : "name" , displayName : 'Customer Name',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>' },
+        {field : "amount"},
+        {field : "date"},
+        {field : "mode" ,displayName : 'Mode Of Payment',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+] , 
+Salesfields : [
+        {field : "customerName",headerCellClass : 'topPadding15',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>' },
+        {field : "date",headerCellClass : 'topPadding15'},
+        {field : "contact",headerCellClass : 'topPadding15'},
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+] ,
+ImportLedgerfields : [
+        {field : "ledgerEntry",headerCellClass : 'topPadding15'},
+        {field : "rows",headerCellClass : 'topPadding15'},
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
+]
 });
 app.controller('addContraCtrl',function($rootScope , $scope , $stateParams , $state){
     console.log('Inside Add Contra Controller');
@@ -1049,7 +1183,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         });
     }
 });
-app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams , $state){
+app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams , $state ,heightCalc, CONSTANTS , journalServices){
     console.log('Inside Add Journal Controller');
     $rootScope.isActive = 'Journal';
 
@@ -1065,42 +1199,68 @@ app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams , $s
     $scope.cancel = function(){
         $state.go('Home.Journal');
     }
-
-    $scope.journalFromData = [
-        {from : '' , debit : ''}
-    ];
-
-    $scope.Add = function(){
-        $scope.journal = {};
-        $scope.journal.name = "";
-        $scope.journal.value = "";
-        $scope.journalFromData.push($scope.journal);
-    };
-
-    $scope.Remove = function(index){
-        if($scope.journalFromData.length !== 1) {
-           $scope.journalFromData.splice(index, 1);
-        }
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('AddJournal');
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
     }
 
-
-    $scope.journalToData = [
-        {to : '' , credit : ''}
-    ];
-
-    $scope.AddTo = function(){
-        $scope.journalTo = {};
-        $scope.journalTo.name = "";
-        $scope.journalTo.value = "";
-        $scope.journalToData.push($scope.journalTo);
-    };
-
-    $scope.RemoveTo = function(index){
-        if($scope.journalToData.length !== 1) {
-           $scope.journalToData.splice(index, 1);
-        }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val,0);
     }
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
 
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }        
+    });
+    journalServices.getCurrentJournal().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+       
+          },function(error){
+        console.log('error',error);
+   });
+    $scope.changeHeight(0);
 });
 app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
     console.log('Inside Add Payment Controller');
@@ -1120,7 +1280,137 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
     }
 
 });
-app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices){
+app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
+    console.log('Inside Purchase Controller');
+    $rootScope.isActive = 'Purchase';
+
+    if(angular.isDefined($stateParams.data.VendorName)) {
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+        }
+    else {
+        $scope.heading = "New";
+        $scope.btnLabel = "Save";
+    }
+
+    $scope.panelShow = true;
+    $scope.togglePannel = function(){
+        $scope.panelShow = !$scope.panelShow;
+    }
+    var today = new Date();
+    $scope.purchase = {};
+    $scope.purchase.date = today;
+    
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('AddPurchase');
+    $scope.gridOptions.columnDefs = [
+        {field : "sno" , width: "5%"},
+        {field : "productName"},
+        {field : "productCode"},
+        {field : "hsnCode"},
+        {field : "batchNo" , width : "7%"},
+        {field : "productIdentifier"},
+        {field : "rate"},
+        {field : "quantity"},
+        {field : "discount"},
+        {field : "taxableValue"},
+        {field : "gstRate"},
+        {field : "outputGst"},
+        {field : "netAmount",width: "10%"}
+]
+
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+    $scope.pdfDownload = function(){
+         $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+    }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 0);
+    }
+
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
+    purchaseService.purchaseList().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }
+          },function(error){
+        console.log('error',error);
+   });
+
+    $scope.changeHeight(0);
+
+    $scope.getMatches = function(searchText) {
+        var deferred = $q.defer();
+            var data = $scope.getData().filter(function(data) {
+                return (data.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1);
+            });
+            deferred.resolve(data);
+            return deferred.promise;
+    }
+
+    
+$scope.getData = function() {
+    return [{"name": "1234"}
+    ,{"name": "1289"}
+    ,{"name": "9658"}
+    ,{"name": "4585"}
+    ,{"name": "6852"}
+    ,{"name": "2547"}
+    ,{"name": "2058"}]
+}
+});
+app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ){
     console.log('Inside Add Receipt Controller');
     $rootScope.isActive = 'Receipt';
     if(angular.isDefined($stateParams.data.customerName)) {
@@ -1152,6 +1442,199 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
     }
+
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('addReceipt');
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 0);
+    }
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
+    receiptServices.getPreviousReceipts().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+       
+          },function(error){
+        console.log('error',error);
+   });
+
+   $scope.changeHeight(0);
+
+});
+app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
+    console.log('Inside Add Sales Controller');
+    $rootScope.isActive = 'Sales';
+
+    if(angular.isDefined($stateParams.data.customerName)) {
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+        }
+    else {
+        $scope.heading = "New";
+        $scope.btnLabel = "Save";
+    }
+
+    $scope.panelShow = true;
+    $scope.togglePannel = function(){
+        $scope.panelShow = !$scope.panelShow;
+    }
+    var today = new Date();
+    $scope.purchase = {};
+    $scope.purchase.date = today;
+    
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('AddSales');
+    $scope.gridOptions.columnDefs = [
+        {field : "sno" , width: "5%"},
+        {field : "productName"},
+        {field : "productCode"},
+        {field : "hsnCode"},
+        {field : "batchNo" , width : "7%"},
+        {field : "productIdentifier"},
+        {field : "rate"},
+        {field : "quantity"},
+        {field : "discount"},
+        {field : "taxableValue"},
+        {field : "gstRate"},
+        {field : "outputGst"},
+        {field : "netAmount",width: "10%"}
+]
+
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+    $scope.pdfDownload = function(){
+         $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+    }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 0);
+    }
+
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+        for(i=0;i<newVal;i++){
+            $scope.pageNumber[i] = i+1; 
+        }
+    });
+    salesService.salesAllList().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }
+          },function(error){
+        console.log('error',error);
+   });
+
+    $scope.changeHeight(0);
+
+    $scope.getMatches = function(searchText) {
+        var deferred = $q.defer();
+            var data = $scope.getData().filter(function(data) {
+                return (data.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1);
+            });
+            deferred.resolve(data);
+            return deferred.promise;
+    }
+
+    
+$scope.getData = function() {
+    return [{"name": "1234"}
+    ,{"name": "1289"}
+    ,{"name": "9658"}
+    ,{"name": "4585"}
+    ,{"name": "6852"}
+    ,{"name": "2547"}
+    ,{"name": "2058"}]
+}
 });
 app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $state , vendorServices , CONSTANTS ,commonServices){
     console.log('Inside Add Vendor Controller');
@@ -1319,13 +1802,29 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
 
     $scope.DefaultListItems = [
        [{
-            email: 'Product 1'
-        }, {
-            email: 'Product 2'
-        }, {
-            email: 'Product 3'
-        }]
-    ];
+        email: 'Product 1'
+    }, {
+        email: 'Product 2'
+    }, {
+        email: 'Product 3'
+    },
+    {
+        email: 'Product 5'
+    }, {
+        email: 'Product 4'
+    }, {
+        email: 'Product 6'
+    }
+    , {
+        email: 'Product 7'
+    }
+    , {
+        email: 'Product 8'
+    }
+    , {
+        email: 'Product 9'
+    }
+    ]];
 
     angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
 
@@ -1495,7 +1994,7 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     $rootScope.isActive = 'CASH/BANKING';
 
     $scope.add = function(){
-       // $state.go('Home.addLedgers');
+        $state.go('Home.bankLedger');
     }
 
     $scope.checkModule = function(){
@@ -2244,6 +2743,38 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , heightCalc ,CO
    $scope.changeHeight(0);
 });
 
+app.controller('importLedgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices){
+    console.log('Inside Import Ledgers Controller');
+    $rootScope.isActive = 'LEDGERS';
+
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 32);
+    }
+
+    
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('ImportLedger');
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+
+
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
+    ledgerServices.importLedgers().then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+          },function(error){
+        console.log('error',error);
+     });
+    $scope.changeHeight(0);
+});
+
 app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONSTANTS ,vendorServices){
     console.log('Inside Import Vendor Controller');
     $rootScope.isActive = 'VENDORS';
@@ -2924,7 +3455,8 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     $scope.moduleHeading = 'Ledgers';
     $scope.btn1 = 'Search';
     $scope.btn2 = 'Add New';
-    $scope.ifThreeBtn = false;
+    $scope.btn3 = 'Import';
+    $scope.ifThreeBtn = true;
 
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 32);
@@ -2934,6 +3466,9 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
     }    
     $scope.editLedger = function(row){
         $state.go('Home.bankLedger' , { data: row.entity });
+    }
+    $scope.import = function(){
+        $state.go('Home.ImportLedger' , { data: "" });   
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Ledger');
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
@@ -3498,55 +4033,64 @@ app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
 
 
 });
-app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants){
+app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $state){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
-    $scope.panelShow = true;
-    $scope.togglePannel = function(){
-        $scope.panelShow = !$scope.panelShow;
-    }
-    var today = new Date();
-    $scope.purchase = {};
-    $scope.purchase.date = today;
+    $scope.moduleHeading = 'Purchase List';
+    $scope.btn1 = 'Search';
+    $scope.btn2 = 'New Purchase'
+    $scope.ifThreeBtn = false;
+
+    $scope.myObj = {};
     
+    $scope.add = function() {
+        $state.go('Home.addPurchase' , { data: $scope.myObj });
+    }
+    $scope.editData = function(row){
+        $state.go('Home.addPurchase' , { data: row.entity });
+    }    
+    $scope.editLedger = function(row){
+        $state.go('Home.companyLedgers' , { data: row.entity });
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Purchase');
-    $scope.gridOptions.columnDefs = [
-        {field : "sno" , width: "5%"},
-        {field : "productName"},
-        {field : "productCode"},
-        {field : "hsnCode"},
-        {field : "batchNo" , width : "7%"},
-        {field : "productIdentifier"},
-        {field : "rate"},
-        {field : "quantity"},
-        {field : "discount"},
-        {field : "taxableValue"},
-        {field : "gstRate"},
-        {field : "outputGst"},
-        {field : "netAmount"}
-]
-//$scope.gridOptions.showGridFooter = true;
-//$scope.gridOptions.gridFooterTemplate = '<div style="z-index:99">pink floyd</div>';
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
     $scope.search = {
         searchString : ''
     }
-    $scope.csvDownload = function(){
-        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
-      }
-      
-    $scope.pdfDownload = function(){
-         $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
-    }
-    $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 0);
+    $scope.search = function(searchterm){
+        if(searchterm == '') {
+        return;
+        }
+        var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+        $scope.gridOptions.data = temp;
+        if(temp.length == 0) {
+            $scope.totalPages = 1;
+            $scope.changeHeight(200);
+        }
+        else {
+            $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+            $scope.paging.pageSelected=1;
+            $scope.changeHeight(0);
+        }       
     }
 
+    $scope.removeSearchFilter = function() {
+        $scope.gridOptions.data =  $scope.dataForGrid;
+        $scope.search.searchString = '';
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val,32);
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
+
         if($scope.paging.pageSelected != $scope.totalPages) {
             $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
         }
@@ -3570,7 +4114,6 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
         $scope.gridApi.pagination.seek($scope.paging.pageSelected);
         $scope.changeHeight(0);
     }
-
     $scope.totalPages = 0;
     $scope.paging = {
         pageSelected : 1
@@ -3580,11 +4123,12 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
         $scope.totalPages = newVal;
         var i = 0;
         $scope.pageNumber = [];
-        for(i=0;i<newVal;i++){
-            $scope.pageNumber[i] = i+1; 
-        }
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }        
     });
-    purchaseService.purchaseList().then(function(response){
+
+    purchaseService.searchPurchase('').then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
@@ -3598,27 +4142,14 @@ app.controller('purchaseCtrl',function($rootScope , $scope , $filter , purchaseS
         console.log('error',error);
    });
 
-    $scope.changeHeight(0);
-
-    $scope.getMatches = function(searchText) {
-        var deferred = $q.defer();
-            var data = $scope.getData().filter(function(data) {
-                return (data.name.toUpperCase().indexOf(searchText.toUpperCase()) !== -1);
-            });
-            deferred.resolve(data);
-            return deferred.promise;
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
+        }
+        return false;
     }
 
-    
-$scope.getData = function() {
-    return [{"name": "1234"}
-    ,{"name": "1289"}
-    ,{"name": "9658"}
-    ,{"name": "4585"}
-    ,{"name": "6852"}
-    ,{"name": "2547"}
-    ,{"name": "2058"}]
-}
+   $scope.changeHeight(0);
 });
 app.controller('purchaseOrderCtrl',function($rootScope){
     console.log('Inside Purchase Order Controller');
@@ -3740,9 +4271,126 @@ $scope.editLedger = function(row){
 }
    $scope.changeHeight(0);
 });
-app.controller('salesCtrl',function($rootScope){
+app.controller('salesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $state){
     console.log('Inside Sales Controller');
     $rootScope.isActive = 'Sales';
+
+    $scope.moduleHeading = 'Sales List';
+    $scope.btn1 = 'Search';
+    $scope.btn2 = 'New Sale'
+    $scope.ifThreeBtn = false;
+
+    $scope.myObj = {};
+    
+    $scope.add = function() {
+        $state.go('Home.addSales' , { data: $scope.myObj });
+    }
+    $scope.editData = function(row){
+        $state.go('Home.addSales' , { data: row.entity });
+    }    
+    $scope.editLedger = function(row){
+        $state.go('Home.companyLedgers' , { data: row.entity });
+    }
+
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('Sales');
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+    }
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
+    $scope.search = {
+        searchString : ''
+    }
+    $scope.search = function(searchterm){
+        if(searchterm == '') {
+        return;
+        }
+        var temp = $filter('filter')($scope.dataForGrid ,searchterm , undefined);
+        $scope.gridOptions.data = temp;
+        if(temp.length == 0) {
+            $scope.totalPages = 1;
+            $scope.changeHeight(200);
+        }
+        else {
+            $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+            $scope.paging.pageSelected=1;
+            $scope.changeHeight(0);
+        }       
+    }
+
+    $scope.removeSearchFilter = function() {
+        $scope.gridOptions.data =  $scope.dataForGrid;
+        $scope.search.searchString = '';
+        $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        $scope.changeHeight(0);
+    }
+    $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val,32);
+    }
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }        
+    });
+
+    salesService.salesList('').then(function(response){
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }
+          },function(error){
+        console.log('error',error);
+   });
+
+    $scope.checkModule = function(){
+        if($scope.gridOptions.data.length == 0) {
+            return true;
+        }
+        return false;
+    }
+
+   $scope.changeHeight(0);
+
+
 });
 app.controller('salesOrderCtrl',function($rootScope){
     console.log('Inside Sales Order Controller');
@@ -4137,6 +4785,9 @@ app.service('journalServices',function($http , CONSTANTS){
         }        
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
     }
+    this.getCurrentJournal = function() {
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCurrentJournal);
+    }
 });
 app.service('ledgerServices',function($http , CONSTANTS){
     this.getLedgers = function(){
@@ -4145,6 +4796,9 @@ app.service('ledgerServices',function($http , CONSTANTS){
      this.getCompanyLedgers = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].companyLedgers);
      };
+     this.importLedgers = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].importLedgers);
+     }
 });
 app.service('organizationServices',function($http , CONSTANTS){
      this.searchUsers = function(search){
@@ -4175,6 +4829,13 @@ app.service('purchaseService',function($http , CONSTANTS){
     this.purchaseList = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].purchaseList);
     }
+    this.searchPurchase = function(search){
+        this.search = search;
+        if(this.search == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].allPurchseList);
+        }        
+       // return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
+     };
 });
 app.service('receiptServices',function($http , CONSTANTS){
     this.searchReceipt = function(search){
@@ -4186,6 +4847,17 @@ app.service('receiptServices',function($http , CONSTANTS){
     }
     this.getCustomerDetails = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getCustomerDetails);
+    }
+    this.getPreviousReceipts = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getPreviousReceipts);
+    }
+});
+app.service('salesService',function($http , CONSTANTS){
+    this.salesList = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].salesList);
+    }
+    this.salesAllList = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].purchaseList);
     }
 });
 app.service('vendorServices',function($http , CONSTANTS){

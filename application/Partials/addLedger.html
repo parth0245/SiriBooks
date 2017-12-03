@@ -49,11 +49,31 @@
                             </md-input-container>
                         </div>
                         <div layout="row" class="topPadding25">
-                                <md-input-container flex="25">
-                                        <label>Description</label>
-                                        <input name="desc" ng-model="ledger.descript">
-                                </md-input-container>
-                        </div>
+                            <md-input-container flex="25">
+                                <label>Bank Name</label>
+                                <input name="desc" ng-model="ledger.bnkName">
+                        </md-input-container>
+                        <md-input-container flex="25" flex-offset="5">
+                            <label>Branch</label>
+                            <input name="desc" ng-model="ledger.branch">
+                    </md-input-container>
+                    <md-input-container flex="25" flex-offset="5">
+                        <label>Account No.</label>
+                        <input name="desc" ng-model="ledger.acc">
+                </md-input-container>
+                    </div>
+                    <div layout="row" class="">
+                        <md-input-container flex="25">
+                                <label>IFSC Code</label>
+                                <input name="desc" ng-model="ledger.ifscCode">
+                        </md-input-container>
+                </div>
+                <div layout="row" class="">
+                    <md-input-container flex="85">
+                            <label>Narration</label>
+                            <input name="desc" ng-model="ledger.narration">
+                    </md-input-container>
+            </div>
                         <div ng-if="heading != 'Update'"  layout="row" class="topPadding25 paddingBottom30 addLedger flex-25 borderRadio">
                             <span class="marginRight20">Opening Balance</span> 
                             <md-radio-group ng-model="ledger.group1" layout="row" flex="25">

@@ -500,6 +500,9 @@
 .flex-offset-44 {
 	margin-left: 44%;
 }
+.flex-offset-48 {
+	margin-left: 48%;
+}
 .flex-offset-78 {
 	margin-left: 78%;
 }
@@ -669,16 +672,16 @@
 .journalTable tbody tr td label{
 	margin-top:25px;
 }
-.journalTable tbody tr td:first-child .onlySelect {
-	width: 65%;
+.journalTable tbody tr td:first-child .onlySelect , .journalTable tbody tr td:nth-child(2) .onlySelect {
+	width: 90%;
 	/*float: right;*/
 	margin-left:15px;
 }
 .journalTable tbody tr td{
 	border-bottom: 1px solid #d4d4d4;
 }
-.journalTable tbody tr td:first-child {
-	width: 550px;
+.journalTable tbody tr td:first-child , .journalTable tbody tr td:nth-child(2) {
+	width: 260px;
 }
 .journalTable.withRole tbody tr td{
 	border-bottom: 1px solid #d4d4d4;
@@ -777,6 +780,9 @@
 .flex-offset-57 {
 	margin-left:57%;
 }
+.flex-offset-67 {
+	margin-left:67%;
+}
   .savedRecords {
 	background-color: #0935ae;
     color: #fff;
@@ -874,6 +880,9 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 	min-width: 20px;
 	margin-top:-10px;
 }
+.purchaseGridFooter , .purchaseGridFooter div span {
+	font-family:  Montserrat-SemiBold !important;
+}
 .purchaseGridFooter {
 	border:1px solid #ccc;
 	border-top: none;
@@ -887,4 +896,17 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 }
 .hideCursor {
 	cursor: no-drop !important;
+}
+#availabelist , #selectedlist  {
+	height:180px;
+}
+#availabelist option , #selectedlist option{
+	font-size: 16px;
+    font-family: Montserrat-Regular;
+    padding-left: 15px;
+	padding-top: 10px;
+	padding-bottom: 5px;
+}
+#availabelist option:hover ,#selectedlist option:hover {
+	background-color: #0935ae;
 }

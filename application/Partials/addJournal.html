@@ -1,4 +1,4 @@
-<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column">
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
         <div class="sectionSubHeading">
             <h3>{{heading}} Journal</h3>
         </div>
@@ -21,75 +21,86 @@
                                    <table class="journalTable">
                                        <thead>
                                            <tr>
-                                            <th>Select Ledger</th>
-                                            <th>Debit</th>
-                                            <th>Credit</th>
+                                                <th>Select From Ledger</th>
+                                                <th>Select To Ledger</th>
+                                            <th>Amount</th>
+                                            <th>Narration</th>
                                         </tr>
                                        </thead>
                                        <tbody>
-    <tr ng-repeat="journal in journalFromData" >
-        <td>
-            <label class="journalLabels">From</label>
-            <md-input-container class="onlySelect">
-                <md-select name="from" ng-model="journal.from">
-                    <md-option value="Product 1">Product 1</md-option>
-                    <md-option value="Product 2">Product 2</md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex="5"  flex-offset="5">
-                    <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="Remove($index)"/>
-            </md-input-container>
-            <md-input-container flex="5"  flex-offset="5">
-                    <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/plus.png" ng-click="Add()" ng-if="$last"/>
-            </md-input-container>
-        </td>
-        <td>
-            <md-input-container>
-                <input name="debit" ng-model="journal.debit">
-            </md-input-container>
-        </td>
-        <td></td>
-    </tr>
-    <tr ng-repeat="journalTo in journalToData">
+    <tr>
             <td>
-                    <label class="journalLabels">To</label>
                     <md-input-container class="onlySelect">
-                        
-                        <md-select name="vname" ng-model="journalTo.to">
+                        <md-select name="from" ng-model="journal.from">
                             <md-option value="Product 1">Product 1</md-option>
                             <md-option value="Product 2">Product 2</md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex="5"  flex-offset="5">
-                            <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/minus.png" ng-click="RemoveTo($index)"/>
-                    </md-input-container>
-                    <md-input-container flex="5"  flex-offset="5">
-                            <img class="" height="30" width="30" src="application/Images/Assets/INVENTORY_page/plus.png" ng-click="AddTo()" ng-if="$last"/>
-                    </md-input-container>
-            </td>
-            <td></td>
-            <td>
-                    <md-input-container>
-                            <input name="name" ng-model="journalTo.credit">
+                </td>
+                <td>
+                        <md-input-container class="onlySelect">
+                            <md-select name="from" ng-model="journal.to">
+                                <md-option value="Product 1">Product 1</md-option>
+                                <md-option value="Product 2">Product 2</md-option>
+                            </md-select>
                         </md-input-container>
-            </td>
+                    </td>
+        <td>
+            <div layout="row">
+                <md-input-container class="onlySelect" style="padding-top: 28px;">
+                        <md-select name="from" ng-model="journal.dr">
+                            <md-option value="debit">Dbt</md-option>
+                            <md-option value="credit">crd 2</md-option>
+                        </md-select>
+                    </md-input-container>
+            <md-input-container style="padding-top: 28px;">
+                <input name="debit" ng-model="journal.amount">
+            </md-input-container>
+        </div>
+        </td>
+        <td>
+                <md-input-container style="padding-top: 28px;">
+                        <input name="debit" ng-model="journal.narration">
+                    </md-input-container>
+        </td>
     </tr>
 
-                                       </tbody>
-                                   </table>
-                            </div>
-                            <div layout="row" class="addPaddingButtons" flex="85">
-                                    <md-input-container flex="55">
-                                            <label>Narration</label>
-                                            <input name="narration" ng-model="narration">
-                                    </md-input-container>
-                                    <md-button class="md-raised ifBold" flex-offset="10" ng-if="btnLabel != 'Update'">Reset All</md-button>
-                                    <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
-                                    <md-button class="md-raised md-primary ifBold" flex-offset="25" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
-                                    <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
-                            </div>
-                </form>
-            </md-content>
-        </div>
+            </tbody>
+        </table>
+</div>
+<div layout="row" class="addPaddingButtons" flex="85">
+        <md-button class="md-raised ifBold" flex-offset="80">Reset</md-button>
+        <md-button class="md-raised md-primary ifBold" ng-click="">Add</md-button>
+</div>
+</form>
+</md-content>
+</div>
 
-    </div>
+<div>
+        <div class="col-xs-11 text-right pagingPart paddingBottom10 paddingRight30" ng-class="moduleHeading == 'Application Users' || moduleHeading == 'Role List'  ? '' : ''">
+                <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+                <span class="buttonBorder" ng-click="prevPage()">
+                    <img src="application/Images/Assets/pagination_left.png"/>
+                </span>
+                <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+                <span class="buttonBorder" ng-click="nextPage()">
+                    <img src="application/Images/Assets/pagination_right.png"/>
+                </span>
+                <span class="ui-grid-pager-row-count-picker">
+                    <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+                    ng-change="seek(paging.pageSelected)"
+                     ng-options="o for o in pageNumber">
+                    </select>
+                </span>
+        </div>
+        <div class="col-xs-11 inventorySection paddingRight30 paddingBottom30" ng-class="moduleHeading == 'Role List' ? 'centerItems' : ''">
+                <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-exporter ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
+                    <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+                </div>
+        </div>
+</div>
+<div layout="row" class="addPaddingButtons" flex="80">
+    <md-button class="md-raised ifBold" flex-offset="67">Save</md-button>
+    <md-button class="md-raised md-primary ifBold" ng-click="cancel()">Cancel</md-button>
+</div>
+</div>

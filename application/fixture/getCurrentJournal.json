@@ -1,0 +1,14 @@
+[
+    {
+        "fromLedger":"Ledger 1",
+        "toLedger":"Ledger 2",
+        "amount":"1234",
+        "narration":"Credit"
+    },
+    {
+        "fromLedger":"Ledger 2",
+        "toLedger":"Ledger 1",
+        "amount":"1234",
+        "narration":"debit"
+    }
+]

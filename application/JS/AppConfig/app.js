@@ -72,6 +72,11 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         controller: 'addLedgerCtrl',
         params: {data : ''}
     })
+    .state('Home.ImportLedger', {
+        url: '/importLedger',
+        templateUrl: 'application/Partials/importLedger.html',
+        controller: 'importLedgerCtrl'
+    })
     .state('Home.companyLedgers', {
         url: '/companyLedgers',
         templateUrl: 'application/Partials/companyLedgers.html',
@@ -95,13 +100,25 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     })
     .state('Home.Sales', {
         url: '/sales',
-        templateUrl: 'application/Partials/sales.html',
+        templateUrl: 'application/Partials/diffModules.html',
         controller: 'salesCtrl'
+    })
+    .state('Home.addSales', {
+        url: '/addSales',
+        templateUrl: 'application/Partials/addSales.html',
+        controller: 'addSalesCtrl',
+        params: {data : ''}
     })
     .state('Home.Purchase', {
         url: '/purchase',
-        templateUrl: 'application/Partials/purchase.html',
+        templateUrl: 'application/Partials/diffModules.html',
         controller: 'purchaseCtrl'
+    })
+    .state('Home.addPurchase', {
+        url: '/addPurchase',
+        templateUrl: 'application/Partials/addPurchase.html',
+        controller: 'addPurchaseCtrl',
+        params: {data : ''}
     })
     .state('Home.Receipt', {
         url: '/receipt',

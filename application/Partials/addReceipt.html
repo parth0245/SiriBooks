@@ -1,4 +1,4 @@
-<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column">
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow:hidden">
     <div class="sectionSubHeading">
         <h3 class="pull-left">{{heading}} Receipt</h3>
         <img class="pull-right downloadPayment" src="application/Images/Assets/download_icon.png" height="40" width="40"/>
@@ -17,15 +17,24 @@
                                             <div ng-message="required">This is required.</div>
                                         </div>
                                     </md-input-container>
+                                    <div flex-offset="5" style="padding-top:25px;">
+                                        <img src="application/Images/Assets/eye.png"/>
+                                    </div>
                         </div>
-                        <div layout="row" class="topPadding20">
+                        <div layout="row" class="topPadding10">
+                            <md-input-container flex="85">
+                                <label>Address</label>
+                                <input name="add1" ng-model="receipt.add" ng-readonly="ifCustomer">
+                            </md-input-container>
+                    </div>
+                        <!--<div layout="row" class="topPadding20">
                             <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                                         Identity
                                         <span ng-hide="!panelShow" class="pull-right description">+</span>
                                         <span ng-hide="panelShow" class="pull-right description">-</span>
                             </md-button>
-                        </div>
-                        <div layout="row" class="topPadding10" ng-hide="panelShow">
+                        </div>-->
+                       <!-- <div layout="row" class="topPadding10" ng-hide="panelShow">
                                 <md-input-container flex="25">
                                     <label>Address 1</label>
                                     <input name="add1" ng-model="receipt.add1" ng-readonly="ifCustomer">
@@ -89,8 +98,8 @@
                                         <label>Registration Number</label>
                                         <input name="aadhar" ng-model="receipt.registration" ng-readonly="ifCustomer">
                                 </md-input-container>
-                        </div>
-                        <div layout="row" class="topPadding30">
+                        </div>-->
+                        <div layout="row" class="">
                                 <md-input-container flex="25">
                                         <label>Receipt Number</label>
                                         <input name="receipt" ng-model="receipt.receipt" ng-readonly="true">
@@ -147,7 +156,7 @@
                                         <input name="ref" ng-model="receipt.ref">
                                 </md-input-container>
                         </div>
-                        <div layout="row" class="topPadding30">
+                        <div layout="row" class="">
                                 <md-input-container flex="25">
                                         <label>TDS Deducted by Customer</label>
                                         <md-select name="tds" ng-model="receipt.tds">
@@ -161,15 +170,40 @@
                                 </md-input-container>
                         </div>
                         
-
+                        <div layout="row" class="addPaddingButtons">
+                            <md-button class="md-raised md-primary ifBold" flex-offset="75">Add Receipt</md-button>
+                        </div>
             </form>
         </md-content>
     </div>
+    <div>
+            <div class="col-xs-11 text-right pagingPart topPadding10 paddingBottom10 paddingRight30">
+                    <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+                    <span class="buttonBorder" ng-click="prevPage()">
+                        <img src="application/Images/Assets/pagination_left.png"/>
+                    </span>
+                    <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+                    <span class="buttonBorder" ng-click="nextPage()">
+                        <img src="application/Images/Assets/pagination_right.png"/>
+                    </span>
+                    <span class="ui-grid-pager-row-count-picker">
+                        <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+                        ng-change="seek(paging.pageSelected)"
+                         ng-options="o for o in pageNumber">
+                        </select>
+                    </span>
+            </div>
+        <div class="col-xs-11 inventorySection paddingRight30 paddingBottom30" ng-class="moduleHeading == 'Role List' ? 'centerItems' : ''">
+            <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-exporter ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
+                <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+            </div>
+    </div>
+    </div>
     <div layout="row" class="addPaddingButtons">
-            <md-button class="md-raised ifBold" flex-offset="35" ng-click="resetAll()" ng-if="btnLabel != 'Update'">Reset All</md-button>
-            <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
+            <!--<md-button class="md-raised ifBold" flex-offset="35" ng-click="resetAll()" ng-if="btnLabel != 'Update'">Reset All</md-button>-->
+            <md-button class="md-raised md-primary ifBold" flex-offset="50" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
             <md-button class="md-raised md-primary ifBold" flex-offset="50" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold" flex="15">{{btnLabel}} & Print</md-button>
+            <md-button class="md-raised md-primary ifBold" flex="15">Print All</md-button>
             <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
     </div>
 </div>
