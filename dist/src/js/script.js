@@ -608,18 +608,19 @@ Customerfields : [
         { field: 'customertype',        headerCellClass : 'topPadding15',
 displayName : 'Type'},
         { field: 'contactphone' , displayName : 'Contact' ,       headerCellClass : 'topPadding15'},
-        { field: 'debit' ,category:"Balance Amount" ,
-        cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        { field: 'orgledger.balanceamount' ,category:"Balance Amount" ,displayName : 'Debit' ,
+        cellTemplate: '<div class="ui-grid-cell-contents">'+
+        //'<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
         '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
         '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
         '<img height="20" width="20" '+
                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
         '</span>'+
         '</div>' },
-        { field: 'credit' ,category:"Balance Amount" ,
+        { field: 'orgledger.balanceamount' ,category:"Balance Amount" ,displayName : 'Credit' ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' ">{{grid.getCellValue(row, col)}}</span>'+
+        //'<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
         '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
         '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
         '<img height="20" width="20" '+
@@ -931,6 +932,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.location = $stateParams.data;
         $scope.identity = $stateParams.data;
         $scope.books = $stateParams.data.orgledger;
+
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
     }
     else {
@@ -939,6 +941,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.location = {};
         $scope.identity = {};
         $scope.books = {};
+        $scope.books.openingbalance = 0;
+        $scope.books.openingbalancetype = "Dr";
     }
     $scope.stateList = [];
     /*$scope.$watch('stateList',function(newVal , oldVal){
@@ -1008,6 +1012,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.books = {};
         $scope.addCustomerForm3.$setUntouched();
         $scope.addCustomerForm3.$setPristine();
+        $scope.books.openingbalance = 0;
+        $scope.books.openingbalancetype = "Dr";
     }
 
     $scope.Add = function(){
@@ -1071,7 +1077,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         console.log('Get - Failure Product');
     });*/
 });
-app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $state){
+app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $state , commonServices){
     console.log('Inside Add Expense Controller');
     $rootScope.isActive = 'Expense';
 
@@ -1098,6 +1104,12 @@ app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $st
         $scope.addExpensesForm.$setUntouched();
         $scope.addExpensesForm.$setPristine();
     }
+
+    commonServices.getpaymentMode().then(function(response){
+        $scope.paymentList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
 });
 app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$state , inventoryServices , commonServices , vendorServices){
     console.log('Inside Add Inventory Controller');
@@ -1262,7 +1274,7 @@ app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams , $s
    });
     $scope.changeHeight(0);
 });
-app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
+app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , commonServices){
     console.log('Inside Add Payment Controller');
     $rootScope.isActive = 'Payments';
 
@@ -1278,6 +1290,12 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
     }
+
+    commonServices.getpaymentMode().then(function(response){
+        $scope.paymentList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
 
 });
 app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
@@ -1410,7 +1428,7 @@ $scope.getData = function() {
     ,{"name": "2058"}]
 }
 });
-app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ){
+app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ,commonServices ){
     console.log('Inside Add Receipt Controller');
     $rootScope.isActive = 'Receipt';
     if(angular.isDefined($stateParams.data.customerName)) {
@@ -1488,6 +1506,13 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
             $scope.pageNumber[i] = i+1; 
         }
     });
+
+    commonServices.getpaymentMode().then(function(response){
+        $scope.paymentList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
+
     receiptServices.getPreviousReceipts().then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
@@ -1640,8 +1665,11 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
-
+    var vendorId;
+    $scope.productListByInventory = [];
     if(angular.isDefined($stateParams.data.name)) {
+        console.log('$stateParams', $stateParams);
+        vendorId = $stateParams.data.vendorid;
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.location = $stateParams.data;
@@ -1650,12 +1678,27 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
     }
     else {
+        vendorId = '';
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.location = {};
         $scope.identity = {};
         $scope.books = {};
     }
+
+    vendorServices.getProducts(vendorId).then(function(response){
+        var productNames = response.data;
+        angular.forEach(productNames , function(key){
+            $scope.productListByInventory.push({"prodName" : key.productname });
+        });
+        console.log('productListByInventory',$scope.productListByInventory);
+          },function(error){
+        console.log('error',error);
+   });
+
+
+
+
     $scope.location.country = 'india';
 $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: "", additionalkeyvalue: "" }];
     $scope.cancel = function(){
@@ -1800,7 +1843,10 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         []
     ];
 
-    $scope.DefaultListItems = [
+    $scope.DefaultListItems = [$scope.productListByInventory];
+    $scope.AvailableListItems =  [$scope.productListByInventory];
+    /*console.log('$scope.DefaultListItems',$scope.DefaultListItems);
+    $scope.sampleHere = [
        [{
         email: 'Product 1'
     }, {
@@ -1824,10 +1870,10 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     , {
         email: 'Product 9'
     }
-    ]];
-
-    angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
-
+    ]];*/
+    //console.log('$scope.sampleHere',$scope.sampleHere);
+    //angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
+    //console.log('$scope.AvailableListItems',$scope.AvailableListItems);
     $scope.btnRight = function () {
         //move selected.
         angular.forEach($scope.SelectedAvailItems, function (value, key) {
@@ -1837,7 +1883,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         //remove the ones that were moved.
         angular.forEach($scope.SelectedAvailItems, function (value, key) {
             for (var i = $scope.AvailableListItems[$scope.selectFaIndex].length - 1; i >= 0; i--) {
-                if ($scope.AvailableListItems[$scope.selectFaIndex][i].email == value.email) {
+                if ($scope.AvailableListItems[$scope.selectFaIndex][i].prodName == value.prodName) {
                     $scope.AvailableListItems[$scope.selectFaIndex].splice(i, 1);
                 }
             }
@@ -1855,7 +1901,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         //remove the ones that were moved from the source container.
         angular.forEach($scope.SelectedSelectedListItems, function (value, key) {
             for (var i = $scope.SelectedListItems[$scope.selectFaIndex].length - 1; i >= 0; i--) {
-                if ($scope.SelectedListItems[$scope.selectFaIndex][i].email == value.email) {
+                if ($scope.SelectedListItems[$scope.selectFaIndex][i].prodName == value.prodName) {
                     $scope.SelectedListItems[$scope.selectFaIndex].splice(i, 1);
                 }
             }
@@ -3625,7 +3671,7 @@ app.controller('notificationCtrl',function($rootScope){
     console.log('Inside Notification Controller');
     $rootScope.isActive = 'Notification';
 });
-app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS){
+app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS , commonServices){
     console.log('Inside Organization Level Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'Organization';
@@ -3646,9 +3692,24 @@ app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS)
         $scope.panelShow3 = !$scope.panelShow3;
     }
 
+    commonServices.getOrgType().then(function(response){
+        $scope.orgTypeList = response.data;
+    },function(error){});
+
+    commonServices.getNatureOfBusiness().then(function(success){
+        $scope.nob = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+
+    commonServices.getGstScheme().then(function(success){
+        $scope.gstSchemeList = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
 });
 
-app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices , $filter){
+app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices , $filter , commonServices){
     console.log('Inside Organization Level - user Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'User';
@@ -3752,6 +3813,18 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
         $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
         $scope.changeHeight(0);
     }
+    commonServices.getuserStatus().then(function(response){
+       $scope.userStatusList = response.data;
+          },function(error){
+        console.log('error',error);
+   });
+
+   commonServices.getRole().then(function(response){
+    $scope.userRoleList = response.data;
+       },function(error){
+     console.log('error',error);
+});
+
     organizationServices.searchUsers('').then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
@@ -3894,7 +3967,7 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
 
 });
 
-app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $stateParams , $state){
+app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $stateParams , $state , commonServices){
     console.log('Inside Organization Add Role Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'Roles';
@@ -3913,6 +3986,19 @@ app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $statePa
     $scope.cancel = function(){
         $state.go('Home.Roles');
     }
+
+    commonServices.getuserStatus().then(function(response){
+        $scope.userStatusList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
+ 
+    commonServices.getRole().then(function(response){
+     $scope.userRoleList = response.data;
+        },function(error){
+      console.log('error',error);
+ });
+ 
 });
 app.controller('paymentCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , paymentServices , $filter){
     console.log('Inside Payment Controller');
@@ -4861,6 +4947,16 @@ app.service('salesService',function($http , CONSTANTS){
     }
 });
 app.service('vendorServices',function($http , CONSTANTS){
+    this.getProducts = function(vendorId){
+        this.vendorId = vendorId;
+        if(this.vendorId == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].inventoryList);
+        }   
+        else{
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].inventoryList);
+        }
+        
+    }
     this.importVendor = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].importVendor);
     }

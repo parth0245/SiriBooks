@@ -1,4 +1,4 @@
-app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS){
+app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS , commonServices){
     console.log('Inside Organization Level Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'Organization';
@@ -19,9 +19,24 @@ app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS)
         $scope.panelShow3 = !$scope.panelShow3;
     }
 
+    commonServices.getOrgType().then(function(response){
+        $scope.orgTypeList = response.data;
+    },function(error){});
+
+    commonServices.getNatureOfBusiness().then(function(success){
+        $scope.nob = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
+
+    commonServices.getGstScheme().then(function(success){
+        $scope.gstSchemeList = success.data;   
+    },function(error){
+        console.log('Get - Failure Product');
+    });
 });
 
-app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices , $filter){
+app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices , $filter , commonServices){
     console.log('Inside Organization Level - user Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'User';
@@ -125,6 +140,18 @@ app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeo
         $scope.totalPages = Math.ceil( $scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
         $scope.changeHeight(0);
     }
+    commonServices.getuserStatus().then(function(response){
+       $scope.userStatusList = response.data;
+          },function(error){
+        console.log('error',error);
+   });
+
+   commonServices.getRole().then(function(response){
+    $scope.userRoleList = response.data;
+       },function(error){
+     console.log('error',error);
+});
+
     organizationServices.searchUsers('').then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
@@ -267,7 +294,7 @@ app.controller('organizationRoleCtrl',function($rootScope,$scope ,$state ,$timeo
 
 });
 
-app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $stateParams , $state){
+app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $stateParams , $state , commonServices){
     console.log('Inside Organization Add Role Controller');
     $rootScope.isActive = 'Org Level';
     $rootScope.isSubActive = 'Roles';
@@ -286,4 +313,17 @@ app.controller('addRoleCtrl',function($rootScope , $scope , CONSTANTS , $statePa
     $scope.cancel = function(){
         $state.go('Home.Roles');
     }
+
+    commonServices.getuserStatus().then(function(response){
+        $scope.userStatusList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
+ 
+    commonServices.getRole().then(function(response){
+     $scope.userRoleList = response.data;
+        },function(error){
+      console.log('error',error);
+ });
+ 
 });

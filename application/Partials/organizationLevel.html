@@ -72,15 +72,13 @@
                                     <md-input-container flex="25" >
                                             <label>Type</label>
                                             <md-select name="type" ng-model="type">
-                                                <md-option value="one">One</md-option>
-                                                <md-option value="two">Two</md-option>
+                                                <md-option ng-repeat="data in orgTypeList" ng-value="{{data.id}}">{{data.type}}</md-option>
                                             </md-select>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
                                                 <label>Nature of Business</label>
                                                 <md-select name="buss" ng-model="buss">
-                                                    <md-option value="one">One</md-option>
-                                                    <md-option value="two">Two</md-option>
+    <md-option ng-repeat="data in nob" value="{{data.nobid}}">{{data.businesstype}}</md-option>
                                                 </md-select>
                                             </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
@@ -107,8 +105,7 @@
                                     <md-input-container flex="25">
                                             <label>GST Scheme</label>
                                             <md-select name="w" ng-model="typwe">
-                                                <md-option value="one">One</md-option>
-                                                <md-option value="two">Two</md-option>
+                                                <md-option ng-repeat="data in gstSchemeList" value="{{data.gstschemeid}}">{{data.scheme}}</md-option>
                                             </md-select>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">

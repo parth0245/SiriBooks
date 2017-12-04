@@ -12,6 +12,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.location = $stateParams.data;
         $scope.identity = $stateParams.data;
         $scope.books = $stateParams.data.orgledger;
+
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
     }
     else {
@@ -20,6 +21,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.location = {};
         $scope.identity = {};
         $scope.books = {};
+        $scope.books.openingbalance = 0;
+        $scope.books.openingbalancetype = "Dr";
     }
     $scope.stateList = [];
     /*$scope.$watch('stateList',function(newVal , oldVal){
@@ -89,6 +92,8 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.books = {};
         $scope.addCustomerForm3.$setUntouched();
         $scope.addCustomerForm3.$setPristine();
+        $scope.books.openingbalance = 0;
+        $scope.books.openingbalancetype = "Dr";
     }
 
     $scope.Add = function(){

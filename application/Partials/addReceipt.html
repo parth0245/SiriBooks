@@ -119,8 +119,7 @@
                                 <md-input-container flex="25">
                                         <label>Payment Mode</label>
                                         <md-select name="mode" ng-model="receipt.mode" required>
-                                            <md-option value="credit">Credit</md-option>
-                                            <md-option value="debit">Debit</md-option>
+<md-option ng-repeat="data in paymentList" ng-value="{{data.paymentmodeid}}">{{data.mode}}</md-option>
                                         </md-select>
                                         <div ng-messages="addReceiptForm.mode.$error" ng-if="addReceiptForm.mode.$touched">
                                             <div ng-message="required">This is required.</div>

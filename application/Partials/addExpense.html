@@ -116,7 +116,9 @@
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
                                                 <label>Payment Mode</label>
-                                                <input name="mode" ng-model="expenseDetails.mode" required>
+                                                <md-select name="tdsSec" ng-model="expenseDetails.mode" required>
+                                                        <md-option ng-repeat="data in paymentList" ng-value="{{data.paymentmodeid}}">{{data.mode}}</md-option>
+                                                    </md-select>
                                                 <div ng-messages="addExpensesForm.mode.$error" ng-if="addExpensesForm.mode.$touched">
                                                                 <div ng-message="required">This is required.</div>
                                                                 </div>

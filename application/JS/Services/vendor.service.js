@@ -1,4 +1,14 @@
 app.service('vendorServices',function($http , CONSTANTS){
+    this.getProducts = function(vendorId){
+        this.vendorId = vendorId;
+        if(this.vendorId == ''){
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].inventoryList);
+        }   
+        else{
+            return $http.get(CONSTANTS.service[CONSTANTS.appLevel].inventoryList);
+        }
+        
+    }
     this.importVendor = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].importVendor);
     }

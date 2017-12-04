@@ -2,8 +2,11 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
     console.log('Inside Add Vendor Controller');
     $rootScope.isActive = 'VENDORS';
 
-
+    var vendorId;
+    $scope.productListByInventory = [];
     if(angular.isDefined($stateParams.data.name)) {
+        console.log('$stateParams', $stateParams);
+        vendorId = $stateParams.data.vendorid;
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.location = $stateParams.data;
@@ -12,12 +15,27 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
     }
     else {
+        vendorId = '';
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.location = {};
         $scope.identity = {};
         $scope.books = {};
     }
+
+    vendorServices.getProducts(vendorId).then(function(response){
+        var productNames = response.data;
+        angular.forEach(productNames , function(key){
+            $scope.productListByInventory.push({"prodName" : key.productname });
+        });
+        console.log('productListByInventory',$scope.productListByInventory);
+          },function(error){
+        console.log('error',error);
+   });
+
+
+
+
     $scope.location.country = 'india';
 $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: "", additionalkeyvalue: "" }];
     $scope.cancel = function(){
@@ -162,7 +180,10 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         []
     ];
 
-    $scope.DefaultListItems = [
+    $scope.DefaultListItems = [$scope.productListByInventory];
+    $scope.AvailableListItems =  [$scope.productListByInventory];
+    /*console.log('$scope.DefaultListItems',$scope.DefaultListItems);
+    $scope.sampleHere = [
        [{
         email: 'Product 1'
     }, {
@@ -186,10 +207,10 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     , {
         email: 'Product 9'
     }
-    ]];
-
-    angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
-
+    ]];*/
+    //console.log('$scope.sampleHere',$scope.sampleHere);
+    //angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
+    //console.log('$scope.AvailableListItems',$scope.AvailableListItems);
     $scope.btnRight = function () {
         //move selected.
         angular.forEach($scope.SelectedAvailItems, function (value, key) {
@@ -199,7 +220,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         //remove the ones that were moved.
         angular.forEach($scope.SelectedAvailItems, function (value, key) {
             for (var i = $scope.AvailableListItems[$scope.selectFaIndex].length - 1; i >= 0; i--) {
-                if ($scope.AvailableListItems[$scope.selectFaIndex][i].email == value.email) {
+                if ($scope.AvailableListItems[$scope.selectFaIndex][i].prodName == value.prodName) {
                     $scope.AvailableListItems[$scope.selectFaIndex].splice(i, 1);
                 }
             }
@@ -217,7 +238,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         //remove the ones that were moved from the source container.
         angular.forEach($scope.SelectedSelectedListItems, function (value, key) {
             for (var i = $scope.SelectedListItems[$scope.selectFaIndex].length - 1; i >= 0; i--) {
-                if ($scope.SelectedListItems[$scope.selectFaIndex][i].email == value.email) {
+                if ($scope.SelectedListItems[$scope.selectFaIndex][i].prodName == value.prodName) {
                     $scope.SelectedListItems[$scope.selectFaIndex].splice(i, 1);
                 }
             }

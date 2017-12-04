@@ -44,8 +44,7 @@
                                         <md-input-container flex="25" flex-offset="10">
                                                 <label>Role</label>
                                                 <md-select name="role" ng-model="user.role" required>
-                                                    <md-option value="Product 1">Role 1</md-option>
-                                                    <md-option value="Product 2">Role 2</md-option>
+                                                    <md-option ng-repeat="data in userRoleList" ng-value="{{data.roleid}}">{{data.rolename}}</md-option>
                                                 </md-select>
                                                 <div ng-messages="orgUser.addUserForm.role.$error" ng-if="orgUser.addUserForm.role.$touched">
                                                         <div ng-message="required">This is required.</div>
@@ -56,8 +55,7 @@
                                         <md-input-container flex="25">
                                                 <label>Status</label>
                                                 <md-select name="status" ng-model="user.status" required>
-                                                    <md-option value="Product 1">Status 1</md-option>
-                                                    <md-option value="Product 2">Status 2</md-option>
+                                                    <md-option ng-repeat="data in userStatusList" ng-value="{{data.userstatusid}}">{{data.status}}</md-option>
                                                 </md-select>
                                                 <div ng-messages="orgUser.addUserForm.status.$error" ng-if="orgUser.addUserForm.status.$touched">
                                                         <div ng-message="required">This is required.</div>

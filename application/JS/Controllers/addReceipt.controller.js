@@ -1,4 +1,4 @@
-app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ){
+app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ,commonServices ){
     console.log('Inside Add Receipt Controller');
     $rootScope.isActive = 'Receipt';
     if(angular.isDefined($stateParams.data.customerName)) {
@@ -76,6 +76,13 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
             $scope.pageNumber[i] = i+1; 
         }
     });
+
+    commonServices.getpaymentMode().then(function(response){
+        $scope.paymentList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
+
     receiptServices.getPreviousReceipts().then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);

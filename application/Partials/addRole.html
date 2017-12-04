@@ -16,8 +16,7 @@
                         <md-input-container flex="25" flex-offset="5">
                                 <label>Role Category</label>
                                 <md-select name="category" ng-model="cat" required>
-                                    <md-option value="one">Category 1</md-option>
-                                    <md-option value="two">Category 2</md-option>
+<md-option ng-repeat="data in userRoleList" ng-value="{{data.roleid}}">{{data.rolename}}</md-option>
                                 </md-select>
                                 <div ng-messages="addRoleForm1.category.$error" ng-if="addRoleForm1.category.$touched">
                                   <div ng-message="required">This is required.</div>
@@ -32,8 +31,7 @@
                         <md-input-container flex="25">
                                 <label>Status</label>
                                 <md-select name="status" ng-model="status" required>
-                                    <md-option value="one">status 1</md-option>
-                                    <md-option value="two">status 2</md-option>
+ <md-option ng-repeat="data in userStatusList" ng-value="{{data.userstatusid}}">{{data.status}}</md-option>
                                 </md-select>
                                 <div ng-messages="addRoleForm1.status.$error" ng-if="addRoleForm1.status.$touched">
                                                 <div ng-message="required">This is required.</div>

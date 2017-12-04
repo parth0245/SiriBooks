@@ -1,4 +1,4 @@
-app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
+app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , commonServices){
     console.log('Inside Add Payment Controller');
     $rootScope.isActive = 'Payments';
 
@@ -14,5 +14,11 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams){
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
     }
+
+    commonServices.getpaymentMode().then(function(response){
+        $scope.paymentList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
 
 });

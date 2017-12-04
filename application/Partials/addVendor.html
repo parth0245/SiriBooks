@@ -148,14 +148,14 @@
         </md-content>
     </div>
 
-    <div layout="row" class="topPadding20" ng-hide="btnLabel == 'Update'">
+    <div layout="row" class="topPadding20">
             <md-button ng-click="togglePannel5()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                     Products Supplied
                     <span ng-hide="!panelShow5" class="pull-right description">+</span>
                     <span ng-hide="panelShow5" class="pull-right description">-</span>
         </md-button>
     </div>
-    <div class="topPadding20 col-xs-8 noPadding" ng-hide="panelShow5 || btnLabel == 'Update'">
+    <div class="topPadding20 col-xs-8 noPadding" ng-hide="panelShow5">
             <table class="journalTable withRole">
                     <thead>
                         <tr>
@@ -172,12 +172,12 @@
                                         <div>
                                             <select multiple id="availabelist" style="border:none;overflow:auto;width:100%;"
                                              size="10" style="width:275px" ng-change="btnRight()" 
-                                             ng-model="SelectedAvailItems" ng-options="i as i.email for i in AvailableListItems[selectFaIndex] | orderBy:'email'"></select>
+                                             ng-model="SelectedAvailItems" ng-options="i as i.prodName for i in AvailableListItems[selectFaIndex] | orderBy:'prodName'"></select>
                                         </div>
                                     </td>
                                     <td style="border-bottom:none;padding: 0px 0px !important;">
                                             <div>
-                                                    <select ng-change="btnLeft()"   style="border:none;width:100%;overflow:auto" multiple id="selectedlist" size="10" style="width:275px" ng-model="SelectedSelectedListItems" ng-options="i as i.email for i  in SelectedListItems[selectFaIndex] | orderBy:'email'"></select>
+                                                    <select ng-change="btnLeft()"   style="border:none;width:100%;overflow:auto" multiple id="selectedlist" size="10" style="width:275px" ng-model="SelectedSelectedListItems" ng-options="i as i.prodName for i  in SelectedListItems[selectFaIndex] | orderBy:'prodName'"></select>
                                                 </div>
                                     </td>
                             </tr>

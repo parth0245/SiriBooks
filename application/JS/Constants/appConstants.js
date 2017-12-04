@@ -326,18 +326,19 @@ Customerfields : [
         { field: 'customertype',        headerCellClass : 'topPadding15',
 displayName : 'Type'},
         { field: 'contactphone' , displayName : 'Contact' ,       headerCellClass : 'topPadding15'},
-        { field: 'debit' ,category:"Balance Amount" ,
-        cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        { field: 'orgledger.balanceamount' ,category:"Balance Amount" ,displayName : 'Debit' ,
+        cellTemplate: '<div class="ui-grid-cell-contents">'+
+        //'<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
         '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
         '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr == \'dr\'">'+
         '<img height="20" width="20" '+
                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
         '</span>'+
         '</div>' },
-        { field: 'credit' ,category:"Balance Amount" ,
+        { field: 'orgledger.balanceamount' ,category:"Balance Amount" ,displayName : 'Credit' ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
+        '<span ng-if="row.entity.orgledger.drcr != \'dr\' ">{{grid.getCellValue(row, col)}}</span>'+
+        //'<span ng-if="row.entity.orgledger.drcr !=  \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
         '<span ng-if="row.entity.orgledger.drcr ==  \'dr\' "> &nbsp; </span>'+
         '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="row.entity.orgledger.drcr != \'dr\'">'+
         '<img height="20" width="20" '+

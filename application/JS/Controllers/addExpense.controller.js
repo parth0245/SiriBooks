@@ -1,4 +1,4 @@
-app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $state){
+app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $state , commonServices){
     console.log('Inside Add Expense Controller');
     $rootScope.isActive = 'Expense';
 
@@ -25,4 +25,10 @@ app.controller('addExpenseCtrl',function($rootScope , $scope ,$stateParams , $st
         $scope.addExpensesForm.$setUntouched();
         $scope.addExpensesForm.$setPristine();
     }
+
+    commonServices.getpaymentMode().then(function(response){
+        $scope.paymentList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
 });
