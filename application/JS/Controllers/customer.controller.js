@@ -7,6 +7,7 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
     $scope.btn2 = 'Add New';
     $scope.btn3 = 'Import';
     $scope.ifThreeBtn = true;
+    $rootScope.showLoader = true;
 
     $scope.myObj = {};
 
@@ -113,6 +114,7 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
         else {
             $scope.changeHeight(200);
         }
+        $rootScope.showLoader = false;
           },function(error){
         console.log('error',error);
    });

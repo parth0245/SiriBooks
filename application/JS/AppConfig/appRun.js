@@ -4,4 +4,5 @@ app.run(function($rootScope) {
     $rootScope.isSubActive = '';
     $rootScope.showNavigations = true ;
     $rootScope.appTitle = 'Siri-Books';
+    $rootScope.showLoader = false;
   });

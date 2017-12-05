@@ -7,6 +7,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     $scope.btn2 = 'Add New Product'
     $scope.ifThreeBtn = false;
     $scope.showWait = true;
+    $rootScope.showLoader = true;
     
     $scope.myObj = {};
 
@@ -105,6 +106,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
         else {
             $scope.changeHeight(200);
         }
+        $rootScope.showLoader = false;
           },function(error){
         console.log('error',error);
    });

@@ -1,4 +1,101 @@
-<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column">
+    <div class="sectionSubHeading">
+        <h3>{{heading}} Bank Ledger</h3>
+    </div>
+    <div class="topPadding20">
+        <md-content>
+            <form name="addBankingForm" style="background-color:#f5f6f8">
+                        <div layout="row" class="topPadding10">
+                                <md-input-container flex="25">
+                                    <label>Name*</label>
+                                    <input name="name" ng-model="banking.name">
+                                </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                    <label>Group/Ledger</label>
+                                    <md-select name="ledger" ng-model="banking.ledger">
+                                        <md-option value="one">1</md-option>
+                                        <md-option value="two">2</md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                    <label>Group</label>
+                                    <md-select name="group" ng-model="banking.group">
+                                        <md-option value="one">One</md-option>
+                                        <md-option value="two">Two</md-option>
+                                    </md-select>
+                                </md-input-container>
+                        </div>
+                        <div layout="row">
+                            <md-input-container flex="25">
+                                <label>Primary Group</label>
+                                <md-select name="primaryGroup" ng-model="banking.primaryGroup">
+                                    <md-option value="one">One</md-option>
+                                    <md-option value="two">Two</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
+                                <label>Major Group</label>
+                                <md-select name="majorGroup" ng-model="banking.majorGroup">
+                                    <md-option value="one">One</md-option>
+                                    <md-option value="two">Two</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
+                                <label>Sub Group</label>
+                                <md-select name="subGroup" ng-model="banking.subGroup">
+                                    <md-option value="one">One</md-option>
+                                    <md-option value="two">Two</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" class="topPadding25">
+                            <md-input-container flex="25">
+                                <label>Bank Name</label>
+                                <input name="desc" ng-model="banking.bnkName">
+                        </md-input-container>
+                        <md-input-container flex="25" flex-offset="5">
+                            <label>Branch</label>
+                            <input name="desc" ng-model="banking.branch">
+                    </md-input-container>
+                    <md-input-container flex="25" flex-offset="5">
+                        <label>Account No.</label>
+                        <input name="desc" ng-model="banking.acc">
+                </md-input-container>
+                    </div>
+                    <div layout="row" class="">
+                        <md-input-container flex="25">
+                                <label>IFSC Code</label>
+                                <input name="desc" ng-model="banking.ifscCode">
+                        </md-input-container>
+                </div>
+                <div layout="row" class="">
+                    <md-input-container flex="85">
+                            <label>Narration</label>
+                            <input name="nrr" ng-model="banking.nrr">
+                    </md-input-container>
+            </div>
+                        <div ng-if="heading != 'Update'"  layout="row" class="topPadding25 paddingBottom30 addLedger flex-25 borderRadio">
+                            <span class="marginRight20">Opening Balance</span> 
+                            <md-radio-group ng-model="banking.group1" layout="row" flex="25">
+                                <md-radio-button ng-disabled="btnLabel == 'Update'" value="Apple" class="md-primary">Debit</md-radio-button>
+                                <md-radio-button ng-disabled="btnLabel == 'Update'" value="Banana" class="md-primary">Credit</md-radio-button>
+                            </md-radio-group>
+                        </div>
+                        <div layout="row">
+                            <hr />
+                        </div>
+<div layout="row" class="addPaddingButtons">
+    <md-button class="md-raised ifBold" flex-offset="50" ng-if="heading != 'Update'" ng-click="resetAll()">Reset All</md-button>
+    <md-button class="md-raised md-primary ifBold" ng-if="heading != 'Update'">{{btnLabel}}</md-button>
+    <md-button class="md-raised md-primary ifBold" flex-offset="65" ng-if="heading == 'Update'">{{btnLabel}}</md-button>
+        <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
+</div>
+            </form>
+        </md-content>
+    </div>
+</div>
+
+<!--<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
         <div class="sectionSubHeading">
             <h3>Ledger of : Bank Name</h3>
         </div>
@@ -63,3 +160,4 @@
         <md-button class="md-raised md-primary ifBold" ng-click="brs()" flex-offset="80">BRS</md-button>
     </div>
     </div>
+-->

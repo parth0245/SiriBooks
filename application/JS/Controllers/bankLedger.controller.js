@@ -1,7 +1,27 @@
-app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices){
+app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$stateParams , CONSTANTS ,heightCalc , bankingServices){
     console.log('Inside Ledger CASH/BANKING Controller');
     $rootScope.isActive = 'CASH/BANKING';
-    $scope.changeHeight = function(val){
+
+    if(angular.isDefined($stateParams.data.ledgerName)) {
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+    }
+    else {
+        $scope.heading = "New";
+        $scope.btnLabel = "Create";
+    }
+
+    $scope.resetAll = function(){
+        $scope.banking ={};
+        $scope.addBankingForm.$setPristine();
+    }
+
+    $scope.cancel = function(){
+        $state.go('Home.Banking');
+    }
+
+
+    /*$scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 0);
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('BankLedger');
@@ -64,6 +84,6 @@ app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , C
        $state.go('Home.bankBRS');
    }
 
-   $scope.changeHeight(0);
+   $scope.changeHeight(0);*/
 
 });

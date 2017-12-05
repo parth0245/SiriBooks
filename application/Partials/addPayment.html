@@ -10,13 +10,22 @@
                             <div layout="row" class="topPadding10">
                                     <md-input-container flex="55">
                                             <label>Vendor Name</label>
-                                            <md-select name="cust_name" ng-model="cust_name" ng-disabled="btnLabel == 'Update'">
-                                                <md-option value="Product 1">Customer 1</md-option>
-                                                <md-option value="Product 2">Customer 2</md-option>
+                                            <md-select name="cust_name" ng-model="payment.name" ng-disabled="btnLabel == 'Update'">
+                                                <md-option value="vendor 1">Vendor 1</md-option>
+                                                <md-option value="vendor 2">Vendor 2</md-option>
                                             </md-select>
                                         </md-input-container>
+                                        <div flex-offset="5" style="padding-top:25px;" >
+                                            <img src="application/Images/Assets/eye.png" ng-click="checkVendors(payment.name)"/>
+                                        </div>
                             </div>
-                            <div layout="row" class="topPadding20">
+                            <div layout="row" class="topPadding10">
+                                <md-input-container flex="85">
+                                    <label>Address</label>
+                                    <input name="add1" ng-model="payment.add" ng-readonly="ifCustomer">
+                                </md-input-container>
+                        </div>
+                           <!-- <div layout="row" class="topPadding20">
                                 <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                                             Identity
                                             <span ng-hide="!panelShow" class="pull-right description">+</span>
@@ -87,7 +96,7 @@
                                             <label>Registration Number</label>
                                             <input name="aadhar" ng-model="aadhar">
                                     </md-input-container>
-                            </div>
+                            </div>-->
                             <div layout="row" class="topPadding30">
                                     <md-input-container flex="25">
                                             <label>Voucher Number</label>

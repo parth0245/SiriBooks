@@ -44,11 +44,11 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
         { field: 'ledgerName',
         headerCellClass : 'LedgerHead topPadding15',
         cellTemplate: '<div class="ui-grid-cell-contents ifCenter" >'+
-        '<span class="marginRight15 marginLeft10" ng-click="grid.appScope.editData(row)">'+
+        '<span class="marginLeft10">{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="marginRight15 marginLeft10 pull-right" ng-click="grid.appScope.editData(row)">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
         '</span>'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' 
         },
         { field: 'debit' ,category:"Balance Amount" ,
@@ -72,6 +72,7 @@ $scope.search = {
     searchString : ''
 }
 $scope.search = function(searchterm){
+    debugger;
     if(searchterm == '') {
     return;
     }
@@ -161,7 +162,6 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'LEDGERS';
 
-    console.log("#sdatet" , $stateParams.data);
     if(angular.isDefined($stateParams.data.ledgerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
@@ -173,7 +173,7 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
 
     $scope.resetAll = function(){
         $scope.ledger ={};
-        $scope.addLedgerForm.$setPristine();
+        $scope.addBankingForm.$setPristine();
     }
 
     $scope.cancel = function(){

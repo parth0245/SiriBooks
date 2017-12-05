@@ -1,56 +1,29 @@
 [
     {
-        "primaryGroup": "Assets",
-        "majorGroupName": "Plant & Machinary",
-        "subGroupName": "",
-        "ledgerName": "",
-        "balance": "5000"
-    },
-    {
-        "primaryGroup": "Assets",
-        "majorGroupName": "Furniture & Fixtures",
-        "subGroupName": "",
-        "ledgerName": "",
-        "balance": "5000"
-    },
-    {
-        "primaryGroup": "Assets",
-        "majorGroupName": "Office Equipment",
-        "subGroupName": "",
-        "ledgerName": "",
-        "balance": "5000"
-    },
-    {
-        "primaryGroup": "Assets",
-        "majorGroupName": "Vehicles",
-        "subGroupName": "Subgroup-2",
-        "ledgerName": "ok",
-        "balance": "5000"
-    }
-    ,
-    {
-        "primaryGroup": "Assets",
-        "majorGroupName": "Intengible",
-        "subGroupName": "Subgroup-2",
-        "ledgerName": "Abc Ledger",
-        "balance": "5000"
-    }
-    ,
-    {
-        "primaryGroup": "Assets",
-        "majorGroupName": "Intengible",
-        "subGroupName": "Subgroup-2",
-        "ledgerName": "Abc Ledger - 2",
-        "balance": "5000"
+        "primaryGroup": "Liabilities",
+        "majorGroupName": "Capital Account",
+        "subGroupName": "Capital",
+        "ledgerName": "Capital",
+        "balance": "5000",
+        "credit" : "1000"
     }
     ,
     {
         "primaryGroup": "Liabilities",
-        "majorGroupName": "",
-        "subGroupName": "",
-        "ledgerName": "",
-        "balance": "5000"
+        "majorGroupName": "Capital Account",
+        "subGroupName": "Capital",
+        "ledgerName": "Reserve & Surplus",
+        "balance": "5000",
+        "credit" : "1090"
     }
-  
-   
-]
+    ,
+    {
+        "primaryGroup": "Liabilities",
+        "majorGroupName": "Capital Account",
+        "subGroupName": "Capital",
+        "ledgerName": "Profit & Loss A/C",
+        "balance": "5000",
+        "debit" : "1000"
+    }
+    
+    ]

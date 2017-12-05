@@ -25,6 +25,9 @@
 		
 	</head>
 	<body layout="column">
-		<ui-view></ui-view>		
+		<ui-view></ui-view>
+		<div class="ajaxLoader" ng-if="showLoader">
+			<img src="application/Images/Assets/ajax-loader.gif" />
+		</div>
 	</body>
 </html>

@@ -4,23 +4,29 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     if(angular.isDefined($stateParams.data.customerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.receipt = {};
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.receipt = {};
     }
     $scope.ifCustomer = true;
     $scope.getCustomer = function(){
         //$scope.ifCustomer = true;
-        receiptServices.getCustomerDetails($scope.receipt.cust_name).then(function(response){
+        receiptServices.getCustomerDetails($scope.receipt.customername).then(function(response){
             console.log('response',response.data[0]);
             $scope.receipt = response.data[0];
         },function(err){
 
         });
     }
+    $scope.receipt.customername = '';
     $scope.cancel = function(){
         $state.go('Home.Receipt');
+    }
+    $scope.checkCustomer = function(){
+        $state.go('Home.addCustomers', {data : {"customername" : $scope.receipt.customername}});
     }
     $scope.resetAll = function(){
         $scope.receipt = {};

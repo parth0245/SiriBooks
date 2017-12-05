@@ -1,4 +1,4 @@
-app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter){
+app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices ,uiGridGroupingConstants , uiGridExporterConstants , $filter){
     console.log('Inside Banking Controller');
     $rootScope.isActive = 'CASH/BANKING';
 
@@ -6,78 +6,66 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         $state.go('Home.bankLedger');
     }
 
-    $scope.checkModule = function(){
-        return true;
-    }
+    
     $scope.moduleHeading = 'Cash / Banking Ledgers';
     $scope.btn1 = 'Search';
     $scope.btn2 = 'Add New';
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 0);
+        heightCalc.calculateGridHeight(val , 32);
     }
-    var cellTemplate = '<div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP"><div style=\"position:absolute;\" class=\"ui-grid-tree-base-row-header-buttons\" ng-class=\"{\'ui-grid-tree-base-header\': row.treeLevel > -1 }\" ng-click=\"grid.appScope.toggleRow(row,evt)\"><i ng-show="grid.appScope.ifToShow(row)" ng-class=\"{\'ui-grid-icon-minus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'expanded\', \'ui-grid-icon-plus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'collapsed\'}\" ng-style=\"{\'padding-left\': grid.options.treeIndent * row.treeLevel + \'px\'}\"></i> &nbsp;</div>{{COL_FIELD CUSTOM_FILTERS}}</div>';
-    var setGroupValues = function( columns, rows ) {
-       
-        columns.forEach( function( column ) {
-          if ( column.grouping && column.grouping.groupPriority > -1 ){
-            // Put the balance next to all group labels.
-            column.customTreeAggregationFinalizerFn = function( aggregation ) {
-              if ( typeof(aggregation.groupVal) !== 'undefined') {
-                aggregation.rendered = aggregation.groupVal;
-              } else {
-                aggregation.rendered = null;
-              }
-            };
-          }
-        });
-        return columns;
-      };
-     
+    $scope.editData = function(row){
+        $state.go('Home.bankLedger' , { data: row.entity });
+    }    
+    $scope.editLedger = function(row){
+        $state.go('Home.bankLedger' , { data: row.entity });
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Banking');
-    $scope.gridOptions.treeRowHeaderAlwaysVisible = false;
-    $scope.gridOptions.enableRowSelection = false;
-
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
     $scope.gridOptions.columnDefs = [
-        { field: 'primaryGroup' , 
-        grouping: { groupPriority: 0 },
-        cellTemplate : cellTemplate},
-        { field: 'majorGroupName' ,grouping: { groupPriority: 1 },
-        cellTemplate : cellTemplate},
-        { field: 'subGroupName' ,grouping: { groupPriority: 2 },
-        cellTemplate: cellTemplate},
         { field: 'ledgerName',
-        cellTemplate : '<div>'+
-        '<div ng-click="grid.appScope.getCompanyLedger(row,col)" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div>'+
-           '</div>'
+        headerCellClass : 'LedgerHead topPadding15',
+        cellTemplate: '<div class="ui-grid-cell-contents ifCenter" >'+
+        '<span class="marginLeft10">{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="marginRight15 marginLeft10 pull-right" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '</div>' 
         },
-        { field: 'balance' , 
-        treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
-        customTreeAggregationFinalizerFn: function( aggregation ) {
-          aggregation.rendered = aggregation.value;
-        }}
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
 ];
-function getRowIndex(id , grid) {
-    var rowIndex = -1;
-    for (var i = 0; i < grid.renderContainers.body.visibleRowCache.length; i++) {
-        if (id === grid.renderContainers.body.visibleRowCache[i].uid) {
-            rowIndex = i;
-            break;
-        }
+
+$scope.checkModule = function(){
+    if($scope.gridOptions.data.length == 0) {
+        return true;
     }
-    return rowIndex;
-};
-$scope.ifToShow = function(row){
-    var exp = $scope.gridApi.treeBase.getRowChildren(row)[0];
-    for (var key in exp.entity) {
-        var keys = exp.entity[key];
-        if(keys.groupVal==""){
-            return false;
-        }
-    }
-    return true;
+    return false;
 }
+$scope.csvDownload = function(){
+    $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+  }
+  
+   $scope.pdfDownload = function(){
+    $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+  }
 
 $scope.search = {
     searchString : ''
@@ -103,46 +91,58 @@ $scope.removeSearchFilter = function() {
     $scope.search.searchString = '';
     $scope.changeHeight(0);
 }
-$scope.toggleRow = function( row,evt ){
-    uiGridTreeBaseService.toggleRowTreeState($scope.gridApi.grid, row, evt);
-    //$scope.gridApi.treeBase.toggleRowTreeState($scope.gridApi.grid.renderContainers.body.visibleRowCache[rowNum]);
-  };
 $scope.getCompanyLedger = function(row,column){
     $state.go('Home.bankLedger');
 }
-$scope.gridOptions.showTreeExpandNoChildren = false;
+
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
 
-        $scope.gridApi.grid.registerColumnsProcessor( setGroupValues, 410 );
+         }
 
-        $scope.gridApi.treeBase.on.rowExpanded($scope, function(row) {
-                var exp = $scope.gridApi.treeBase.getRowChildren(row)[0];
-                for (var key in exp.entity) {
-                    var keys = exp.entity[key];
-                    if(keys.groupVal==""){
-                        $scope.gridApi.treeBase.toggleRowTreeState(row);
-                    }
-                }
-                $scope.changeHeight(0);
-         });
-         $scope.gridApi.treeBase.on.rowCollapsed($scope, function(row) {
-                 $scope.changeHeight(0);
-         });
-      }
+         $scope.nextPage = function(){
+            $scope.gridApi.pagination.nextPage();
+            if($scope.paging.pageSelected != $scope.totalPages) {
+                $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+            }
+            else{
+                $scope.paging.pageSelected = $scope.paging.pageSelected;
+            }
+            $scope.changeHeight(0);
+        }
+        $scope.prevPage = function(){
+            $scope.gridApi.pagination.previousPage();
+            if($scope.paging.pageSelected != 1) {
+                $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+            }
+            else{
+                $scope.paging.pageSelected = $scope.paging.pageSelected;
+            }
+            $scope.changeHeight(0);
+        }
+        $scope.seek = function(pageSelected){
+            $scope.paging.pageSelected = pageSelected;
+            $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+            $scope.changeHeight(0);
+        }
+        $scope.totalPages = 0;
+        $scope.paging = {
+            pageSelected : 1
+        };
+        $scope.pageNumber = [];
+        $scope.$watch('totalPages',function(newVal , oldVal){
+            $scope.totalPages = newVal;
+            var i = 0;
+            $scope.pageNumber = [];
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }
+        });
      
-    $scope.nextPage = function(){
-        $scope.gridApi.pagination.nextPage();
-        $scope.changeHeight(0);
-    }
-    $scope.prevPage = function(){
-        $scope.gridApi.pagination.previousPage();
-        $scope.changeHeight(0);
-    }
-
-    bankingServices.getLedgers().then(function(response){
+   bankingServices.getLedgers().then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
        if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
         }

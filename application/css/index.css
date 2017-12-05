@@ -910,3 +910,26 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 #availabelist option:hover ,#selectedlist option:hover {
 	background-color: #0935ae;
 }
+.purchaseGridFooter .md-errors-spacer{
+	display: none;
+}
+.ajaxLoader {
+	position: fixed;
+    background: grey;
+    opacity: 0.7;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+	bottom: 0px;
+	z-index: 999;
+	overflow-y: hidden;
+	pointer-events: none;
+	height: 100%;
+	min-height: 100%;
+	text-align: center;
+}
+.ajaxLoader img {
+	margin-top:25%;
+	height: 45px;
+    width: 45px;
+}

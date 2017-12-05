@@ -9,7 +9,7 @@
                         <div layout="row" class="topPadding10">
                                 <md-input-container flex="55">
                                         <label>Customer Name</label>
-                                        <md-select ng-change="getCustomer()" name="cust_name" ng-model="receipt.cust_name" required ng-disabled="btnLabel == 'Update'">
+                                        <md-select ng-change="getCustomer()" name="cust_name" ng-model="receipt.customername" required ng-disabled="btnLabel == 'Update'">
                                             <md-option value="customer1">Customer 1</md-option>
                                             <md-option value="customer2">Customer 2</md-option>
                                         </md-select>
@@ -17,8 +17,8 @@
                                             <div ng-message="required">This is required.</div>
                                         </div>
                                     </md-input-container>
-                                    <div flex-offset="5" style="padding-top:25px;">
-                                        <img src="application/Images/Assets/eye.png"/>
+                                    <div flex-offset="5" style="padding-top:25px;" >
+                                        <img src="application/Images/Assets/eye.png" ng-click="checkCustomer(receipt.customername)"/>
                                     </div>
                         </div>
                         <div layout="row" class="topPadding10">

@@ -91,7 +91,8 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     .state('Home.bankLedger', {
         url: '/bankLedger',
         templateUrl: 'application/Partials/bankLedger.html',
-        controller: 'bankLedgerCtrl'
+        controller: 'bankLedgerCtrl',
+        params: {data : ''}
     })
     .state('Home.bankBRS', {
         url: '/bankBRS',
@@ -279,6 +280,7 @@ app.run(function($rootScope) {
     $rootScope.isSubActive = '';
     $rootScope.showNavigations = true ;
     $rootScope.appTitle = 'Siri-Books';
+    $rootScope.showLoader = false;
   });
 app.constant('CONSTANTS', {
         appLevel : 0,
@@ -396,9 +398,9 @@ app.constant('CONSTANTS', {
                 {url : 'Home.Journal', name : 'Journal' , SelimgSrc:'application/Images/Assets/Journal_active.png' , imgSrc : 'application/Images/Assets/Journal.png', glyphClasses : 'glyphicon glyphicon-signal'},
                 {url : 'Home.Contra', name : 'Contra' , SelimgSrc:'application/Images/Assets/Contra_active.png' , imgSrc : 'application/Images/Assets/Contra.png', glyphClasses : 'glyphicon glyphicon-signal'},
                 {url : 'Home.CreditNote', name : 'Credit Note' , SelimgSrc:'application/Images/Assets/Credit_Note_active.png' , imgSrc : 'application/Images/Assets/Credit_Note.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.DebitNote', name : 'Debit Note' , SelimgSrc:'application/Images/Assets/Debit_Note_active.png' , imgSrc : 'application/Images/Assets/Debit_Note.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.SalesOrder', name : 'Sales Order' ,SelimgSrc:'application/Images/Assets/Sale_Order_active.png' , imgSrc : 'application/Images/Assets/Sale_Order.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.PurchaseOrder', name : 'Purchase Order' , SelimgSrc:'application/Images/Assets/Purchase_Order_active.png' , imgSrc : 'application/Images/Assets/Purchase_Order.png', glyphClasses : 'glyphicon glyphicon-signal'}
+                {url : 'Home.DebitNote', name : 'Debit Note' , SelimgSrc:'application/Images/Assets/Debit_Note_active.png' , imgSrc : 'application/Images/Assets/Debit_Note.png', glyphClasses : 'glyphicon glyphicon-signal'}
+                //{url : 'Home.SalesOrder', name : 'Sales Order' ,SelimgSrc:'application/Images/Assets/Sale_Order_active.png' , imgSrc : 'application/Images/Assets/Sale_Order.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                //{url : 'Home.PurchaseOrder', name : 'Purchase Order' , SelimgSrc:'application/Images/Assets/Purchase_Order_active.png' , imgSrc : 'application/Images/Assets/Purchase_Order.png', glyphClasses : 'glyphicon glyphicon-signal'}
         ],
         organizationNavigation : [
                 {url : 'Home.Organization', name : 'Organization' ,SelimgSrc:'application/Images/Assets/Admin-Settings inside/Organization_active.png' , imgSrc : 'application/Images/Assets/Admin-Settings inside/Organization_inactive.png', glyphClasses : 'glyphicon glyphicon-home'},
@@ -932,8 +934,9 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.location = $stateParams.data;
         $scope.identity = $stateParams.data;
         $scope.books = $stateParams.data.orgledger;
-
+        if($stateParams.data.customername != ''){
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
+        }
     }
     else {
         $scope.heading = "New";
@@ -1274,17 +1277,19 @@ app.controller('addJournalCtrl',function($rootScope , $scope , $stateParams , $s
    });
     $scope.changeHeight(0);
 });
-app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , commonServices){
+app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , commonServices , $state){
     console.log('Inside Add Payment Controller');
     $rootScope.isActive = 'Payments';
 
     if(angular.isDefined($stateParams.data.vendorName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.payment = {}
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.payment = {}
     }
     $scope.panelShow = true ;
     $scope.togglePannel = function(){
@@ -1296,6 +1301,10 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , co
            },function(error){
          console.log('error',error);
     });
+    $scope.payment.name = '';
+    $scope.checkVendors = function(){
+        $state.go('Home.addVendors', {data : {"name" : $scope.payment.name}});
+    }
 
 });
 app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
@@ -1434,23 +1443,29 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     if(angular.isDefined($stateParams.data.customerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.receipt = {};
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.receipt = {};
     }
     $scope.ifCustomer = true;
     $scope.getCustomer = function(){
         //$scope.ifCustomer = true;
-        receiptServices.getCustomerDetails($scope.receipt.cust_name).then(function(response){
+        receiptServices.getCustomerDetails($scope.receipt.customername).then(function(response){
             console.log('response',response.data[0]);
             $scope.receipt = response.data[0];
         },function(err){
 
         });
     }
+    $scope.receipt.customername = '';
     $scope.cancel = function(){
         $state.go('Home.Receipt');
+    }
+    $scope.checkCustomer = function(){
+        $state.go('Home.addCustomers', {data : {"customername" : $scope.receipt.customername}});
     }
     $scope.resetAll = function(){
         $scope.receipt = {};
@@ -1674,8 +1689,10 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
         $scope.btnLabel = "Update";
         $scope.location = $stateParams.data;
         $scope.identity = $stateParams.data;
+        if($stateParams.data.name != ''){
         $scope.books = $stateParams.data.orgledger;
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
+        }
     }
     else {
         vendorId = '';
@@ -2035,7 +2052,7 @@ app.controller('bankBRSCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
    $scope.changeHeight(0);
 
 });
-app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices ,uiGridGroupingConstants , uiGridTreeBaseService , $filter){
+app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices ,uiGridGroupingConstants , uiGridExporterConstants , $filter){
     console.log('Inside Banking Controller');
     $rootScope.isActive = 'CASH/BANKING';
 
@@ -2043,78 +2060,66 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
         $state.go('Home.bankLedger');
     }
 
-    $scope.checkModule = function(){
-        return true;
-    }
+    
     $scope.moduleHeading = 'Cash / Banking Ledgers';
     $scope.btn1 = 'Search';
     $scope.btn2 = 'Add New';
     $scope.ifThreeBtn = false;
 
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 0);
+        heightCalc.calculateGridHeight(val , 32);
     }
-    var cellTemplate = '<div ng-if="!col.grouping || col.grouping.groupPriority === undefined || col.grouping.groupPriority === null || ( row.groupHeader && col.grouping.groupPriority === row.treeLevel )" class="ui-grid-cell-contents" title="TOOLTIP"><div style=\"position:absolute;\" class=\"ui-grid-tree-base-row-header-buttons\" ng-class=\"{\'ui-grid-tree-base-header\': row.treeLevel > -1 }\" ng-click=\"grid.appScope.toggleRow(row,evt)\"><i ng-show="grid.appScope.ifToShow(row)" ng-class=\"{\'ui-grid-icon-minus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'expanded\', \'ui-grid-icon-plus-squared\': ( ( grid.options.showTreeExpandNoChildren && row.treeLevel > -1 ) || ( row.treeNode.children && row.treeNode.children.length > 0 ) ) && row.treeNode.state === \'collapsed\'}\" ng-style=\"{\'padding-left\': grid.options.treeIndent * row.treeLevel + \'px\'}\"></i> &nbsp;</div>{{COL_FIELD CUSTOM_FILTERS}}</div>';
-    var setGroupValues = function( columns, rows ) {
-       
-        columns.forEach( function( column ) {
-          if ( column.grouping && column.grouping.groupPriority > -1 ){
-            // Put the balance next to all group labels.
-            column.customTreeAggregationFinalizerFn = function( aggregation ) {
-              if ( typeof(aggregation.groupVal) !== 'undefined') {
-                aggregation.rendered = aggregation.groupVal;
-              } else {
-                aggregation.rendered = null;
-              }
-            };
-          }
-        });
-        return columns;
-      };
-     
+    $scope.editData = function(row){
+        $state.go('Home.bankLedger' , { data: row.entity });
+    }    
+    $scope.editLedger = function(row){
+        $state.go('Home.bankLedger' , { data: row.entity });
+    }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Banking');
-    $scope.gridOptions.treeRowHeaderAlwaysVisible = false;
-    $scope.gridOptions.enableRowSelection = false;
-
+    $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
+    $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
     $scope.gridOptions.columnDefs = [
-        { field: 'primaryGroup' , 
-        grouping: { groupPriority: 0 },
-        cellTemplate : cellTemplate},
-        { field: 'majorGroupName' ,grouping: { groupPriority: 1 },
-        cellTemplate : cellTemplate},
-        { field: 'subGroupName' ,grouping: { groupPriority: 2 },
-        cellTemplate: cellTemplate},
         { field: 'ledgerName',
-        cellTemplate : '<div>'+
-        '<div ng-click="grid.appScope.getCompanyLedger(row,col)" class="ui-grid-cell-contents" title="TOOLTIP">{{COL_FIELD CUSTOM_FILTERS}}</div>'+
-           '</div>'
+        headerCellClass : 'LedgerHead topPadding15',
+        cellTemplate: '<div class="ui-grid-cell-contents ifCenter" >'+
+        '<span class="marginLeft10">{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="marginRight15 marginLeft10 pull-right" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '</div>' 
         },
-        { field: 'balance' , 
-        treeAggregationType: uiGridGroupingConstants.aggregation.SUM,
-        customTreeAggregationFinalizerFn: function( aggregation ) {
-          aggregation.rendered = aggregation.value;
-        }}
+        { field: 'debit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' },
+        { field: 'credit' ,category:"Balance Amount" ,
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)" ng-if="grid.getCellValue(row, col) != undefined">'+
+        '<img height="20" width="20" '+
+                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+        '</span>'+
+        '</div>' }
 ];
-function getRowIndex(id , grid) {
-    var rowIndex = -1;
-    for (var i = 0; i < grid.renderContainers.body.visibleRowCache.length; i++) {
-        if (id === grid.renderContainers.body.visibleRowCache[i].uid) {
-            rowIndex = i;
-            break;
-        }
+
+$scope.checkModule = function(){
+    if($scope.gridOptions.data.length == 0) {
+        return true;
     }
-    return rowIndex;
-};
-$scope.ifToShow = function(row){
-    var exp = $scope.gridApi.treeBase.getRowChildren(row)[0];
-    for (var key in exp.entity) {
-        var keys = exp.entity[key];
-        if(keys.groupVal==""){
-            return false;
-        }
-    }
-    return true;
+    return false;
 }
+$scope.csvDownload = function(){
+    $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+  }
+  
+   $scope.pdfDownload = function(){
+    $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+  }
 
 $scope.search = {
     searchString : ''
@@ -2140,46 +2145,58 @@ $scope.removeSearchFilter = function() {
     $scope.search.searchString = '';
     $scope.changeHeight(0);
 }
-$scope.toggleRow = function( row,evt ){
-    uiGridTreeBaseService.toggleRowTreeState($scope.gridApi.grid, row, evt);
-    //$scope.gridApi.treeBase.toggleRowTreeState($scope.gridApi.grid.renderContainers.body.visibleRowCache[rowNum]);
-  };
 $scope.getCompanyLedger = function(row,column){
     $state.go('Home.bankLedger');
 }
-$scope.gridOptions.showTreeExpandNoChildren = false;
+
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
 
-        $scope.gridApi.grid.registerColumnsProcessor( setGroupValues, 410 );
+         }
 
-        $scope.gridApi.treeBase.on.rowExpanded($scope, function(row) {
-                var exp = $scope.gridApi.treeBase.getRowChildren(row)[0];
-                for (var key in exp.entity) {
-                    var keys = exp.entity[key];
-                    if(keys.groupVal==""){
-                        $scope.gridApi.treeBase.toggleRowTreeState(row);
-                    }
-                }
-                $scope.changeHeight(0);
-         });
-         $scope.gridApi.treeBase.on.rowCollapsed($scope, function(row) {
-                 $scope.changeHeight(0);
-         });
-      }
+         $scope.nextPage = function(){
+            $scope.gridApi.pagination.nextPage();
+            if($scope.paging.pageSelected != $scope.totalPages) {
+                $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+            }
+            else{
+                $scope.paging.pageSelected = $scope.paging.pageSelected;
+            }
+            $scope.changeHeight(0);
+        }
+        $scope.prevPage = function(){
+            $scope.gridApi.pagination.previousPage();
+            if($scope.paging.pageSelected != 1) {
+                $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+            }
+            else{
+                $scope.paging.pageSelected = $scope.paging.pageSelected;
+            }
+            $scope.changeHeight(0);
+        }
+        $scope.seek = function(pageSelected){
+            $scope.paging.pageSelected = pageSelected;
+            $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+            $scope.changeHeight(0);
+        }
+        $scope.totalPages = 0;
+        $scope.paging = {
+            pageSelected : 1
+        };
+        $scope.pageNumber = [];
+        $scope.$watch('totalPages',function(newVal , oldVal){
+            $scope.totalPages = newVal;
+            var i = 0;
+            $scope.pageNumber = [];
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }
+        });
      
-    $scope.nextPage = function(){
-        $scope.gridApi.pagination.nextPage();
-        $scope.changeHeight(0);
-    }
-    $scope.prevPage = function(){
-        $scope.gridApi.pagination.previousPage();
-        $scope.changeHeight(0);
-    }
-
-    bankingServices.getLedgers().then(function(response){
+   bankingServices.getLedgers().then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
        if($scope.gridOptions.data.length !== 0){
             $scope.changeHeight(0);
         }
@@ -2192,10 +2209,30 @@ $scope.gridOptions.showTreeExpandNoChildren = false;
       
    $scope.changeHeight(0);
 });
-app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , bankingServices){
+app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$stateParams , CONSTANTS ,heightCalc , bankingServices){
     console.log('Inside Ledger CASH/BANKING Controller');
     $rootScope.isActive = 'CASH/BANKING';
-    $scope.changeHeight = function(val){
+
+    if(angular.isDefined($stateParams.data.ledgerName)) {
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+    }
+    else {
+        $scope.heading = "New";
+        $scope.btnLabel = "Create";
+    }
+
+    $scope.resetAll = function(){
+        $scope.banking ={};
+        $scope.addBankingForm.$setPristine();
+    }
+
+    $scope.cancel = function(){
+        $state.go('Home.Banking');
+    }
+
+
+    /*$scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 0);
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('BankLedger');
@@ -2258,7 +2295,7 @@ app.controller('bankLedgerCtrl',function($rootScope,$scope ,$state ,$timeout , C
        $state.go('Home.bankBRS');
    }
 
-   $scope.changeHeight(0);
+   $scope.changeHeight(0);*/
 
 });
 app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices , $stateParams){
@@ -2453,6 +2490,7 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
     $scope.btn2 = 'Add New';
     $scope.btn3 = 'Import';
     $scope.ifThreeBtn = true;
+    $rootScope.showLoader = true;
 
     $scope.myObj = {};
 
@@ -2559,6 +2597,7 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
         else {
             $scope.changeHeight(200);
         }
+        $rootScope.showLoader = false;
           },function(error){
         console.log('error',error);
    });
@@ -2907,6 +2946,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     $scope.btn2 = 'Add New Product'
     $scope.ifThreeBtn = false;
     $scope.showWait = true;
+    $rootScope.showLoader = true;
     
     $scope.myObj = {};
 
@@ -3005,6 +3045,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
         else {
             $scope.changeHeight(200);
         }
+        $rootScope.showLoader = false;
           },function(error){
         console.log('error',error);
    });
@@ -3523,11 +3564,11 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
         { field: 'ledgerName',
         headerCellClass : 'LedgerHead topPadding15',
         cellTemplate: '<div class="ui-grid-cell-contents ifCenter" >'+
-        '<span class="marginRight15 marginLeft10" ng-click="grid.appScope.editData(row)">'+
+        '<span class="marginLeft10">{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="marginRight15 marginLeft10 pull-right" ng-click="grid.appScope.editData(row)">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
         '</span>'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' 
         },
         { field: 'debit' ,category:"Balance Amount" ,
@@ -3551,6 +3592,7 @@ $scope.search = {
     searchString : ''
 }
 $scope.search = function(searchterm){
+    debugger;
     if(searchterm == '') {
     return;
     }
@@ -3640,7 +3682,6 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'LEDGERS';
 
-    console.log("#sdatet" , $stateParams.data);
     if(angular.isDefined($stateParams.data.ledgerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
@@ -3652,7 +3693,7 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
 
     $scope.resetAll = function(){
         $scope.ledger ={};
-        $scope.addLedgerForm.$setPristine();
+        $scope.addBankingForm.$setPristine();
     }
 
     $scope.cancel = function(){
@@ -4491,6 +4532,7 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
     $scope.btn2 = 'Add New';
     $scope.btn3 = 'Import';
     $scope.ifThreeBtn = true;
+    $rootScope.showLoader = true;
     $scope.myObj = {};
     $scope.add = function() {
         $state.go('Home.addVendors', { data: $scope.myObj });
@@ -4597,6 +4639,7 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
         else {
             $scope.changeHeight(200);
         }   
+        $rootScope.showLoader = false;
           },function(error){
         console.log('error',error);
      });

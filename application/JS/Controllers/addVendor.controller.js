@@ -11,8 +11,10 @@ app.controller('addVendorCtrl',function($rootScope , $scope , $stateParams , $st
         $scope.btnLabel = "Update";
         $scope.location = $stateParams.data;
         $scope.identity = $stateParams.data;
+        if($stateParams.data.name != ''){
         $scope.books = $stateParams.data.orgledger;
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
+        }
     }
     else {
         vendorId = '';

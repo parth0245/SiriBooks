@@ -7,6 +7,7 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
     $scope.btn2 = 'Add New';
     $scope.btn3 = 'Import';
     $scope.ifThreeBtn = true;
+    $rootScope.showLoader = true;
     $scope.myObj = {};
     $scope.add = function() {
         $state.go('Home.addVendors', { data: $scope.myObj });
@@ -113,6 +114,7 @@ app.controller('vendorCtrl',function($rootScope , $scope , $state , CONSTANTS ,h
         else {
             $scope.changeHeight(200);
         }   
+        $rootScope.showLoader = false;
           },function(error){
         console.log('error',error);
      });

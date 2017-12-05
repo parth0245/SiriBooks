@@ -91,7 +91,8 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     .state('Home.bankLedger', {
         url: '/bankLedger',
         templateUrl: 'application/Partials/bankLedger.html',
-        controller: 'bankLedgerCtrl'
+        controller: 'bankLedgerCtrl',
+        params: {data : ''}
     })
     .state('Home.bankBRS', {
         url: '/bankBRS',
