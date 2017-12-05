@@ -26,9 +26,6 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.books.openingbalancetype = "Dr";
     }
     $scope.stateList = [];
-    /*$scope.$watch('stateList',function(newVal , oldVal){
-        $scope.stateList = newVal;
-    });*/
     commonServices.getCountries().then(function(success){
         var myArray = success.data;
         var countries = {};

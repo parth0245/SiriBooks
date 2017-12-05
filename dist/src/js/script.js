@@ -948,9 +948,6 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.books.openingbalancetype = "Dr";
     }
     $scope.stateList = [];
-    /*$scope.$watch('stateList',function(newVal , oldVal){
-        $scope.stateList = newVal;
-    });*/
     commonServices.getCountries().then(function(success){
         var myArray = success.data;
         var countries = {};
@@ -1307,7 +1304,7 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , co
     }
 
 });
-app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purchaseService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
+app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purchaseService ,commonServices, CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
@@ -1414,6 +1411,41 @@ app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purcha
           },function(error){
         console.log('error',error);
    });
+
+
+   $scope.stateList = [];
+   $scope.identity = {};
+   commonServices.getCountries().then(function(success){
+       var myArray = success.data;
+       var countries = {};
+       for (var i = 0; i < myArray.length; i++) {
+         var countryName = myArray[i].lkupcountry.countryname;
+         if (!countries[countryName]) {
+           countries[countryName] = [];
+         }
+         countries[countryName].push({"countryName": myArray[i].lkupcountry.countryname ,"stateName":myArray[i].statename , "stateId" : myArray[i].id ,"countryId":myArray[i].lkupcountry.countryid});
+       }
+       myArray = [];
+       for (var countryName in countries) {
+         myArray.push({country: countryName, state: [countries[countryName]]});
+       }
+       $scope.countryList = myArray;
+      $scope.getState('India');
+   },function(error){
+       console.log(error);
+   });
+   
+   $scope.identity.country = 'India';
+
+   $scope.getState = function(country) {
+       var states;
+       angular.forEach($scope.countryList , function(key){
+           if(key.country == country){
+               states =  key.state;
+           }
+       });
+       $scope.stateList = states[0];
+   }
 
     $scope.changeHeight(0);
 
@@ -1546,7 +1578,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
    $scope.changeHeight(0);
 
 });
-app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
+app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams , commonServices){
     console.log('Inside Add Sales Controller');
     $rootScope.isActive = 'Sales';
 
@@ -1565,6 +1597,7 @@ app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesServ
     }
     var today = new Date();
     $scope.purchase = {};
+    $scope.identity = {};
     $scope.purchase.date = today;
     
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('AddSales');
@@ -1653,6 +1686,41 @@ app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesServ
           },function(error){
         console.log('error',error);
    });
+
+   $scope.stateList = [];
+   commonServices.getCountries().then(function(success){
+       var myArray = success.data;
+       var countries = {};
+       for (var i = 0; i < myArray.length; i++) {
+         var countryName = myArray[i].lkupcountry.countryname;
+         if (!countries[countryName]) {
+           countries[countryName] = [];
+         }
+         countries[countryName].push({"countryName": myArray[i].lkupcountry.countryname ,"stateName":myArray[i].statename , "stateId" : myArray[i].id ,"countryId":myArray[i].lkupcountry.countryid});
+       }
+       myArray = [];
+       for (var countryName in countries) {
+         myArray.push({country: countryName, state: [countries[countryName]]});
+       }
+       $scope.countryList = myArray;
+      $scope.getState('India');
+   },function(error){
+       console.log(error);
+   });
+   
+   $scope.identity.country = 'India';
+
+   $scope.getState = function(country) {
+       var states;
+       angular.forEach($scope.countryList , function(key){
+           if(key.country == country){
+               states =  key.state;
+           }
+       });
+       $scope.stateList = states[0];
+   }
+
+
 
     $scope.changeHeight(0);
 
@@ -3748,6 +3816,42 @@ app.controller('organizationLevelCtrl',function($rootScope , $scope , CONSTANTS 
     },function(error){
         console.log('Get - Failure Product');
     });
+
+    $scope.stateList = [];
+    $scope.location = {};
+    commonServices.getCountries().then(function(success){
+        var myArray = success.data;
+        var countries = {};
+        for (var i = 0; i < myArray.length; i++) {
+          var countryName = myArray[i].lkupcountry.countryname;
+          if (!countries[countryName]) {
+            countries[countryName] = [];
+          }
+          countries[countryName].push({"countryName": myArray[i].lkupcountry.countryname ,"stateName":myArray[i].statename , "stateId" : myArray[i].id ,"countryId":myArray[i].lkupcountry.countryid});
+        }
+        myArray = [];
+        for (var countryName in countries) {
+          myArray.push({country: countryName, state: [countries[countryName]]});
+        }
+        $scope.countryList = myArray;
+       $scope.getState('India');
+    },function(error){
+        console.log(error);
+    });
+    
+    $scope.location.country = 'India';
+ 
+    $scope.getState = function(country) {
+        var states;
+        angular.forEach($scope.countryList , function(key){
+            if(key.country == country){
+                states =  key.state;
+            }
+        });
+        $scope.stateList = states[0];
+    }
+ 
+ 
 });
 
 app.controller('organizationUserCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , organizationServices , $filter , commonServices){

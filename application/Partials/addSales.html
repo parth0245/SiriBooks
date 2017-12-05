@@ -138,31 +138,29 @@
                         <div layout="row" class="topPadding20" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>Address 1</label>
-                                <input name="add1" ng-model="add1" ng-readonly="true">
+                                <input name="add1" ng-model="identity.add1" ng-readonly="true">
                             </md-input-container>
                             <md-input-container flex="25"  flex-offset="5">
                                     <label>Address 2</label>
-                                    <input name="add2" ng-model="add2" ng-readonly="true">
+                                    <input name="add2" ng-model="identity.add2" ng-readonly="true">
                             </md-input-container>
                             <md-input-container flex="25"  flex-offset="5">
                                     <label>City</label>
-                                    <input name="city" ng-model="city" ng-readonly="true">
+                                    <input name="city" ng-model="identity.city" ng-readonly="true">
                             </md-input-container>
                         </div>
                         <div layout="row" class="topPadding10" ng-hide="panelShow">
                             <md-input-container flex="25">
                                 <label>State</label>
-                                <md-select name="state" ng-model="state" ng-readonly="true">
-                                    <md-option value="Product 1">state 1</md-option>
-                                    <md-option value="Product 2">state 2</md-option>
+                                <md-select name="state" ng-model="identity.state" ng-readonly="true">
+                                    <md-option ng-repeat="state in stateList" ng-value="{{state.stateId}}">{{state.stateName}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5">
                                 <label>Country</label>
-                                <md-select name="ctry" ng-model="ctry" ng-readonly="true">
-                                    <md-option value="Product 1">Country 1</md-option>
-                                    <md-option value="Product 2">Country 2</md-option>
-                                </md-select>
+                                <md-select name="country" ng-model="identity.country" required ng-change="getState(identity.country)">
+                                    <md-option ng-repeat="country in countryList" value="{{country.country}}">{{country.country}}</md-option>
+                            </md-select>
                             </md-input-container>
                             <md-input-container flex="25"  flex-offset="5">
                                 <label>PIN</label>
