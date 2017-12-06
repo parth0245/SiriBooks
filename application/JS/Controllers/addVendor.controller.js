@@ -124,19 +124,28 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         });
     }
     $scope.identity.type = [
-        {id : "1" , type : "Retail"},
-        {id : "2" , type : "Dealer"}
+        {id : "1" , type : "GST Registered Dealer"},
+        {id : "2" , type : "GST Composition Dealer"},
+        {id : "3" , type : "Unregistered Dealer"}
     ]
-    /*commonServices.getOrgType().then(function(success){
+    $scope.gstRequired = false;
+    /*
+    
+     if($scope.identity.type == 'Unregistered Dealer' || $scope.identity.types==''){
+            return false;
+        }
+        return true;
+        
+        commonServices.getOrgType().then(function(success){
         $scope.identity.type = success.data;   
     },function(error){
         console.log('Get - Failure Product');
-    });*/
+    });
     commonServices.getNatureOfBusiness().then(function(success){
         $scope.identity.nob = success.data;   
     },function(error){
         console.log('Get - Failure Product');
-    });
+    });*/
     $scope.stateList = [];
 
     commonServices.getCountries().then(function(success){
@@ -184,35 +193,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
 
     $scope.DefaultListItems = [$scope.productListByInventory];
     $scope.AvailableListItems =  [$scope.productListByInventory];
-    /*console.log('$scope.DefaultListItems',$scope.DefaultListItems);
-    $scope.sampleHere = [
-       [{
-        email: 'Product 1'
-    }, {
-        email: 'Product 2'
-    }, {
-        email: 'Product 3'
-    },
-    {
-        email: 'Product 5'
-    }, {
-        email: 'Product 4'
-    }, {
-        email: 'Product 6'
-    }
-    , {
-        email: 'Product 7'
-    }
-    , {
-        email: 'Product 8'
-    }
-    , {
-        email: 'Product 9'
-    }
-    ]];*/
-    //console.log('$scope.sampleHere',$scope.sampleHere);
-    //angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
-    //console.log('$scope.AvailableListItems',$scope.AvailableListItems);
+    
     $scope.btnRight = function () {
         //move selected.
         angular.forEach($scope.SelectedAvailItems, function (value, key) {

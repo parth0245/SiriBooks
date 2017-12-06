@@ -140,11 +140,11 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
             console.log('Customer update Failure');
         });
     }
-    commonServices.getNatureOfBusiness().then(function(success){
+    /*commonServices.getNatureOfBusiness().then(function(success){
         $scope.identity.nob = success.data;   
     },function(error){
         console.log('Get - Failure Product');
-    });
+    });*/
     $scope.identity.type = [
         {id : "1" , type : "Retail"},
         {id : "2" , type : "Dealer"}

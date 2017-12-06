@@ -1,4 +1,4 @@
-app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , inventoryServices , $filter){
+app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , inventoryServices , $filter , uiGridExporterConstants){
     console.log('Inside Inventory Controller');
     
     $rootScope.isActive = 'INVENTORY';
@@ -27,11 +27,29 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
             $state.go('Home.AddInventory' , { data: row.entity });
         });*/
     }
+    /*$scope.gridOptions.exporterFieldCallback  = function ( grid, row, col, value ){
+        if ( col.displayName === 'specification' ){
+          if(row.entity.productspecs.length >= 1){
+            return row.entity.productspecs[0].productspecid;
+         }
+         return "";
+        }
+        return value;
+    }*/
     $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
     $scope.search = {
         searchString : ''
     }
+
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+       $scope.pdfDownload = function(){
+        $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+
     $scope.search = function(searchterm){
         if(searchterm == '') {
         return;
@@ -55,7 +73,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
         $scope.changeHeight(0);
     }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val,32);
+        heightCalc.calculateGridHeight(val,0);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();

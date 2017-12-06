@@ -77,6 +77,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     $scope.update = function(){
         inventoryServices.update($scope.inventory , $scope.Description).then(function(success){
             console.log('update Successfully');
+            $state.go('Home.Inventory'); 
         },function(error){
             console.log('update Failure');
         });

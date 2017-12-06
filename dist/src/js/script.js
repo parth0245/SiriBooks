@@ -290,8 +290,57 @@ app.constant('CONSTANTS', {
                 return new Date(splitedArray[1]+'/'+splitedArray[0]+'/'+splitedArray[2]);
         },
         uuid : "d9f7617a-6117-4d7e-b71e-b4a337f8b545",
+        uorgid: "43682e5e-af9c-4805-a29a-5f34e24185af",		
+        orguser: "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
         service : [
                 {
+                        inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products',
+                        updateInventory : 'http://localhost:8080/api/fasmain/VCPL/Products',
+                        customerList : 'http://localhost:8080/api/fasmain/VCPL/Customers/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        saveCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
+                        updateCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
+                        vendorList : 'http://localhost:8080/api/fasmain/VCPL/Vendors/org/43682e5e-af9c-4805-a29a-5f34e24185af',
+                        saveVendor : 'http://localhost:8080/api/fasmain/VCPL/Vendors',
+                        updateVendor : 'http://localhost:8080/api/fasmain/VCPL/Vendors',
+                        importVendor : 'application/fixture/importVendors.json',
+                        receiptList : 'application/fixture/receiptList.json',
+                        paymentList : 'application/fixture/paymentList.json',
+                        expenseList : 'application/fixture/expenseList.json',
+                        journalList : 'application/fixture/journalList.json',
+                        contraList : 'application/fixture/contraList.json',
+                        ledgerList : 'application/fixture/ledgerList.json',
+                        organizationUserList : 'application/fixture/organizationUserList.json',
+                        organizationRoleList : 'application/fixture/organizationRoleList.json',
+                        accountingList : 'application/fixture/accountingList.json',
+                        bankingLedger : 'application/fixture/bankingLedger.json',
+                        importCustomer : 'application/fixture/importCustomer.json',
+                        companyLedgers : 'application/fixture/companyLedger.json',
+                        bankLedgers : 'application/fixture/bankLedger.json',
+                        bankBRS : 'application/fixture/bankLedger.json',
+                        searchInventoryList : 'application/fixture/searchInventory.json',
+                        purchaseList : 'application/fixture/purchaseList.json',
+                        getCustomerDetails : 'application/fixture/customer.json',
+                        //getCountries : 'application/fixture/contryState.json',
+                        getCountries : 'http://localhost:8091/api/fas/lkup/countries/states/country/91',
+                        productGroup : 'application/fixture/productGroup.json',
+                        userStatus : 'application/fixture/userStatus.json'             ,
+                        subscriptionStatus : 'application/fixture/subscriptionStatus.json',
+                        subscriptionPlan : 'application/fixture/subscriptionPlan.json',
+                        subscriptionOption : 'application/fixture/subscriptionOption.json',
+                        userRole : 'application/fixture/userRole.json',
+                        productType : 'application/fixture/productType.json',
+                        paymentMode : 'application/fixture/paymentMode.json',
+                        boardingStatus : 'application/fixture/boardingStatus.json',
+                        orgType : 'application/fixture/orgType.json',
+                        NOB : 'http://192.168.1.97:8091/api/fas/lkup/natureofbusiness',
+                        gstScheme : 'application/fixture/gstScheme.json',
+                        getPreviousReceipts : 'application/fixture/getPreviousReceipts.json',
+                        allPurchseList : 'application/fixture/allPurshaseList.json',
+                        getCurrentJournal :'application/fixture/getCurrentJournal.json',
+                        salesList : 'application/fixture/salesList.json',
+                        importLedgers :'application/fixture/importLedgers.json'                     
+                },{
                         inventoryList : 'application/fixture/inventoryList.json',
                         saveInventory : '',
                         customerList : 'application/fixture/customerList.json',
@@ -336,49 +385,6 @@ app.constant('CONSTANTS', {
                         getCurrentJournal :'application/fixture/getCurrentJournal.json',
                         salesList : 'application/fixture/salesList.json',
                         importLedgers :'application/fixture/importLedgers.json'
-                },{
-                        inventoryList : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
-                        saveInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
-                        updateInventory : 'http://localhost:8080/api/fasmain/VCPL/Products/org/43682e5e-af9c-4805-a29a-5f34e24185af',
-                        customerList : 'http://localhost:8080/api/fasmain/VCPL/Customers/org/43682e5e-af9c-4805-a29a-5f34e24185af',
-                        saveCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
-                        updateCustomer : 'http://localhost:8080/api/fasmain/VCPL/Customers',
-                        vendorList : 'http://localhost:8080/api/fasmain/VCPL/Vendors/org/43682e5e-af9c-4805-a29a-5f34e24185af',
-                        saveVendor: 'http://localhost:8080/api/fasmain/VCPL/Vendors',
-                        updateVendor: 'http://localhost:8080/api/fasmain/VCPL/Vendors',
-                        importVendor :'',
-                        receiptList :'',
-                        paymentList : '',
-                        expenseList : '',
-                        journalList : '',
-                        contraList : '',
-                        ledgerList : 'application/fixture/ledgerList.json',
-                        organizationUserList : '',
-                        organizationRoleList : '' ,
-                        accountingList : '',
-                        bankingLedger : 'application/fixture/bankingLedger.json',
-                        importCustomer : '',
-                        companyLedgers : 'application/fixture/importCustomer.json',
-                        bankLedgers : 'application/fixture/bankLedger.json',
-                        bankBRS : 'application/fixture/bankLedger.json',
-                        searchInventoryList : '',
-                        getCountries : 'application/fixture/contryState.json',
-                        productGroup : ''  ,
-                        userStatus : 'application/fixture/userStatus.json',
-                        subscriptionStatus : 'application/fixture/subscriptionStatus.json',
-                        subscriptionPlan : 'application/fixture/subscriptionPlan.json',
-                        subscriptionOption : 'application/fixture/subscriptionOption.json',
-                        userRole : 'application/fixture/userRole.json',
-                        productType : 'application/fixture/productType.json',
-                        paymentMode : 'application/fixture/paymentMode.json',
-                        boardingStatus : 'application/fixture/boardingStatus.json',
-                        orgType : 'application/fixture/orgType.json',
-                        NOB : 'application/fixture/nob.json',
-                        gstScheme : 'application/fixture/gstScheme.json',
-                        getPreviousReceipts : 'application/fixture/getPreviousReceipts.json',
-                        allPurchseList : 'application/fixture/getPreviousReceipts.json',
-                        getCurrentJournal :'application/fixture/allPurshaseList.json'     ,
-                        salesList : 'application/fixture/getCurrentJournal.json'                     
                 }
         ],
         headBarNavigator : [
@@ -444,7 +450,7 @@ app.constant('CONSTANTS', {
                         enableVerticalScrollbar : 0 ,
                         enablePaginationControls: false,
                         paginationPageSizes: [5 , 10, 20 , 25],
-                        paginationPageSize: 5,
+                        paginationPageSize: 20,
                         treeRowHeaderAlwaysVisible:false,
                         showColumnFooter: false,
                         columnDefs : this[gridName+"fields"]
@@ -557,7 +563,7 @@ app.constant('CONSTANTS', {
                 { field: 'productname',
                 displayName : 'Product',
                 width : '20%',
-                headerCellClass : 'topPadding15',
+                headerCellClass : '',
                 cellTemplate: '<div class="ui-grid-cell-contents" >'+
                               '<span>{{grid.getCellValue(row, col)}}</span>'+
                               '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
@@ -567,13 +573,19 @@ app.constant('CONSTANTS', {
                               '</div>' },
                              
              { field: 'specification',
-             headerCellClass : 'topPadding15',
+             headerCellClass : '',
               width : '20%' ,
               cellTemplate: '<div class="ui-grid-cell-contents" >'+
               '<span>{{row.entity.productspecs[0].productspecid}}</span>'+
               '</div>' },
-              { field: 'stockCount' , 
-              headerCellClass : 'topPadding15'}, { field: 'debit' ,category:"Balance Amount" ,
+              { field: 'stockCount', 
+              headerCellClass : ''}, 
+              { field: 'value' ,displayName:'Value', 
+              headerCellClass : '',
+              cellTemplate: '<div class="ui-grid-cell-contents" >'+
+              '<span>{{row.entity.orgledger.balanceamount}}</span>'+
+              '</div>' },
+              /*{ field: 'debit' ,category:"Balance Amount" ,
               cellTemplate: '<div class="ui-grid-cell-contents" >'+
               '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
               '<span ng-if="row.entity.orgledger.drcr != \'dr\' "> &nbsp; </span>'+
@@ -590,7 +602,7 @@ app.constant('CONSTANTS', {
               '<img height="20" width="20" '+
                       'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
               '</span>'+
-              '</div>' },
+              '</div>' },*/
         
         ],
 Customerfields : [
@@ -605,8 +617,8 @@ Customerfields : [
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
                 '</div>' },
-        { field: 'corporateaddress1',displayName:'Address',headerCellClass : 'topPadding15',
-        width : '15%' },
+        /*{ field: 'corporateaddress1',displayName:'Address',headerCellClass : 'topPadding15',
+        width : '15%' },*/
         { field: 'customertype',        headerCellClass : 'topPadding15',
 displayName : 'Type'},
         { field: 'contactphone' , displayName : 'Contact' ,       headerCellClass : 'topPadding15'},
@@ -642,7 +654,7 @@ Vendorfields : [
                         'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
                 '</span>'+
                 '</div>' },
-        { field: 'address1' , displayName : "Address" , headerCellClass : 'topPadding15',},
+        /*{ field: 'address1' , displayName : "Address" , headerCellClass : 'topPadding15',},*/
         { field: 'contactphone' , headerCellClass : 'topPadding15', displayName : "Contact"},
         { field: 'debit' ,category:"Balance Amount" ,
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
@@ -1062,11 +1074,11 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
             console.log('Customer update Failure');
         });
     }
-    commonServices.getNatureOfBusiness().then(function(success){
+    /*commonServices.getNatureOfBusiness().then(function(success){
         $scope.identity.nob = success.data;   
     },function(error){
         console.log('Get - Failure Product');
-    });
+    });*/
     $scope.identity.type = [
         {id : "1" , type : "Retail"},
         {id : "2" , type : "Dealer"}
@@ -1190,6 +1202,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     $scope.update = function(){
         inventoryServices.update($scope.inventory , $scope.Description).then(function(success){
             console.log('update Successfully');
+            $state.go('Home.Inventory'); 
         },function(error){
             console.log('update Failure');
         });
@@ -1870,19 +1883,28 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
         });
     }
     $scope.identity.type = [
-        {id : "1" , type : "Retail"},
-        {id : "2" , type : "Dealer"}
+        {id : "1" , type : "GST Registered Dealer"},
+        {id : "2" , type : "GST Composition Dealer"},
+        {id : "3" , type : "Unregistered Dealer"}
     ]
-    /*commonServices.getOrgType().then(function(success){
+    $scope.gstRequired = false;
+    /*
+    
+     if($scope.identity.type == 'Unregistered Dealer' || $scope.identity.types==''){
+            return false;
+        }
+        return true;
+        
+        commonServices.getOrgType().then(function(success){
         $scope.identity.type = success.data;   
     },function(error){
         console.log('Get - Failure Product');
-    });*/
+    });
     commonServices.getNatureOfBusiness().then(function(success){
         $scope.identity.nob = success.data;   
     },function(error){
         console.log('Get - Failure Product');
-    });
+    });*/
     $scope.stateList = [];
 
     commonServices.getCountries().then(function(success){
@@ -1930,35 +1952,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
 
     $scope.DefaultListItems = [$scope.productListByInventory];
     $scope.AvailableListItems =  [$scope.productListByInventory];
-    /*console.log('$scope.DefaultListItems',$scope.DefaultListItems);
-    $scope.sampleHere = [
-       [{
-        email: 'Product 1'
-    }, {
-        email: 'Product 2'
-    }, {
-        email: 'Product 3'
-    },
-    {
-        email: 'Product 5'
-    }, {
-        email: 'Product 4'
-    }, {
-        email: 'Product 6'
-    }
-    , {
-        email: 'Product 7'
-    }
-    , {
-        email: 'Product 8'
-    }
-    , {
-        email: 'Product 9'
-    }
-    ]];*/
-    //console.log('$scope.sampleHere',$scope.sampleHere);
-    //angular.copy($scope.DefaultListItems, $scope.AvailableListItems);
-    //console.log('$scope.AvailableListItems',$scope.AvailableListItems);
+    
     $scope.btnRight = function () {
         //move selected.
         angular.forEach($scope.SelectedAvailItems, function (value, key) {
@@ -3005,7 +2999,7 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
    $scope.changeHeight(0);
 });
 
-app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , inventoryServices , $filter){
+app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , inventoryServices , $filter , uiGridExporterConstants){
     console.log('Inside Inventory Controller');
     
     $rootScope.isActive = 'INVENTORY';
@@ -3034,11 +3028,29 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
             $state.go('Home.AddInventory' , { data: row.entity });
         });*/
     }
+    /*$scope.gridOptions.exporterFieldCallback  = function ( grid, row, col, value ){
+        if ( col.displayName === 'specification' ){
+          if(row.entity.productspecs.length >= 1){
+            return row.entity.productspecs[0].productspecid;
+         }
+         return "";
+        }
+        return value;
+    }*/
     $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
     $scope.search = {
         searchString : ''
     }
+
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+       $scope.pdfDownload = function(){
+        $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+
     $scope.search = function(searchterm){
         if(searchterm == '') {
         return;
@@ -3062,7 +3074,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
         $scope.changeHeight(0);
     }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val,32);
+        heightCalc.calculateGridHeight(val,0);
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();

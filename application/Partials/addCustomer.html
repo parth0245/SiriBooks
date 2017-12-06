@@ -85,6 +85,24 @@
     <div class="topPadding20" ng-hide="panelShow2">
         <md-content>
             <form name="addCustomerForm2" style="background-color:#f5f6f8">
+                    <div layout="row" class="topPadding10">
+                            <!-- <md-input-container flex="25">
+                                 <label>Nature of Business</label>
+                                 <md-select name="NOB" ng-model="identity.lkupnatbus">
+                                         <md-option ng-repeat="data in identity.nob" ng-value="{{data.nobid}}">{{data.businesstype}}</md-option>
+                                 </md-select>
+                             </md-input-container>-->
+                             <md-input-container flex="25">
+                                 <label>Type</label>
+                                 <md-select name="type" ng-model="identity.customertype">
+                                     <md-option ng-repeat="data in identity.type" ng-value="{{data.id}}">{{data.type}}</md-option>
+                                 </md-select>
+                             </md-input-container>
+                            <!-- <md-input-container flex="25" flex-offset="5">
+                                 <label>Registration Number</label>
+                                 <input name="RN" ng-model="identity.regnumber">
+                             </md-input-container>-->
+                         </div>
                 <div layout="row" class="topPadding10">
                     <md-input-container flex="25">
                         <label>GST</label>
@@ -99,24 +117,7 @@
                         <input name="aadhar" ng-model="identity.aadharnum">
                      </md-input-container>
                  </div>
-                 <div layout="row" class="topPadding10">
-                    <md-input-container flex="25">
-                        <label>Nature of Business</label>
-                        <md-select name="NOB" ng-model="identity.lkupnatbus">
-                                <md-option ng-repeat="data in identity.nob" ng-value="{{data.nobid}}">{{data.businesstype}}</md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container flex="25" flex-offset="5">
-                        <label>Type</label>
-                        <md-select name="type" ng-model="identity.customertype">
-                            <md-option ng-repeat="data in identity.type" ng-value="{{data.id}}">{{data.type}}</md-option>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container flex="25" flex-offset="5">
-                        <label>Registration Number</label>
-                        <input name="RN" ng-model="identity.regnumber">
-                    </md-input-container>
-                </div>
+                 
                 <div layout="row" ng-if="heading=='New'">
                     <md-button class="md-raised ifBold" ng-click="resetForm2()" flex="10" flex-offset="75">Reset</md-button>
                 </div>
@@ -174,6 +175,10 @@
             <form name="addCustomerForm4" style="background-color:#f5f6f8">
                     <div layout="row" class="topPadding10">
                             <md-input-container flex="25">
+                                    <label>Name</label>
+                                    <input name="name" ng-model="location.customername">
+                            </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
                                     <label>Contact Phone</label>
                                     <input name="name" ng-model="location.contactphone">
                             </md-input-container>
