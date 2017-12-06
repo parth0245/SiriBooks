@@ -1,5 +1,5 @@
 app.constant('CONSTANTS', {
-        appLevel : 0,
+        appLevel : 1,
         getDateObject : function(d){
                 var onlydate = d.split(" ");
                 var splitedArray = onlydate[0].split("/")

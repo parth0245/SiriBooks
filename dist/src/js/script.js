@@ -281,9 +281,10 @@ app.run(function($rootScope) {
     $rootScope.showNavigations = true ;
     $rootScope.appTitle = 'Siri-Books';
     $rootScope.showLoader = false;
+    $rootScope.emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   });
 app.constant('CONSTANTS', {
-        appLevel : 0,
+        appLevel : 1,
         getDateObject : function(d){
                 var onlydate = d.split(" ");
                 var splitedArray = onlydate[0].split("/")

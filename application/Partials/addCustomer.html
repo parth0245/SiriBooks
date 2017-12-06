@@ -184,7 +184,10 @@
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5">
                                     <label>Contact Email</label>
-                                    <input name="name" ng-model="location.contactemail">
+                                    <input name="email" ng-model="location.contactemail" ng-pattern="emailRegex">
+                                    <div ng-messages="addCustomerForm4.email.$error" ng-if="addCustomerForm4.email.$touched">
+                                            <div ng-message="pattern">Invalid Email</div>
+                                        </div>
                             </md-input-container>
                     </div>
                     <div layout="row" class="topPadding10">
@@ -194,7 +197,10 @@
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5">
                                     <label>Contact Email2</label>
-                                    <input name="name" ng-model="location.contactemail2">
+                                    <input name="email2" ng-model="location.contactemail2" ng-pattern="emailRegex">
+                                    <div ng-messages="addCustomerForm4.email2.$error" ng-if="addCustomerForm4.email2.$touched">
+                                            <div ng-message="pattern">Invalid Email</div>
+                                        </div>
                             </md-input-container>
                     </div>
                 <div layout="row" class="topPadding10" ng-repeat="addData in additionalData">
