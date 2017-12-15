@@ -514,6 +514,9 @@
 }
 /*Margins*/
 /*Grid*/
+.ui-grid-render-container-body .ui-grid-viewport {
+	height: 100% !important;
+}
 .grid .ui-grid-header-cell {
 	height: 40px;
 	padding-left: 15px;

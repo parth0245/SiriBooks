@@ -1,0 +1,119 @@
+[
+    {
+        "id": 1,
+        "name": "Liabilities",
+        "mainGroup": [{
+            "id": 1,
+            "name": "Capital Account",
+            "subGroup" : [{
+                "name" : "Capital"
+             }]
+            },
+            {
+                "id": 2,
+                "name": "Non Current Liabilitis",
+                "subGroup" : [
+                    {
+                        "name" : "Secured Loans"
+                        },
+                        {
+                            "name" : "Unsecured Loans"
+                            }
+                            ,
+                            {
+                                "name" : "Loans & Advances (Taken)"
+                                },
+                                {
+                                    "name" : "Long Term Provisions"
+                                    }
+                ]
+                },
+                {
+                    "id": 3,
+                    "name": "Current Liabilities",
+                    "subGroup" : [
+                        {"name" : "Trade Payables (Vendors)"},
+                        {"name" : "GST Output"},
+                        {"name" : "TDS Payable"},
+                        {"name" : "Bank Over Draft"},
+                        {"name" : "Short Term Provisions"}
+                    ]
+                    }]
+    },
+    {
+        "id": 2,
+        "name": "Assets",
+        "mainGroup": [{
+            "id": 1,
+            "name": "Fixed Assets",
+            "subGroup" : [
+                {"name" : "Land & Buildings"},
+                {"name" : "Plant & Machinery"},
+                {"name" : "Furniture & Fixtures"},
+                {"name" : "Office Equipment"},
+                {"name" : "Vehicles"},
+                {"name" : "Intangible Assets"}
+            ]
+            },
+            {
+                "id": 2,
+                "name": "Non Current Assets",
+                "subGroup" : [{
+                    "name" : "Investements"
+                    },
+                    {
+                        "name" : "Loans & Advances (Given)"
+                        }]
+                },
+                {
+                    "id": 3,
+                    "name": "Current Assets",
+                    "subGroup" : [
+                        {"name" : "Inventory"},
+                        {"name" : "Trade Receivables"},
+                        {"name" : "Cash"},
+                        {"name" : "Bank Accounts"},
+                        {"name" : "TDS Receivable"},
+                        {"name" : "Branch / Division"}
+                    ]
+                    }]
+    },
+    {
+        "id": 3,
+        "name": "Income",
+        "mainGroup": [{
+            "id": 1,
+            "name": "Sales",
+            "subGroup" : []
+            },
+            {
+                "id": 2,
+                "name": "Direct Incomes",
+                "subGroup" : []
+                },
+                {
+                    "id": 3,
+                    "name": "Indirect Incomes",
+                    "subGroup" : []
+                    }]
+    },
+    {
+        "id": 4,
+        "name": "Expenses",
+        "mainGroup": [{
+            "id": 1,
+            "name": "Purchases",
+            "subGroup" : []
+            },
+            {
+                "id": 2,
+                "name": "Direct Expenses",
+                "subGroup" : []
+                },
+                {
+                    "id": 3,
+                    "name": "Indirect Expenses",
+                    "subGroup" : []
+                    }]
+    }
+]

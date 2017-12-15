@@ -8,4 +8,11 @@ app.service('ledgerServices',function($http , CONSTANTS){
      this.importLedgers = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].importLedgers);
      }
+     this.getprimaryGroupList = function(){ 
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].groupList);
+     }
+     this.getGroups = function(){ 
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].groupList);
+     }
+     //niksweta300@gmail.com
 });

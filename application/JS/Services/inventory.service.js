@@ -1,4 +1,7 @@
 app.service('inventoryServices',function($http , CONSTANTS){
+    this.getStockCount = function(prod){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].stockCountList);
+    }
     this.searchInventories = function(search){
         this.search = search;
         if(this.search == ''){

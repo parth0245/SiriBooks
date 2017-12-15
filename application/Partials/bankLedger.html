@@ -11,21 +11,25 @@
                                     <input name="name" ng-model="banking.name">
                                 </md-input-container>
                                 <md-input-container flex="25" flex-offset="5">
-                                    <label>Group/Ledger</label>
-                                    <md-select name="ledger" ng-model="banking.ledger">
-                                        <md-option value="one">1</md-option>
-                                        <md-option value="two">2</md-option>
+                                    <label>Account Type</label>
+                                    <md-select name="accountType" ng-model="banking.accType">
+                                        <md-option value="saving">Saving</md-option>
+                                        <md-option value="current">Current</md-option>
                                     </md-select>
                                 </md-input-container>
                                 <md-input-container flex="25" flex-offset="5">
+                                    <label>Bank Name</label>
+                                    <input name="desc" ng-model="banking.bnkName">
+                            </md-input-container>
+                               <!-- <md-input-container flex="25" flex-offset="5">
                                     <label>Group</label>
                                     <md-select name="group" ng-model="banking.group">
                                         <md-option value="one">One</md-option>
                                         <md-option value="two">Two</md-option>
                                     </md-select>
-                                </md-input-container>
+                                </md-input-container>-->
                         </div>
-                        <div layout="row">
+                        <!--<div layout="row">
                             <md-input-container flex="25">
                                 <label>Primary Group</label>
                                 <md-select name="primaryGroup" ng-model="banking.primaryGroup">
@@ -47,26 +51,24 @@
                                     <md-option value="two">Two</md-option>
                                 </md-select>
                             </md-input-container>
-                        </div>
-                        <div layout="row" class="topPadding25">
-                            <md-input-container flex="25">
-                                <label>Bank Name</label>
-                                <input name="desc" ng-model="banking.bnkName">
-                        </md-input-container>
-                        <md-input-container flex="25" flex-offset="5">
+                        </div>-->
+                        <div layout="row" class="">
+                            
+                        <md-input-container flex="25">
                             <label>Branch</label>
                             <input name="desc" ng-model="banking.branch">
                     </md-input-container>
                     <md-input-container flex="25" flex-offset="5">
                         <label>Account No.</label>
-                        <input name="desc" ng-model="banking.acc">
+                            <input name="desc" ng-model="banking.acc">
+                    </md-input-container>
+                    <md-input-container flex="25" flex-offset="5">
+                        <label>IFSC Code</label>
+                        <input name="desc" ng-model="banking.ifscCode">
                 </md-input-container>
                     </div>
                     <div layout="row" class="">
-                        <md-input-container flex="25">
-                                <label>IFSC Code</label>
-                                <input name="desc" ng-model="banking.ifscCode">
-                        </md-input-container>
+                        
                 </div>
                 <div layout="row" class="">
                     <md-input-container flex="85">

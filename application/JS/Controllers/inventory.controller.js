@@ -49,7 +49,35 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
        $scope.pdfDownload = function(){
         $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
       }
-
+      $scope.print = function(){
+        var gridOptions = $scope.gridOptions;
+        
+        var innerContents = '<div class="col-xs-12 inventorySection">'+
+        '<div id="grid2" ui-grid="optionsForGrid" class="grid" style="width:100%">'+
+            '</div></div>';
+        sessionStorage.setItem("gridOpts", JSON.stringify(gridOptions)); 
+        var popupWinindow = window.open('', '_blank', 'width=1000,height=700,scrollbars=no,menubar=no,toolbar=no,location=no,status=no,titlebar=no');
+        popupWinindow.document.open();
+        popupWinindow.document.write('<html  ng-app="print"><head><base href="/">'+
+        '<script src="/node_modules/jquery/dist/jquery.min.js"></script>'+
+        '<link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />'+
+        '<link rel="stylesheet" type="text/css" href="/node_modules/angular-ui-grid/ui-grid.css" />'+
+        '<link rel="stylesheet" type="text/css" href="/application/css/index.css"/>'+
+        '<script src="/node_modules/angular/angular.min.js"></script>'+
+        '<script src="/node_modules/angular-ui-grid/ui-grid.js"></script>'+ 
+        '<style>.ui-grid-header { height : 40px; } </style>'+   
+        '<script>'+
+        'var print= angular.module("print",["ui.grid"]);print.controller("printCtrl",function($rootScope,$scope,$timeout,$window){'+
+            '$scope.optionsForGrid = JSON.parse(sessionStorage.getItem("gridOpts"));'+
+            '$timeout(function(){var height = $(".ui-grid-canvas").height();$(".grid").css("height",height + 0 + 43);},500);'+
+            'console.log("Print in Progress");'+
+            '});'+ 
+            '</script>'+
+            '</head>'+
+            '<body id="body" ng-controller="printCtrl"><a>Hit Ctrl+P to print this Document</a><div>'+innerContents+'</div></body></html>');
+       
+            popupWinindow.document.close();
+      }
     $scope.search = function(searchterm){
         if(searchterm == '') {
         return;
@@ -116,6 +144,18 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     });
     inventoryServices.searchInventories('').then(function(response){
         $scope.gridOptions.data = response.data;
+
+        $scope.gridOptions.data.forEach( function addDates( row, index ){
+            console.log('row',row);
+            row.value = row.orgledger.balanceamount;
+            if(row.productspecs.length !=0) {
+                row.specification = row.productspecs[0].productspecid;
+            }
+            else {
+                row.specification = "-";
+            }
+          });
+
         $scope.dataForGrid = angular.copy(response.data);
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
         if($scope.gridOptions.data.length !== 0){
@@ -128,6 +168,26 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
           },function(error){
         console.log('error',error);
    });
+   $scope.panelShow = true;
+   $scope.showAccordian = false;
+   $scope.togglePannel = function(){
+    $scope.panelShow = !$scope.panelShow;
+   }
+   $scope.showCounts = function(row){
+    $scope.panelShow = true;
+    $rootScope.showLoader = true;
+    $scope.productName = row.entity.productname;
+    $scope.showAccordian = true;
+
+    inventoryServices.getStockCount($scope.productName).then(function(response){
+        $scope.stockCountList = response.data;
+        $rootScope.showLoader = false;
+          },function(error){
+        console.log('error',error);
+        $rootScope.showLoader = false;
+   });
+}
+
     $scope.checkModule = function(){
         if($scope.gridOptions.data.length == 0) {
             return true;

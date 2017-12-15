@@ -126,7 +126,7 @@
                     <li><a ng-click="csvDownload()">Excel</a></li>
                   </ul>
             </span>
-            <span ng-if="moduleHeading == 'Inventory' || moduleHeading == 'Cash / Banking Ledgers' || moduleHeading == 'Customers List' || moduleHeading == 'Vendor List' || moduleHeading == 'Ledgers'" class="paddingLeft10 paddingRight10">
+            <span ng-click="print()" ng-if="moduleHeading == 'Inventory' || moduleHeading == 'Cash / Banking Ledgers' || moduleHeading == 'Customers List' || moduleHeading == 'Vendor List' || moduleHeading == 'Ledgers'" class="paddingLeft10 paddingRight10">
                 <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
             </span>
             <span class="buttonBorder" ng-click="prevPage()">
@@ -148,4 +148,29 @@
                 <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
             </div>
     </div>
+    <div class="addInventory" ng-if="showAccordian">
+    <div layout="row" class="topPadding20 col-xs-11 paddingRight30" ng-if="moduleHeading == 'Inventory'">
+        <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
+                {{productName}}
+                <span ng-hide="!panelShow" class="pull-right description">+</span>
+                <span ng-hide="panelShow" class="pull-right description">-</span>
+    </md-button>
+    </div>
+    <div layout="row" ng-hide="panelShow" class="topPadding20 col-xs-6 paddingRight30 paddingBottom30">
+            <table class="journalTable withRole">
+                    <thead>
+                        <tr>
+                         <th>Batch No.</th>
+                         <th>Stock Count</th>
+                     </tr>
+                    </thead>
+                    <tbody>
+                            <tr ng-repeat="data in stockCountList">
+                                    <td>{{data.batch}}</td>
+                                    <td>{{data.count}}</td>
+                            </tr>
+                    </tbody>
+                </table>
+    </div>
+</div>
 </div>

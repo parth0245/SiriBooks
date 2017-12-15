@@ -139,6 +139,13 @@
                             <md-datepicker ng-model="books.updateddate" md-hide-icons="triangle" md-open-on-focus=""></md-datepicker>
                         </md-input-container>
                  </div>
+                 <div ng-if="heading != 'Update'"  layout="row" class="paddingBottom30 addLedger flex-25 borderRadio">
+                        <span class="marginRight20">Opening Balance Type</span> 
+                        <md-radio-group ng-model="books.openingbalancetype" layout="row" flex="25">
+                            <md-radio-button value="Dr" class="md-primary">Debit</md-radio-button>
+                            <md-radio-button value="Cr" class="md-primary">Credit</md-radio-button>
+                        </md-radio-group>
+                    </div>
                 <div layout="row" ng-if="heading=='New'">
                     <md-button ng-click="resetForm3()" class="md-raised ifBold" flex="10" flex-offset="75">Reset</md-button>
                 </div>

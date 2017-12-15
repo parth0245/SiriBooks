@@ -32,7 +32,7 @@ app.controller('ledgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONS
         $state.go('Home.addLedgers' , { data: row.entity });
     }    
     $scope.editLedger = function(row){
-        $state.go('Home.bankLedger' , { data: row.entity });
+        $state.go('Home.companyLedgers' , { data: row.entity });
     }
     $scope.import = function(){
         $state.go('Home.ImportLedger' , { data: "" });   
@@ -158,17 +158,19 @@ $scope.getCompanyLedger = function(row,column){
    $scope.changeHeight(0);
 });
 
-app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $stateParams){
+app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $stateParams , ledgerServices){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'LEDGERS';
 
     if(angular.isDefined($stateParams.data.ledgerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.ledger ={};
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Create";
+        $scope.ledger ={};
     }
 
     $scope.resetAll = function(){
@@ -180,4 +182,79 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
         $state.go('Home.Ledgers');
     }
 
+    $scope.primaryGroupList = [];
+    $scope.showdrcr = true;
+    $scope.checkBalance = function(){
+
+        if($scope.heading != 'Update'){
+            $scope.showdrcr = true;
+        }
+        else {
+            if($scope.ledger.group == 'sub'){
+                $scope.showdrcr = false;
+            }
+            $scope.showdrcr = true;
+        } 
+    }
+    $scope.checkBalance();
+    $scope.showMainGroup = true;
+    $scope.showSubGroup = true;
+    $scope.selectGroup = function(){
+        if($scope.ledger.group == 'main'){
+            $scope.showdrcr = true;
+            if($scope.ledger.ledger == 'ledger'){
+                return;
+            }
+            $scope.showMainGroup = false;
+            $scope.showSubGroup = false;
+           
+        }
+        else {
+            $scope.showdrcr = false;
+            if($scope.ledger.ledger == 'ledger'){
+                return;
+            }            
+            $scope.showSubGroup = false;
+            $scope.showMainGroup = true;
+            
+        }
+    }
+    $scope.subGroupList = [
+       
+    ];
+    $scope.majorGroupList = [
+       
+    ];
+    $scope.checkGroups = function(){
+        $scope.showMainGroup = true;
+        $scope.showSubGroup = true;
+    }
+    ledgerServices.getprimaryGroupList().then(function(responce){
+        $scope.primaryGroupList = responce.data;
+
+    },function(error){
+        console.log(error);
+    });
+
+    $scope.changeGroup = function() {
+        angular.forEach($scope.primaryGroupList , function(key,value){
+          if(angular.isDefined(key.mainGroup[value])) {
+              if(key.name == $scope.ledger.primaryGroup){
+                $scope.majorGroupList = key.mainGroup;
+              }
+          }
+        });
+        $scope.ledger.majorGroup = "";
+        $scope.ledger.subGroup = "";
+    }
+    $scope.changeMainGroup = function(){
+        angular.forEach($scope.majorGroupList , function(key,value){
+            if(angular.isDefined(key.subGroup[value])) {
+                if(key.name == $scope.ledger.majorGroup){
+                  $scope.subGroupList = key.subGroup;
+                }
+            }
+    });
+    $scope.ledger.subGroup = "";
+}
 });

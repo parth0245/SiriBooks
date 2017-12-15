@@ -55,7 +55,8 @@ app.constant('CONSTANTS', {
                         allPurchseList : 'application/fixture/allPurshaseList.json',
                         getCurrentJournal :'application/fixture/getCurrentJournal.json',
                         salesList : 'application/fixture/salesList.json',
-                        importLedgers :'application/fixture/importLedgers.json'                     
+                        importLedgers :'application/fixture/importLedgers.json' ,
+                        stockCountList : ''                   
                 },{
                         inventoryList : 'application/fixture/inventoryList.json',
                         saveInventory : '',
@@ -100,7 +101,10 @@ app.constant('CONSTANTS', {
                         allPurchseList : 'application/fixture/allPurshaseList.json',
                         getCurrentJournal :'application/fixture/getCurrentJournal.json',
                         salesList : 'application/fixture/salesList.json',
-                        importLedgers :'application/fixture/importLedgers.json'
+                        importLedgers :'application/fixture/importLedgers.json',
+                        stockCountList :'application/fixture/stockCountList.json',
+                        primaryGroupList : "application/fixture/primaryGroupList.json",
+                        groupList : "application/fixture/groupList.json"
                 }
         ],
         headBarNavigator : [
@@ -155,7 +159,6 @@ app.constant('CONSTANTS', {
                 }
                 else{
                 return {
-                        enableSorting: true,
                         rowHeight: 40,
                         enableRowSelection: false,
                         enableColumnResizing: false,
@@ -289,17 +292,26 @@ app.constant('CONSTANTS', {
                               '</div>' },
                              
              { field: 'specification',
+             displayName : 'Specification',
              headerCellClass : '',
               width : '20%' ,
               cellTemplate: '<div class="ui-grid-cell-contents" >'+
               '<span>{{row.entity.productspecs[0].productspecid}}</span>'+
+              '<span>{{grid.getCellValue(row, col)}}</span>'+
               '</div>' },
               { field: 'stockCount', 
-              headerCellClass : ''}, 
+              headerCellClass : '',
+              cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.showCounts(row)" >'+
+              '<span>{{grid.getCellValue(row, col)}}</span>'+
+              '</div>' }, 
               { field: 'value' ,displayName:'Value', 
               headerCellClass : '',
               cellTemplate: '<div class="ui-grid-cell-contents" >'+
-              '<span>{{row.entity.orgledger.balanceamount}}</span>'+
+              '<span>{{grid.getCellValue(row, col)}}</span>'+
+              '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
+              '<img height="20" width="20" '+
+                      'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
+              '</span>'+
               '</div>' },
               /*{ field: 'debit' ,category:"Balance Amount" ,
               cellTemplate: '<div class="ui-grid-cell-contents" >'+
@@ -493,7 +505,17 @@ CompanyLedgerfields : [
         {field : "date"},
         {field : "particulars"},
         {field : "voucherType"},
-        {field : "voucherNo."},
+        {field : "voucherNo",
+        cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.salePurchase(row)" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>'},
+        {field : "count",
+        cellTemplate: '<div class="ui-grid-cell-contents">'+
+        '<span class="" ng-if="row.entity.voucherType == \'purchase\'">+</span>'+
+        '<span class="" ng-if="row.entity.voucherType == \'sale\'">-</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '</div>'
+},
         {field : "debit"},
         {field : "credit"},
         {field : "netBalance"}

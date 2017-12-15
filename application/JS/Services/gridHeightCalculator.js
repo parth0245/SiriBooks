@@ -9,7 +9,8 @@ app.factory('heightCalc',function($timeout){
             else {
             $timeout(function(){
                 var height = $('.ui-grid-canvas').height();
-                $('.grid').css('height',height + val1 + 43);     
+                $('.grid').css('height',height + val1 + 43);
+                    
             },500);
         }
         }

@@ -2,14 +2,21 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
     console.log('Inside Company Ledger Controller');
     $rootScope.isActive = 'LEDGERS';
     $scope.pageData = $stateParams.data;
-    $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val , 0);
-    }
+    console.log($scope.pageData);
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }
+
     $scope.group1 = "day";
+    $scope.salePurchase = function(row){
+        if(row.entity.voucherType == 'sale'){
+            $state.go('Home.addSales',{data: row.entity});
+        }
+        else {
+            $state.go('Home.addPurchase',{data: row.entity});
+        }
+    }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
         if($scope.paging.pageSelected != $scope.totalPages) {
@@ -60,6 +67,9 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
           },function(error){
         console.log('error',error);
    });
+   $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val , 0);
+    }   
       
    $scope.changeHeight(0);
 

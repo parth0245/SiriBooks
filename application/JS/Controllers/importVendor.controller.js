@@ -63,6 +63,7 @@ app.controller('importVendorCtrl',function($scope, $rootScope , heightCalc ,CONS
           },function(error){
         console.log('error',error);
      });
+    
      $scope.checkModule = function(){
         if($scope.gridOptions.data.length == 0) {
             return true;

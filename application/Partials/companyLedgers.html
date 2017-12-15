@@ -1,20 +1,30 @@
 <div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
     <div class="sectionSubHeading">
-        <h3>Ledger of : {{pageData.product || "Company Name"}}</h3>
+        <h3>Ledger of : {{pageData.productname || pageData.customername || pageData.name || "Company"}}</h3>
     </div>
     <div class="topPadding20">
         <md-content>
             <form name="companyLedgerForm" style="background-color:#f5f6f8">
-                        <div layout="row" class="topPadding10">
-                                <md-input-container flex="55">
-                                    <label>Address</label>
-                                    <input name="add" ng-model="add" ng-readonly="true">
-                                </md-input-container>
-                                <md-input-container flex="25"  flex-offset="5">
-                                        <label>Contact</label>
-                                        <input name="contact" ng-model="contact" ng-readonly="true">
-                                </md-input-container>
-                        </div>
+                <div layout="row" class="topPadding10" ng-if="!pageData.productname && !pageData.bank">
+                    <md-input-container flex="55">
+                        <label>Address</label>
+                        <input name="add" ng-model="add" ng-readonly="true">
+                    </md-input-container>
+                    <md-input-container flex="25"  flex-offset="5">
+                            <label>Contact</label>
+                            <input name="contact" ng-model="contact" ng-readonly="true">
+                    </md-input-container>
+            </div>
+            <div layout="row" class="topPadding10" ng-if="pageData.bank">
+                <md-input-container flex="55">
+                    <label>Account</label>
+                    <input name="acc" ng-model="acc" ng-readonly="false">
+                </md-input-container>
+                <md-input-container flex="25"  flex-offset="5">
+                        <label>Branch</label>
+                        <input name="branch" ng-model="branch" ng-readonly="false">
+                </md-input-container>
+        </div>
                         <div layout="row" class="sectionSubHeading">
                             <h3>Select View</h3>
                         </div>
@@ -40,12 +50,19 @@
         </md-content>
     </div>
     <div class="pagingPart col-xs-11 text-right paddingTop100 paddingBottom10 paddingRight30">
-            <span class="">
-                <img src="application/Images/Assets/download.png" height="25" width="25"/>
+            <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+            <span class="moduleDownload">
+                <img src="application/Images/Assets/download.png" id="dropdownMenu1" data-toggle="dropdown" height="25" width="25"/>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a ng-click="pdfDownload()">PDF</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ng-click="csvDownload()">Excel</a></li>
+                  </ul>
             </span>
             <span class="paddingLeft10 paddingRight10">
                 <img src="application/Images/Assets/printing-document.png" height="25" width="25"/>
             </span>
+           
         <span class="buttonBorder" ng-click="prevPage()">
             <img src="application/Images/Assets/pagination_left.png"/>
         </span>
