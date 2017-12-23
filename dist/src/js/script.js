@@ -341,7 +341,8 @@ app.constant('CONSTANTS', {
                         getCurrentJournal :'application/fixture/getCurrentJournal.json',
                         salesList : 'application/fixture/salesList.json',
                         importLedgers :'application/fixture/importLedgers.json' ,
-                        stockCountList : ''                   
+                        stockCountList : '' ,
+                        saveReceiptList :''                  
                 },{
                         inventoryList : 'application/fixture/inventoryList.json',
                         saveInventory : '',
@@ -389,7 +390,8 @@ app.constant('CONSTANTS', {
                         importLedgers :'application/fixture/importLedgers.json',
                         stockCountList :'application/fixture/stockCountList.json',
                         primaryGroupList : "application/fixture/primaryGroupList.json",
-                        groupList : "application/fixture/groupList.json"
+                        groupList : "application/fixture/groupList.json",
+                        saveReceiptList :''
                 }
         ],
         headBarNavigator : [
@@ -863,24 +865,34 @@ AddJournalfields : [
         {field : "narration"},
 ],
 addReceiptfields : [
-        {field : "name" , displayName : 'Customer Name',
+        {field : "customername" , displayName : 'Customer Name',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
         '</span>'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' },
-        {field : "amount"},
+        {field : "orgledger.balanceamount" , displayName:"Amount"},
         {field : "date"},
         {field : "mode" ,displayName : 'Mode Of Payment',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span ng-if="row.entity.mode == \'1\'">Cash</span>'+
+        '<span ng-if="row.entity.mode == \'2\'">Bank</span>'+
+        '<span ng-if="row.entity.mode == \'3\'">NA</span>'+
         '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
         '<img height="20" width="20" '+
                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
         '</span>'+
-        '</div>' }
+        '</div>' },
+        {field:'regnumber', displayName:'Receipt Number',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '</div>'}
 ] , 
 Salesfields : [
         {field : "customerName",headerCellClass : 'topPadding15',
@@ -1508,6 +1520,28 @@ $scope.getData = function() {
 app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ,commonServices ){
     console.log('Inside Add Receipt Controller');
     $rootScope.isActive = 'Receipt';
+    $scope.custNameList = [];
+
+    $scope.getCustomers = function(){
+        receiptServices.getCustomerDetails().then(function(response){
+           $scope.receiptDataList = response.data;
+           angular.forEach(response.data,function(key){
+                $scope.custNameList.push({name : key.customername});
+           });
+        },function(err){
+            console.log(err);
+        });
+    }
+
+    $scope.getPerticularCustomer = function(){
+        angular.forEach($scope.receiptDataList,function(key){
+           if($scope.receipt.customername == key.customername){
+            $scope.receipt = key;
+           }
+       });
+
+    }
+
     if(angular.isDefined($stateParams.data.customerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
@@ -1517,17 +1551,11 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.receipt = {};
+        $scope.getCustomers();
     }
     $scope.ifCustomer = true;
-    $scope.getCustomer = function(){
-        //$scope.ifCustomer = true;
-        receiptServices.getCustomerDetails($scope.receipt.customername).then(function(response){
-            console.log('response',response.data[0]);
-            $scope.receipt = response.data[0];
-        },function(err){
-
-        });
-    }
+   
+    
     $scope.receipt.customername = '';
     $scope.cancel = function(){
         $state.go('Home.Receipt');
@@ -1611,6 +1639,83 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         console.log('error',error);
    });
 
+
+ $scope.gotoSales = function(event){
+    event.stopPropagation();
+     $state.go('Home.Sales');
+ }
+   $scope.saveReceipt = function(){
+    receiptServices.saveReceipt($scope.receipt).then(function(response){
+        console.log($scope.receipt);
+        $scope.gridOptions.data = response.data;
+        $scope.dataForGrid = angular.copy(response.data);
+        $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        }   
+           },function(error){
+         console.log('error',error);
+    });
+   }
+
+   $scope.salesList = [
+    {"id":1,"date":"10/12/2017","amount":"200"},
+    {"id":2,"date":"10/12/2017","amount":"200"},
+    {"id":3,"date":"10/12/2017","amount":"200"},
+    {"id":4,"date":"10/12/2017","amount":"200"},
+    {"id":5,"date":"10/12/2017","amount":"200"},
+    {"id":6,"date":"10/12/2017","amount":"200"},
+    {"id":7,"date":"10/12/2017","amount":"200"},
+    {"id":8,"date":"10/12/2017","amount":"200"},
+    {"id":9,"date":"10/12/2017","amount":"200"},
+    {"id":10,"date":"10/12/2017","amount":"200"},
+    ];
+
+    function getSaleTotal(){
+        $scope.totalOfSelectedSaleList = 0;
+        $scope.totalOfSaleList = 0;
+        angular.forEach($scope.salesList , function(key){
+            if(angular.isDefined(key)){
+            $scope.totalOfSaleList = $scope.totalOfSaleList + parseInt(key.amount);
+            }
+        });
+        angular.forEach($scope.SelectedSalesList , function(key){
+            if(angular.isDefined(key)){
+            $scope.totalOfSelectedSaleList = $scope.totalOfSelectedSaleList + parseInt(key.amount);
+            }
+        });
+    };
+
+    getSaleTotal();
+   $scope.SelectedSalesList = [];
+
+
+   $scope.btnRight = function (data , $index) {
+    $scope.SelectedSalesList.push(data);
+
+    angular.forEach($scope.salesList , function(key , value){
+        if(data.id == key.id){
+            $scope.salesList.splice($index,1);
+            console.log($scope.salesList);
+        }
+        
+    });
+    getSaleTotal();
+};
+$scope.btnLeft = function (data , $index) {
+    $scope.salesList.push(data);
+    
+        angular.forEach($scope.SelectedSalesList , function(key , value){
+            if(data.id == key.id){
+                $scope.SelectedSalesList.splice($index,1);
+                console.log($scope.SelectedSalesList);
+            }
+        });
+        getSaleTotal();
+};
    $scope.changeHeight(0);
 
 });
@@ -5277,6 +5382,14 @@ app.service('receiptServices',function($http , CONSTANTS){
     }
     this.getPreviousReceipts = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getPreviousReceipts);
+    }
+    this.saveReceipt = function(data){
+        console.log(data);
+        return $http({
+            method: "post",
+            url: CONSTANTS.service[CONSTANTS.appLevel].saveReceiptList,
+            data: data
+            })
     }
 });
 app.service('salesService',function($http , CONSTANTS){

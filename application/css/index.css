@@ -936,3 +936,41 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 	height: 45px;
     width: 45px;
 }
+.balanceAmount {
+	font-weight: 400!important;
+    font-family: Montserrat-Medium;
+	font-size:14px;
+}
+.addReceiptTable {
+	cursor: pointer;
+}
+.addReceiptTable:hover {
+	color:#0935ae;
+}
+#table-wrapper {
+	position:relative;
+  }
+  #table-scroll {
+	height:350px;
+	overflow-y: auto;
+    overflow-x: hidden; 
+  }
+  .secHeader{
+	  background-color: #e7e9e9;
+	  height:40px;
+	  border-right: 1px solid #d4d4d4;
+	  padding-top: 10px;
+	  text-align: center;
+  }
+  .secHeader.noRightborder{
+	border-right: none;
+  }
+  .secdata{
+	height:40px;
+	border-right: 1px solid #d4d4d4;
+	text-align: center;
+	padding-top: 10px;
+}
+.secdata.noRightborder{
+	border-right: none;
+}

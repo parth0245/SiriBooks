@@ -1,8 +1,12 @@
 [
     {
-        "name" : "Parth",
+        "customername" : "Parth",
         "amount" : "1234569999",
+        "orgledger" : {
+            "balanceamount" : 0
+        },
         "date" : "1/12/2107",
-        "mode" : "cash"
+        "mode" : "2",
+        "regnumber" : "123455"
     }
 ]

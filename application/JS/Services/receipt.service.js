@@ -12,4 +12,12 @@ app.service('receiptServices',function($http , CONSTANTS){
     this.getPreviousReceipts = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getPreviousReceipts);
     }
+    this.saveReceipt = function(data){
+        console.log(data);
+        return $http({
+            method: "post",
+            url: CONSTANTS.service[CONSTANTS.appLevel].saveReceiptList,
+            data: data
+            })
+    }
 });

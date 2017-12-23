@@ -56,7 +56,8 @@ app.constant('CONSTANTS', {
                         getCurrentJournal :'application/fixture/getCurrentJournal.json',
                         salesList : 'application/fixture/salesList.json',
                         importLedgers :'application/fixture/importLedgers.json' ,
-                        stockCountList : ''                   
+                        stockCountList : '' ,
+                        saveReceiptList :''                  
                 },{
                         inventoryList : 'application/fixture/inventoryList.json',
                         saveInventory : '',
@@ -104,7 +105,8 @@ app.constant('CONSTANTS', {
                         importLedgers :'application/fixture/importLedgers.json',
                         stockCountList :'application/fixture/stockCountList.json',
                         primaryGroupList : "application/fixture/primaryGroupList.json",
-                        groupList : "application/fixture/groupList.json"
+                        groupList : "application/fixture/groupList.json",
+                        saveReceiptList :''
                 }
         ],
         headBarNavigator : [
@@ -578,24 +580,34 @@ AddJournalfields : [
         {field : "narration"},
 ],
 addReceiptfields : [
-        {field : "name" , displayName : 'Customer Name',
+        {field : "customername" , displayName : 'Customer Name',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="float:left;margin-left:20px;">'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
         '</span>'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' },
-        {field : "amount"},
+        {field : "orgledger.balanceamount" , displayName:"Amount"},
         {field : "date"},
         {field : "mode" ,displayName : 'Mode Of Payment',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span ng-if="row.entity.mode == \'1\'">Cash</span>'+
+        '<span ng-if="row.entity.mode == \'2\'">Bank</span>'+
+        '<span ng-if="row.entity.mode == \'3\'">NA</span>'+
         '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
         '<img height="20" width="20" '+
                 'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
         '</span>'+
-        '</div>' }
+        '</div>' },
+        {field:'regnumber', displayName:'Receipt Number',
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<img height="15" width="15" '+
+                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
+        '</span>'+
+        '</div>'}
 ] , 
 Salesfields : [
         {field : "customerName",headerCellClass : 'topPadding15',
