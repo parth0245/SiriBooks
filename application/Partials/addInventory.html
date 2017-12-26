@@ -52,16 +52,25 @@
                             <div layout="row">
                                     <md-input-container flex="25">
                                         <label>Vendor</label>
-                                        <md-select name="vendor" ng-model="inventory.vendor">
-                                            <md-option ng-repeat="data in inventory.vendorList" ng-value="{{data.name}}">{{data.name}}</md-option>
+                                        <md-select name="vendor" ng-model="selectedVendors" multiple="">
+                                            <md-option ng-repeat="data in inventory.vendorList track by $index" ng-value="data.name">{{data.name}}</md-option>
                                         </md-select>
                                     </md-input-container>
-                                    <md-input-container flex="25"  flex-offset="5">
+                                    <!--<md-input-container flex="25"  flex-offset="5">
                                             <label>Price</label>
                                             <input name="price" ng-model="inventory.price" required>
                                             <div ng-messages="addInventoryForm.price.$error">
                                                 <div ng-message="required">This is required.</div>
                                         </div>
+                                    </md-input-container>-->
+                                    <md-input-container flex="25" flex-offset="5">
+                                        <label>GST %</label>
+                                        <md-select name="gst" ng-model="inventory.gst" required>
+                                            <md-option ng-repeat="percent in gstList track by $index" value="{{percent}}">{{percent}}</md-option>
+                                        </md-select>
+                                        <div ng-messages="addInventoryForm.gst.$error"  ng-if="addInventoryForm.gst.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                    </div>
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Description</label>
@@ -122,13 +131,13 @@
                                 
                 <md-content>
                 <div flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" flow-init="{singleFile:true}">
-                        <div ng-show="!$flow.files.length">
+                        <div ng-show="!$flow.files.length" style="display: inline;padding-right: 50px;">
                         <img src="application/Images/Assets/noImage.png" height="200" width="275" />
                         </div>
-                        <div ng-show="$flow.files.length">
+                        <div ng-show="$flow.files.length" style="display: inline;padding-right: 50px;">
                         <img flow-img="$flow.files[0]" height="200" width="275"/>
                         </div>
-                        <div style="text-align:center;" class="topPadding20">
+                        <div style="display: inline;" class="topPadding20">
                         <md-button ng-show="!$flow.files.length" class="md-raised md-primary ifBold" >
                                 <label for="select">Image Upload</label>
                         </md-button>

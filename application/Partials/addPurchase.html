@@ -8,13 +8,18 @@
                     <div layout="row">
                             <md-input-container flex="85">
                                 <label>Vendor Name*</label>
-                                <md-select name="name" ng-model="name">
+                                <md-select name="name" ng-model="vendor.name">
                                     <md-option value="Product 1">name 1</md-option>
                                     <md-option value="Product 2">name 2</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
-
+                        <div layout="row" class="balanceAmount paddingBottom10" ng-if="vendor.name">
+                            MRP : {{vendor.mrp || 0}} 
+                        </div>
+                        <div layout="row" class="balanceAmount paddingBottom10" ng-if="vendor.name">
+                            Sale Price : {{vendor.salePrice || 0}} 
+                        </div>
                         <div layout="row" class="topPadding10">
                             <md-input-container flex="25">
                                 <label>Date</label>
@@ -290,6 +295,16 @@
                                     <label>Batch No.</label>
                                     <input name="gst" ng-model="bno">
                                 </md-input-container>
+                            </div>
+                            <div layout="row">
+                                <md-input-container flex="25">
+                                    <label>MRP</label>
+                                    <input name="mrp" ng-model="mrp">
+                                </md-input-container>
+                                <md-input-container flex="25"  flex-offset="5">
+                                    <label>Sale Price</label>
+                                    <input name="salePrice" ng-model="salePrice">
+                            </md-input-container>
                             </div>
                             <!--<div layout="row" class="topPadding20 purchaseSpecification">
                                 <div>Add Additional Specification for each Item of Quantity</div>

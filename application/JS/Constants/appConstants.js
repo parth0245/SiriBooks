@@ -278,7 +278,7 @@ app.constant('CONSTANTS', {
                 '</span>'+
                 '</div>' },
         { field: 'date' },
-        { field: 'modeOfPayment'}
+        { field: 'mode'}
         ],
         Inventoryfields : [
                 { field: 'productname',
@@ -303,7 +303,7 @@ app.constant('CONSTANTS', {
               '</div>' },
               { field: 'stockCount', 
               headerCellClass : '',
-              cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.showCounts(row)" >'+
+              cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue">'+
               '<span>{{grid.getCellValue(row, col)}}</span>'+
               '</div>' }, 
               { field: 'value' ,displayName:'Value', 
@@ -315,6 +315,11 @@ app.constant('CONSTANTS', {
                       'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
               '</span>'+
               '</div>' },
+              { field: 'price', 
+              headerCellClass : '',
+              cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.showPrice(row)" >'+
+              '<span>{{grid.getCellValue(row, col)}}</span>'+
+              '</div>' }
               /*{ field: 'debit' ,category:"Balance Amount" ,
               cellTemplate: '<div class="ui-grid-cell-contents" >'+
               '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
@@ -582,11 +587,11 @@ AddJournalfields : [
 addReceiptfields : [
         {field : "customername" , displayName : 'Customer Name',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="position:absolute;left: 10px;text-align: left;">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
         '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' },
         {field : "orgledger.balanceamount" , displayName:"Amount"},
         {field : "date"},
@@ -595,18 +600,10 @@ addReceiptfields : [
         '<span ng-if="row.entity.mode == \'1\'">Cash</span>'+
         '<span ng-if="row.entity.mode == \'2\'">Bank</span>'+
         '<span ng-if="row.entity.mode == \'3\'">NA</span>'+
-        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
-        '<img height="20" width="20" '+
-                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-        '</span>'+
         '</div>' },
         {field:'regnumber', displayName:'Receipt Number',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
-        '<img height="15" width="15" '+
-                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-        '</span>'+
         '</div>'}
 ] , 
 Salesfields : [
@@ -639,6 +636,7 @@ Salesfields : [
         '</span>'+
         '</div>' }
 ] ,
+InventoryDetailsfields : [],
 ImportLedgerfields : [
         {field : "ledgerEntry",headerCellClass : 'topPadding15'},
         {field : "rows",headerCellClass : 'topPadding15'},

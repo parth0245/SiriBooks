@@ -7,7 +7,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         receiptServices.getCustomerDetails().then(function(response){
            $scope.receiptDataList = response.data;
            angular.forEach(response.data,function(key){
-                $scope.custNameList.push({name : key.customername});
+                $scope.custNameList.push({customername : key.customername});
            });
         },function(err){
             console.log(err);
@@ -23,14 +23,24 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
 
     }
 
+    $scope.editData = function(row){
+        $scope.receipt = row.entity;
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+        $scope.addReceiptLabel = "Update";
+        console.log('row',$scope.receipt);
+    }
+
     if(angular.isDefined($stateParams.data.customerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.addReceiptLabel = "Update";
         $scope.receipt = {};
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.addReceiptLabel = "Add";
         $scope.receipt = {};
         $scope.getCustomers();
     }
@@ -121,9 +131,9 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
    });
 
 
- $scope.gotoSales = function(event){
+ $scope.gotoSales = function(event , data){
     event.stopPropagation();
-     $state.go('Home.Sales');
+     $state.go('Home.addSales', {data :  data });
  }
    $scope.saveReceipt = function(){
     receiptServices.saveReceipt($scope.receipt).then(function(response){

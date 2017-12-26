@@ -23,19 +23,9 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Inventory');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
-            $state.go('Home.AddInventory' , { data: row.entity });
-        });*/
+       
     }
-    /*$scope.gridOptions.exporterFieldCallback  = function ( grid, row, col, value ){
-        if ( col.displayName === 'specification' ){
-          if(row.entity.productspecs.length >= 1){
-            return row.entity.productspecs[0].productspecid;
-         }
-         return "";
-        }
-        return value;
-    }*/
+   
     $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
     $scope.search = {
@@ -173,6 +163,12 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
    $scope.togglePannel = function(){
     $scope.panelShow = !$scope.panelShow;
    }
+   $scope.showPrice = function(row){
+    var inventoryDetails = row.entity;
+    $state.go('Home.InventoryDetails', { data: inventoryDetails , gridData : $scope.gridOptions.data});
+
+   }
+ 
    $scope.showCounts = function(row){
     $scope.panelShow = true;
     $rootScope.showLoader = true;

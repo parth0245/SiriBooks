@@ -29,6 +29,12 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         controller: 'addInventoryCtrl',
         params: {data : ''}
     })
+    .state('Home.InventoryDetails', {
+        url: '/inventoryDetails',
+        templateUrl: 'application/Partials/inventoryDetails.html',
+        controller: 'inventoryDetailsCtrl',
+        params: {data : '' , gridData : ''}
+    })
     .state('Home.Customers', {
         url: '/customers',
         templateUrl: 'application/Partials/diffModules.html',
@@ -563,7 +569,7 @@ app.constant('CONSTANTS', {
                 '</span>'+
                 '</div>' },
         { field: 'date' },
-        { field: 'modeOfPayment'}
+        { field: 'mode'}
         ],
         Inventoryfields : [
                 { field: 'productname',
@@ -588,7 +594,7 @@ app.constant('CONSTANTS', {
               '</div>' },
               { field: 'stockCount', 
               headerCellClass : '',
-              cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.showCounts(row)" >'+
+              cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue">'+
               '<span>{{grid.getCellValue(row, col)}}</span>'+
               '</div>' }, 
               { field: 'value' ,displayName:'Value', 
@@ -600,6 +606,11 @@ app.constant('CONSTANTS', {
                       'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
               '</span>'+
               '</div>' },
+              { field: 'price', 
+              headerCellClass : '',
+              cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.showPrice(row)" >'+
+              '<span>{{grid.getCellValue(row, col)}}</span>'+
+              '</div>' }
               /*{ field: 'debit' ,category:"Balance Amount" ,
               cellTemplate: '<div class="ui-grid-cell-contents" >'+
               '<span ng-if="row.entity.orgledger.drcr == \'dr\' ">{{row.entity.orgledger.balanceamount}}</span>'+
@@ -867,11 +878,11 @@ AddJournalfields : [
 addReceiptfields : [
         {field : "customername" , displayName : 'Customer Name',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
+        '<span class="productInactive" ng-click="grid.appScope.editData(row)" style="position:absolute;left: 10px;text-align: left;">'+
         '<img height="15" width="15" '+
                 'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
         '</span>'+
+        '<span>{{grid.getCellValue(row, col)}}</span>'+
         '</div>' },
         {field : "orgledger.balanceamount" , displayName:"Amount"},
         {field : "date"},
@@ -880,18 +891,10 @@ addReceiptfields : [
         '<span ng-if="row.entity.mode == \'1\'">Cash</span>'+
         '<span ng-if="row.entity.mode == \'2\'">Bank</span>'+
         '<span ng-if="row.entity.mode == \'3\'">NA</span>'+
-        '<span class="productInactive" ng-click="grid.appScope.editLedger(row)">'+
-        '<img height="20" width="20" '+
-                'src="application/Images/Assets/INVENTORY_page/ladger_inactive.png"/>'+
-        '</span>'+
         '</div>' },
         {field:'regnumber', displayName:'Receipt Number',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '<span class="productInactive" ng-click="grid.appScope.editData(row)">'+
-        '<img height="15" width="15" '+
-                'src="application/Images/Assets/INVENTORY_page/edit_inactive.png"/>'+
-        '</span>'+
         '</div>'}
 ] , 
 Salesfields : [
@@ -924,6 +927,7 @@ Salesfields : [
         '</span>'+
         '</div>' }
 ] ,
+InventoryDetailsfields : [],
 ImportLedgerfields : [
         {field : "ledgerEntry",headerCellClass : 'topPadding15'},
         {field : "rows",headerCellClass : 'topPadding15'},
@@ -1174,7 +1178,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.inventory.lkupunitofmeasure = "1";
 
     }
-
+    $scope.gstList = ["5%" , "10%" , "15%"];
     commonServices.getProductType().then(function(success){
         $scope.inventory.productService = success.data;   
     },function(error){
@@ -1185,9 +1189,10 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     },function(error){
         console.log('Get - Failure Group');
     });
+    $scope.selectedVendors = [];
     vendorServices.searchVendor('').then(function(response){
         $scope.inventory.vendorList = response.data;
-        $scope.inventory.vendor = "";
+        $scope.selectedVendors = [];
           },function(error){
         console.log('error',error);
      });
@@ -1225,6 +1230,8 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
     }
+
+    
 
     $scope.save = function(){
         inventoryServices.save($scope.inventory , $scope.Description).then(function(success){
@@ -1526,7 +1533,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         receiptServices.getCustomerDetails().then(function(response){
            $scope.receiptDataList = response.data;
            angular.forEach(response.data,function(key){
-                $scope.custNameList.push({name : key.customername});
+                $scope.custNameList.push({customername : key.customername});
            });
         },function(err){
             console.log(err);
@@ -1542,14 +1549,24 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
 
     }
 
+    $scope.editData = function(row){
+        $scope.receipt = row.entity;
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+        $scope.addReceiptLabel = "Update";
+        console.log('row',$scope.receipt);
+    }
+
     if(angular.isDefined($stateParams.data.customerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        $scope.addReceiptLabel = "Update";
         $scope.receipt = {};
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
+        $scope.addReceiptLabel = "Add";
         $scope.receipt = {};
         $scope.getCustomers();
     }
@@ -1640,9 +1657,9 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
    });
 
 
- $scope.gotoSales = function(event){
+ $scope.gotoSales = function(event , data){
     event.stopPropagation();
-     $state.go('Home.Sales');
+     $state.go('Home.addSales', {data :  data });
  }
    $scope.saveReceipt = function(){
     receiptServices.saveReceipt($scope.receipt).then(function(response){
@@ -1722,10 +1739,14 @@ $scope.btnLeft = function (data , $index) {
 app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams , commonServices){
     console.log('Inside Add Sales Controller');
     $rootScope.isActive = 'Sales';
-
+    $scope.disableAll = false;
     if(angular.isDefined($stateParams.data.customerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        }
+        else if(angular.isDefined($stateParams.data.id) ){
+            console.log('$stateParams.data',$stateParams.data);
+            $scope.disableAll = true;
         }
     else {
         $scope.heading = "New";
@@ -3164,19 +3185,9 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Inventory');
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
-        /*$scope.gridApi.selection.on.rowSelectionChanged($scope, function(row){
-            $state.go('Home.AddInventory' , { data: row.entity });
-        });*/
+       
     }
-    /*$scope.gridOptions.exporterFieldCallback  = function ( grid, row, col, value ){
-        if ( col.displayName === 'specification' ){
-          if(row.entity.productspecs.length >= 1){
-            return row.entity.productspecs[0].productspecid;
-         }
-         return "";
-        }
-        return value;
-    }*/
+   
     $scope.gridOptions.category =[{name: 'Balance Amount', visible: true}];
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
     $scope.search = {
@@ -3314,6 +3325,12 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
    $scope.togglePannel = function(){
     $scope.panelShow = !$scope.panelShow;
    }
+   $scope.showPrice = function(row){
+    var inventoryDetails = row.entity;
+    $state.go('Home.InventoryDetails', { data: inventoryDetails , gridData : $scope.gridOptions.data});
+
+   }
+ 
    $scope.showCounts = function(row){
     $scope.panelShow = true;
     $rootScope.showLoader = true;
@@ -3337,6 +3354,107 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     }
 
    $scope.changeHeight(0);
+});
+app.controller('inventoryDetailsCtrl', function($filter , $rootScope,$scope , $state ,$stateParams, CONSTANTS ,heightCalc , inventoryServices){
+    console.log('Inside Inventory Details Controller');
+
+    $rootScope.isActive = 'INVENTORY';
+
+    $scope.productDetails = $stateParams.data;
+    $scope.gridData = $stateParams.gridData;
+    angular.forEach($scope.gridData , function(key,value){
+        $scope.gridData[value].createddate = CONSTANTS.getDateObject(key.createddate);
+    });
+    $scope.selectedProduct = $scope.productDetails.productname;
+    
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('InventoryDetails');
+    $scope.gridOptions.columnDefs = [
+        {field : "batchNumber" , displayName : "Batch Number" , enableCellEdit:false},
+        {field : "purchaseDate" , displayName : "Purchase Date" , enableCellEdit:false},
+        {field : "purchasePrice" , displayName : "Purchase Price" , enableCellEdit:false},
+        {field : "stockCount" , displayName : "Stock Count", enableCellEdit:false},
+        {field : "mrp" , displayName : "MRP", enableCellEdit:false},
+        {field : "salePrice" , displayName : "Current Sale Price", enableCellEdit:false},
+        {field : "newSalePrice" , displayName : "New Sale Price" ,
+        enableCellEdit:true,
+        cellEditableCondition : function($scope){if($scope.row.entity.stockCount > 0){return true;}else{return false;}}},
+        {field : "createddate" , displayName : "New Price Effective Date",
+        editableCellTemplate: 'application/Partials/dateTemplate.html',
+        enableCellEdit:true,
+        cellFilter : 'date : \'dd/MM/yyyy\'',
+        cellEditableCondition : function($scope){if($scope.row.entity.stockCount > 0){return true;}else{return false;}}}
+];
+
+$scope.getEffectiveDate = function(data){
+    return data;
+}
+    $scope.gridOptions.onRegisterApi = function( gridApi ) {
+        $scope.gridApi = gridApi;
+        $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity, colDef, newValue, oldValue){
+          console.log(rowEntity);
+          //$scope.$apply();
+        });
+    }
+    $scope.cancel = function(){
+        $state.go('Home.Inventory');
+    }
+    $scope.gridOptions.data = $scope.gridData;
+    $scope.csvDownload = function(){
+        $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+      
+       $scope.pdfDownload = function(){
+        $scope.gridApi.exporter.pdfExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
+      }
+
+      $scope.changeHeight = function(val){
+        heightCalc.calculateGridHeight(val,0);
+    }
+    $scope.nextPage = function(){
+        $scope.gridApi.pagination.nextPage();
+
+        if($scope.paging.pageSelected != $scope.totalPages) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected + 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.prevPage = function(){
+        $scope.gridApi.pagination.previousPage();
+        if($scope.paging.pageSelected != 1) {
+            $scope.paging.pageSelected = $scope.paging.pageSelected - 1;
+        }
+        else{
+            $scope.paging.pageSelected = $scope.paging.pageSelected;
+        }
+        $scope.changeHeight(0);
+    }
+    $scope.seek = function(pageSelected){
+        $scope.paging.pageSelected = pageSelected;
+        $scope.gridApi.pagination.seek($scope.paging.pageSelected);
+        $scope.changeHeight(0);
+    }
+    $scope.totalPages = 0;
+    $scope.paging = {
+        pageSelected : 1
+    };
+    $scope.pageNumber = [];
+    $scope.$watch('totalPages',function(newVal , oldVal){
+        $scope.totalPages = newVal;
+        var i = 0;
+        $scope.pageNumber = [];
+            for(i=0;i<newVal;i++){
+                $scope.pageNumber[i] = i+1; 
+            }        
+    });
+
+    $scope.changeHeight(0);
+    
+    console.log($stateParams.gridData);
+
+
 });
 app.controller('journalCtrl',function($rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , journalServices , $filter){
     console.log('Inside Journal Controller');

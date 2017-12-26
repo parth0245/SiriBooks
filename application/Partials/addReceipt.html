@@ -10,7 +10,7 @@
                                 <md-input-container flex="55">
                                         <label>Customer Name</label>
                                         <md-select ng-change="getPerticularCustomer()" name="cust_name" ng-model="receipt.customername" required ng-disabled="btnLabel == 'Update'">
-                                            <md-option ng-repeat="data in custNameList track by $index" ng-value="data.name">{{data.name}}</md-option>
+                                            <md-option ng-repeat="data in custNameList track by $index" ng-value="data.customername">{{data.customername}}</md-option>
                                         </md-select>
                                         <div ng-messages="addReceiptForm.cust_name.$error" ng-if="addReceiptForm.cust_name.$touched">
                                             <div ng-message="required">This is required.</div>
@@ -55,7 +55,7 @@
                                                                             <div class="secHeader noRightborder col-xs-4">Amount</div>
                                                                         </div>
                                                                             <div ng-click="btnRight(data , $index)" ng-repeat="data in salesList track by $index" class="row" style="border-bottom:1px solid #d4d4d4">
-                                                                                    <div class="secdata col-xs-4"><a ng-click="gotoSales($event)">{{data.id}}</a></div>
+                                                                                    <div class="secdata col-xs-4"><a ng-click="gotoSales($event , data)">{{data.id}}</a></div>
                                                                                     <div class="secdata col-xs-4">{{data.date}}</div>
                                                                                     <div class="secdata noRightborder col-xs-4">{{data.amount}}</div>
                                                                             </div>
@@ -94,7 +94,116 @@
                                 </table>
 
                          </div>
-                        <!--<div layout="row" class="topPadding20">
+                        
+                        <div layout="row" class="topPadding20">
+                                <!--<md-input-container flex="25">
+                                        <label>Receipt Number</label>
+                                        <input name="receipt" ng-model="receipt.receipt" ng-readonly="true">
+                                </md-input-container>-->
+                                <md-input-container flex="55">
+                                        <label>Against</label>
+                                        <md-select name="against" ng-model="receipt.against" required>
+                                            <md-option value="Product 1">against 1</md-option>
+                                            <md-option value="Product 2">against 2</md-option>
+                                        </md-select>
+                                        <div ng-messages="addReceiptForm.against.$error" ng-if="addReceiptForm.against.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                    </div>
+                                    </md-input-container>
+                        </div>
+                        <div layout="row" class="topPadding10">
+                                <md-input-container flex="25">
+                                        <label>Payment Mode</label>
+                                        <md-select name="mode" ng-model="receipt.mode" required>
+<md-option ng-repeat="data in paymentList" ng-value="{{data.paymentmodeid}}">{{data.mode}}</md-option>
+                                        </md-select>
+                                        <div ng-messages="addReceiptForm.mode.$error" ng-if="addReceiptForm.mode.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                    </div>
+                                    </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                    <label>Amount</label>
+                                    <input name="amount" ng-model="receipt.amount" required>
+                                    <div ng-messages="addReceiptForm.amount.$error" ng-if="addReceiptForm.amount.$touched">
+                                        <div ng-message="required">This is required.</div>
+                                </div>
+                                </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                        <label>Date</label>
+                                        <md-datepicker name="date" ng-model="receipt.date" md-hide-icons="triangle" md-open-on-focus="" required></md-datepicker>
+                                        <div ng-messages="addReceiptForm.date.$error">
+                                            <div ng-message="valid">The entered value is not a date!</div>
+                                            <div ng-message="required">This date is required!</div>
+                                        </div>
+                                    </md-input-container>
+                        </div>
+                        <div layout="row">
+                                <md-input-container flex="25">
+                                        <label>Bank Name</label>
+                                        <input name="bnkName" ng-model="receipt.bankName" ng-disabled="receipt.mode == 'credit'">
+                                    </md-input-container>
+                                <md-input-container flex="25" flex-offset="5">
+                                    <label>Branch</label>
+                                    <input name="branch" ng-model="receipt.branch" ng-disabled="receipt.mode == 'credit'">
+                                </md-input-container>
+                                <md-input-container flex="25"  flex-offset="5">
+                                        <label>Reference</label>
+                                        <input name="ref" ng-model="receipt.ref">
+                                </md-input-container>
+                        </div>
+                        <div layout="row" class="">
+                                <md-input-container flex="25">
+                                        <label>TDS Deducted by Customer</label>
+                                        <md-select name="tds" ng-model="receipt.tds">
+                                            <md-option value="Product 1">tds 1</md-option>
+                                            <md-option value="Product 2">tds 2</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container flex="25"  flex-offset="5">
+                                        <label>Amount</label>
+                                        <input name="amt" ng-model="receipt.amount">
+                                </md-input-container>
+                        </div>
+                        
+                        <div layout="row" class="addPaddingButtons">
+                            <md-button class="md-raised md-primary ifBold" flex="12" flex-offset="75" ng-click="saveReceipt()">{{addReceiptLabel}} Receipt</md-button>
+                        </div>
+            </form>
+        </md-content>
+    </div>
+    <div>
+            <div class="col-xs-11 text-right pagingPart topPadding10 paddingBottom10 paddingRight30">
+                    <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+                    <span class="buttonBorder" ng-click="prevPage()">
+                        <img src="application/Images/Assets/pagination_left.png"/>
+                    </span>
+                    <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+                    <span class="buttonBorder" ng-click="nextPage()">
+                        <img src="application/Images/Assets/pagination_right.png"/>
+                    </span>
+                    <span class="ui-grid-pager-row-count-picker">
+                        <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+                        ng-change="seek(paging.pageSelected)"
+                         ng-options="o for o in pageNumber">
+                        </select>
+                    </span>
+            </div>
+        <div class="col-xs-11 inventorySection paddingRight30 paddingBottom30" ng-class="moduleHeading == 'Role List' ? 'centerItems' : ''">
+            <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-exporter ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
+                <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+            </div>
+    </div>
+    </div>
+    <div layout="row" class="addPaddingButtons">
+            <!--<md-button class="md-raised ifBold" flex-offset="35" ng-click="resetAll()" ng-if="btnLabel != 'Update'">Reset All</md-button>-->
+            <md-button class="md-raised md-primary ifBold" flex-offset="50" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex-offset="50" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex="15">Print All</md-button>
+            <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
+    </div>
+</div>
+
+<!--<div layout="row" class="topPadding20">
                             
                             <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                                         Identity
@@ -167,110 +276,3 @@
                                         <input name="aadhar" ng-model="receipt.registration" ng-readonly="ifCustomer">
                                 </md-input-container>
                         </div>-->
-                        <div layout="row" class="topPadding20">
-                                <!--<md-input-container flex="25">
-                                        <label>Receipt Number</label>
-                                        <input name="receipt" ng-model="receipt.receipt" ng-readonly="true">
-                                </md-input-container>-->
-                                <md-input-container flex="55">
-                                        <label>Against</label>
-                                        <md-select name="against" ng-model="receipt.against" required>
-                                            <md-option value="Product 1">against 1</md-option>
-                                            <md-option value="Product 2">against 2</md-option>
-                                        </md-select>
-                                        <div ng-messages="addReceiptForm.against.$error" ng-if="addReceiptForm.against.$touched">
-                                            <div ng-message="required">This is required.</div>
-                                    </div>
-                                    </md-input-container>
-                        </div>
-                        <div layout="row" class="topPadding10">
-                                <md-input-container flex="25">
-                                        <label>Payment Mode</label>
-                                        <md-select name="mode" ng-model="receipt.mode" required>
-<md-option ng-repeat="data in paymentList" ng-value="{{data.paymentmodeid}}">{{data.mode}}</md-option>
-                                        </md-select>
-                                        <div ng-messages="addReceiptForm.mode.$error" ng-if="addReceiptForm.mode.$touched">
-                                            <div ng-message="required">This is required.</div>
-                                    </div>
-                                    </md-input-container>
-                                <md-input-container flex="25" flex-offset="5">
-                                    <label>Amount</label>
-                                    <input name="amount" ng-model="receipt.amt" required>
-                                    <div ng-messages="addReceiptForm.amount.$error" ng-if="addReceiptForm.amount.$touched">
-                                        <div ng-message="required">This is required.</div>
-                                </div>
-                                </md-input-container>
-                                <md-input-container flex="25" flex-offset="5">
-                                        <label>Date</label>
-                                        <md-datepicker name="date" ng-model="receipt.date" md-hide-icons="triangle" md-open-on-focus="" required></md-datepicker>
-                                        <div ng-messages="addReceiptForm.date.$error">
-                                            <div ng-message="valid">The entered value is not a date!</div>
-                                            <div ng-message="required">This date is required!</div>
-                                        </div>
-                                    </md-input-container>
-                        </div>
-                        <div layout="row">
-                                <md-input-container flex="25">
-                                        <label>Bank Name</label>
-                                        <input name="bnkName" ng-model="receipt.bnkName" ng-disabled="receipt.mode == 'credit'">
-                                    </md-input-container>
-                                <md-input-container flex="25" flex-offset="5">
-                                    <label>Branch</label>
-                                    <input name="branch" ng-model="receipt.branch" ng-disabled="receipt.mode == 'credit'">
-                                </md-input-container>
-                                <md-input-container flex="25"  flex-offset="5">
-                                        <label>Reference</label>
-                                        <input name="ref" ng-model="receipt.ref">
-                                </md-input-container>
-                        </div>
-                        <div layout="row" class="">
-                                <md-input-container flex="25">
-                                        <label>TDS Deducted by Customer</label>
-                                        <md-select name="tds" ng-model="receipt.tds">
-                                            <md-option value="Product 1">tds 1</md-option>
-                                            <md-option value="Product 2">tds 2</md-option>
-                                        </md-select>
-                                    </md-input-container>
-                                    <md-input-container flex="25"  flex-offset="5">
-                                        <label>Amount</label>
-                                        <input name="amt" ng-model="receipt.amt">
-                                </md-input-container>
-                        </div>
-                        
-                        <div layout="row" class="addPaddingButtons">
-                            <md-button class="md-raised md-primary ifBold" flex-offset="75" ng-click="saveReceipt()">Add Receipt</md-button>
-                        </div>
-            </form>
-        </md-content>
-    </div>
-    <div>
-            <div class="col-xs-11 text-right pagingPart topPadding10 paddingBottom10 paddingRight30">
-                    <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
-                    <span class="buttonBorder" ng-click="prevPage()">
-                        <img src="application/Images/Assets/pagination_left.png"/>
-                    </span>
-                    <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
-                    <span class="buttonBorder" ng-click="nextPage()">
-                        <img src="application/Images/Assets/pagination_right.png"/>
-                    </span>
-                    <span class="ui-grid-pager-row-count-picker">
-                        <select class="selectPaginationBox" ng-model="paging.pageSelected" 
-                        ng-change="seek(paging.pageSelected)"
-                         ng-options="o for o in pageNumber">
-                        </select>
-                    </span>
-            </div>
-        <div class="col-xs-11 inventorySection paddingRight30 paddingBottom30" ng-class="moduleHeading == 'Role List' ? 'centerItems' : ''">
-            <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-exporter ui-grid-pagination ui-grid-auto-resize ui-grid-grouping class="grid">
-                <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
-            </div>
-    </div>
-    </div>
-    <div layout="row" class="addPaddingButtons">
-            <!--<md-button class="md-raised ifBold" flex-offset="35" ng-click="resetAll()" ng-if="btnLabel != 'Update'">Reset All</md-button>-->
-            <md-button class="md-raised md-primary ifBold" flex-offset="50" ng-if="btnLabel != 'Update'">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold" flex-offset="50" ng-if="btnLabel == 'Update'">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold" flex="15">Print All</md-button>
-            <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
-    </div>
-</div>

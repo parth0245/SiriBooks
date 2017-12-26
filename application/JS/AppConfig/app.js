@@ -29,6 +29,12 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         controller: 'addInventoryCtrl',
         params: {data : ''}
     })
+    .state('Home.InventoryDetails', {
+        url: '/inventoryDetails',
+        templateUrl: 'application/Partials/inventoryDetails.html',
+        controller: 'inventoryDetailsCtrl',
+        params: {data : '' , gridData : ''}
+    })
     .state('Home.Customers', {
         url: '/customers',
         templateUrl: 'application/Partials/diffModules.html',

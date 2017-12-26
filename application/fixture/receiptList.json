@@ -3,42 +3,42 @@
         "customerName": "Customer 1",
         "amount": "Rs 5000 /-",
         "date": "1-2-2017",
-        "modeOfPayment": "cash"
+        "mode": "cash"
     },
     {
         "customerName": "Customer 1",
         "amount": "Rs 5000 /-",
         "date": "1-2-2017",
-        "modeOfPayment": "cash"
+        "mode": "cash"
     },
     {
         "customerName": "Customer 1",
         "amount": "Rs 5000 /-",
         "date": "1-2-2017",
-        "modeOfPayment": "cash"
+        "mode": "cash"
     },
     {
         "customerName": "Customer 1",
         "amount": "Rs 5000 /-",
         "date": "1-2-2017",
-        "modeOfPayment": "cash"
+        "mode": "cash"
     },
     {
         "customerName": "Customer 1",
         "amount": "Rs 5000 /-",
         "date": "1-2-2017",
-        "modeOfPayment": "cash"
+        "mode": "cash"
     },
     {
         "customerName": "Customer 1",
         "amount": "Rs 5000 /-",
         "date": "1-2-2017",
-        "modeOfPayment": "cash"
+        "mode": "cash"
     },
     {
         "customerName": "Customer 1",
         "amount": "Rs 5000 /-",
         "date": "1-2-2017",
-        "modeOfPayment": "cash"
+        "mode": "cash"
     }
 ]

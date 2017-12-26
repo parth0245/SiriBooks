@@ -13,6 +13,7 @@
   "stockCount":"1",
   "sku": "sku",
   "status": 1,
+  "price" : 100,
   "uorgid": "43682e5e-af9c-4805-a29a-5f34e24185af",
   "createdby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",
   "updatedby": "6aeca4b7-6f4f-4071-9fd7-af3cb5a4a341",

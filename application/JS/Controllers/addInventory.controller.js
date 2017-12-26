@@ -14,7 +14,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.inventory.lkupunitofmeasure = "1";
 
     }
-
+    $scope.gstList = ["5%" , "10%" , "15%"];
     commonServices.getProductType().then(function(success){
         $scope.inventory.productService = success.data;   
     },function(error){
@@ -25,9 +25,10 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     },function(error){
         console.log('Get - Failure Group');
     });
+    $scope.selectedVendors = [];
     vendorServices.searchVendor('').then(function(response){
         $scope.inventory.vendorList = response.data;
-        $scope.inventory.vendor = "";
+        $scope.selectedVendors = [];
           },function(error){
         console.log('error',error);
      });
@@ -65,6 +66,8 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
     }
+
+    
 
     $scope.save = function(){
         inventoryServices.save($scope.inventory , $scope.Description).then(function(success){

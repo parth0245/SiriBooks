@@ -780,6 +780,9 @@
   .flex-16, .layout-row>.flex-16 {
 	width:16%;
 }
+.flex-12, .layout-row>.flex-12 {
+	width:12%;
+}
 .flex-offset-57 {
 	margin-left:57%;
 }
@@ -951,9 +954,10 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 	position:relative;
   }
   #table-scroll {
-	height:350px;
+	height:245px;
 	overflow-y: auto;
-    overflow-x: hidden; 
+	overflow-x: hidden; 
+	/*hidden*/
   }
   .secHeader{
 	  background-color: #e7e9e9;
@@ -973,4 +977,22 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 }
 .secdata.noRightborder{
 	border-right: none;
+}
+.buttonRound {
+    background-color: #0935ae;
+    border: none;
+    color: #ffffff;
+    padding: 12px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 11px;
+    cursor: pointer;
+    border-radius: 50px;
+    position: fixed;
+    left: 130px;
+    top: 230px;
+	z-index: 9;
+	font-weight: 400!important;
+    font-family: Montserrat-Medium;
 }

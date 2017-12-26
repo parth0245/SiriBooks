@@ -1,12 +1,18 @@
 [
     {
-        "customername" : "Parth",
+        "customername" : "hasystech",
         "amount" : "1234569999",
         "orgledger" : {
             "balanceamount" : 0
         },
         "date" : "1/12/2107",
         "mode" : "2",
-        "regnumber" : "123455"
+        "regnumber" : "123455",
+        "corporateaddress1" : "Hyderabad",
+        "bankName" : "HDFC",
+        "branch" : "dlf",
+        "ref" : "123889",
+        "tds" : "1"
+
     }
 ]
