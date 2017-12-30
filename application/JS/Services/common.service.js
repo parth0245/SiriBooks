@@ -37,5 +37,13 @@ app.service('commonServices',function($http , CONSTANTS){
     }
     this.getGstScheme = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].gstScheme);
-    }    
+    }
+    this.setPassword = function(data){
+        return $http({
+            method: "post",
+            url: CONSTANTS.service[CONSTANTS.appLevel].setPassword,
+            data: data
+            })
+    }
+
 });

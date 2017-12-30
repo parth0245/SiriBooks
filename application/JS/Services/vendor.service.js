@@ -20,7 +20,8 @@ app.service('vendorServices',function($http , CONSTANTS){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].searchInventoryList);
     }
 
-    this.saveVendor = function(location , identity , additionalData , books){
+    this.saveVendor = function(location , identity , additionalData , books , SelectedSelectedListItems){
+        console.log('SelectedSelectedListItems',SelectedSelectedListItems[0]);
         var data = 
         {
             "aadhar": identity.aadhar,

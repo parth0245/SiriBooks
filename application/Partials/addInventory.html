@@ -52,7 +52,7 @@
                             <div layout="row">
                                     <md-input-container flex="25">
                                         <label>Vendor</label>
-                                        <md-select name="vendor" ng-model="selectedVendors" multiple="">
+                                        <md-select name="vendor" ng-model="inventory.selectedVendors" multiple="">
                                             <md-option ng-repeat="data in inventory.vendorList track by $index" ng-value="data.name">{{data.name}}</md-option>
                                         </md-select>
                                     </md-input-container>
@@ -77,11 +77,45 @@
                                             <input name="desc" ng-model="inventory.description">
                                     </md-input-container>
                             </div>
-                            <div layout="row" ng-if="btnLabel == 'Update'">
+                            <!--<div layout="row" ng-if="btnLabel == 'Update'">
 
                                     <md-checkbox class="md-primary checkBoxForInventory" ng-model="status">Status</md-checkbox>
 
                             </div>
+                            <div layout="row" class="topPadding10">
+                                <md-checkbox class="md-primary" ng-model="ifSaleSelected" ng-click="showStock()">
+                                    <label class="topPadding10">Add opening stock (optional)</label>
+                                </md-checkbox>
+                             </div>
+                             <div layout="row" class="topPadding10" ng-if="showBelowGrid">
+                                <div>
+                                    <div class="col-xs-12 text-right pagingPart topPadding10 paddingBottom10 paddingRight30 paddingLeft0">
+                                            <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+                                            <span class="buttonBorder" ng-click="prevPage()">
+                                                <img src="application/Images/Assets/pagination_left.png"/>
+                                            </span>
+                                            <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+                                            <span class="buttonBorder" ng-click="nextPage()">
+                                                <img src="application/Images/Assets/pagination_right.png"/>
+                                            </span>
+                                            <span class="ui-grid-pager-row-count-picker">
+                                                <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+                                                ng-change="seek(paging.pageSelected)"
+                                                 ng-options="o for o in pageNumber">
+                                                </select>
+                                            </span>
+                                    </div>
+                                <div class="col-xs-12 inventorySection paddingRight30 paddingBottom30 paddingLeft0">
+                                    <div id="grid1" ui-grid="gridOptions" ui-grid-exporter ui-grid-pagination ui-grid-auto-resize ui-grid-edit class="grid">
+                                        <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+                                    </div>
+                            </div>
+                            </div>
+                           
+                             </div>
+                             <div layout="row" ng-if="showBelowGrid" class="paddingLeft0">
+                                <span class="glyphicon glyphicon-plus addRowButton" ng-click="addGridData()"></span>
+                            </div>-->
                             <div layout="row" class="topPadding20">
                                 <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                                             Detailed Specification
@@ -103,10 +137,10 @@
                                     </md-input-container>
                                 </div>
                                     <div layout="column" flex="25" flex-offset="5">
-                                            <md-checkbox  class="md-primary checkBoxForInventory smallLabel">Specification value will be provided during sale and purchase</md-checkbox>
+                                            <md-checkbox ng-model="desc.ifSpecDefined" class="md-primary checkBoxForInventory smallLabel">Specification value will be provided during sale and purchase</md-checkbox>
                                         <md-input-container  >
                                             <label>Value</label>
-                                            <input name="value" ng-model="desc.specvalue">
+                                            <input name="value" ng-model="desc.specvalue" ng-disabled="true">
                                     </md-input-container>
                                      </div>
                                     
@@ -157,9 +191,10 @@
 
                             </div>
     <div layout="row" class="addPaddingButtons">
-            <md-button class="md-raised ifBold" flex-offset="30" ng-if="btnLabel != 'Update'" ng-click="reserAll()">Reset All</md-button>
+            <md-button class="md-raised ifBold" flex-offset="10" ng-if="btnLabel != 'Update'" ng-click="reserAll()">Reset All</md-button>
             <md-button class="md-raised md-primary ifBold" ng-if="btnLabel != 'Update'" ng-click="save()" ng-disabled="!addInventoryForm.$valid" ng-class="{'hideCursor' : !addInventoryForm.$valid}">{{btnLabel}}</md-button>
-            <md-button class="md-raised md-primary ifBold" flex-offset="40" ng-if="btnLabel == 'Update'" ng-click="update()" ng-disabled="!addInventoryForm.$valid" ng-class="{'hideCursor' : !addInventoryForm.$valid}">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex-offset="20" ng-if="btnLabel == 'Update'" ng-click="update()" ng-disabled="!addInventoryForm.$valid" ng-class="{'hideCursor' : !addInventoryForm.$valid}">{{btnLabel}}</md-button>
+            <md-button class="md-raised md-primary ifBold" flex="25" ng-click="showStockCount()" ng-disabled="enableStockButton" ng-class="{'hideCursor' : enableStockButton}">Save & Set Opening stock</md-button>
             <md-button class="md-raised md-primary ifBold" flex="22">{{btnLabel}} & Purchase</md-button>
             <md-button class="md-raised ifBold" ng-click="cancel()">Cancel</md-button>
     </div>

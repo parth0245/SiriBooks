@@ -4,8 +4,11 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     $rootScope.isActive = 'INVENTORY';
     $scope.moduleHeading = 'Inventory';
     $scope.btn1 = 'Search';
-    $scope.btn2 = 'Add New Product'
-    $scope.ifThreeBtn = false;
+    $scope.btn2 = 'Add New';
+    $scope.btn3 = 'Import';
+    $scope.ifThreeBtn = true;
+
+
     $scope.showWait = true;
     $rootScope.showLoader = true;
     
@@ -14,6 +17,10 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
     $scope.add = function() {
         $state.go('Home.AddInventory' , { data: $scope.myObj });
     }
+    $scope.import = function(){
+        $state.go('Home.ImportCustomer' , { from: "Inventory" });
+    }
+    
     $scope.editData = function(row){
         $state.go('Home.AddInventory' , { data: row.entity });
     }    

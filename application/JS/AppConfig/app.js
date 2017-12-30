@@ -1,4 +1,4 @@
-var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ui.grid.exporter','ngMessages','flow','ngFileUpload','ui.grid.edit']);
+var app = angular.module('siriBooks',['ui.router','ngMaterial','ngSanitize','ui.grid','ui.grid.selection','ui.grid.resizeColumns','ui.grid.pagination','ui.grid.grouping','ui.grid.exporter','ui.grid.expandable','ngMessages','flow','ngFileUpload','ui.grid.edit']);
 
 app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , flowFactoryProvider , $mdDateLocaleProvider) {
     $stateProvider
@@ -6,6 +6,20 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         url: '/login',
         templateUrl: 'application/Partials/login.html',
         controller : 'LoginCtrl'
+    })
+    .state('SetPassword', {
+        url: '/setpassword',
+        controller: function( $location , $state){
+            var url = $location.$$url.split("?");
+            var params = url[1].split("&");
+            $state.go('PasswordReset' , {data : params});
+       }
+      })
+    .state('PasswordReset', {
+        url: '/passwordReset',
+        templateUrl: 'application/Partials/passwordReset.html',
+        controller: 'passwordResetCtrl',
+        params: {data : ''}
     })
     .state('Home', {
         abstract:true,
@@ -35,6 +49,12 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         controller: 'inventoryDetailsCtrl',
         params: {data : '' , gridData : ''}
     })
+    .state('Home.SetStock', {
+        url: '/setStock',
+        templateUrl: 'application/Partials/setStock.html',
+        controller: 'setStockCtrl',
+        params: {data : '', desc : ''}
+    })
     .state('Home.Customers', {
         url: '/customers',
         templateUrl: 'application/Partials/diffModules.html',
@@ -47,9 +67,10 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         params: {data : ''}
     })
     .state('Home.ImportCustomer', {
-        url: '/importCustomer',
+        url: '/import',
         templateUrl: 'application/Partials/importCustomer.html',
-        controller: 'importCustomerCtrl'
+        controller: 'importCustomerCtrl',
+        params: {from : ''}
     })
     .state('Home.Vendors', {
         url: '/vendors',

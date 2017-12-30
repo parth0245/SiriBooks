@@ -1,9 +1,11 @@
 app.factory('heightCalc',function($timeout){
     return {
         calculateGridHeight : function(val , val1){
+
             if(val !== 0){
                 $timeout(function(){
-                    $('.grid').css('height',val + 43);     
+                    $('.grid').css('height',val + 43);   
+
                 },500);
             }
             else {

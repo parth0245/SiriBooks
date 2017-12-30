@@ -512,17 +512,7 @@ CompanyLedgerfields : [
         {field : "date"},
         {field : "particulars"},
         {field : "voucherType"},
-        {field : "voucherNo",
-        cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.salePurchase(row)" >'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '</div>'},
-        {field : "count",
-        cellTemplate: '<div class="ui-grid-cell-contents">'+
-        '<span class="" ng-if="row.entity.voucherType == \'purchase\'">+</span>'+
-        '<span class="" ng-if="row.entity.voucherType == \'sale\'">-</span>'+
-        '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '</div>'
-},
+        {field : "voucherNo"},
         {field : "debit"},
         {field : "credit"},
         {field : "netBalance"}
@@ -637,6 +627,7 @@ Salesfields : [
         '</div>' }
 ] ,
 InventoryDetailsfields : [],
+addInventoryStockfields : [],
 ImportLedgerfields : [
         {field : "ledgerEntry",headerCellClass : 'topPadding15'},
         {field : "rows",headerCellClass : 'topPadding15'},

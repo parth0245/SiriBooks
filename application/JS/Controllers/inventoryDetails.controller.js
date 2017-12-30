@@ -7,6 +7,8 @@ app.controller('inventoryDetailsCtrl', function($filter , $rootScope,$scope , $s
     $scope.gridData = $stateParams.gridData;
     angular.forEach($scope.gridData , function(key,value){
         $scope.gridData[value].createddate = CONSTANTS.getDateObject(key.createddate);
+        $scope.gridData[value].currentMrp = "10";
+        $scope.gridData[value].newMrp = "0";
     });
     $scope.selectedProduct = $scope.productDetails.productname;
     
@@ -16,7 +18,10 @@ app.controller('inventoryDetailsCtrl', function($filter , $rootScope,$scope , $s
         {field : "purchaseDate" , displayName : "Purchase Date" , enableCellEdit:false},
         {field : "purchasePrice" , displayName : "Purchase Price" , enableCellEdit:false},
         {field : "stockCount" , displayName : "Stock Count", enableCellEdit:false},
-        {field : "mrp" , displayName : "MRP", enableCellEdit:false},
+        {field : "currentMrp" , displayName : "Current MRP", enableCellEdit:false},
+        {field : "newMrp" , displayName : "New MRP", enableCellEdit:false,
+        enableCellEdit:true,
+        cellEditableCondition : function($scope){if($scope.row.entity.stockCount > 0){return true;}else{return false;}}},
         {field : "salePrice" , displayName : "Current Sale Price", enableCellEdit:false},
         {field : "newSalePrice" , displayName : "New Sale Price" ,
         enableCellEdit:true,

@@ -15,7 +15,7 @@ app.controller('customerCtrl',function($rootScope , $scope , $state , CONSTANTS 
         $state.go('Home.addCustomers', { data: $scope.myObj });
     }
     $scope.import = function(){
-        $state.go('Home.ImportCustomer');
+        $state.go('Home.ImportCustomer', { from: "Customer" });
     }
     $scope.editData = function(row){
         $state.go('Home.addCustomers' , { data: row.entity });

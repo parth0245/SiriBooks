@@ -108,7 +108,7 @@ $scope.vendorsData = $scope.location.vendoraddtnldetails || [{ addionalkeyname: 
     }
 
     $scope.save = function(){
-        vendorServices.saveVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books).then(function(success){
+        vendorServices.saveVendor($scope.location , $scope.identity , $scope.additionalData , $scope.books , $scope.SelectedListItems).then(function(success){
             console.log('success');
             $state.go('Home.Vendors');
         },function(error){

@@ -226,6 +226,9 @@
 .sectionSubHeading h3 {
 	font-family: "Montserrat-Regular";
 }
+.sectionSubHeading h4 {
+	font-family: "Montserrat-Regular";
+}
 .sectionSubSection .glyphicon {
 	color:lightgrey;
 	padding-top:3px;
@@ -522,6 +525,9 @@
 	padding-left: 15px;
 	background-color: rgb(231, 233, 233);
 }
+.optionalGrid.grid .ui-grid-header-cell {
+	padding-left:0px;
+}
 .grid .ui-grid-cell-contents {
 	text-align: center;	
 	margin-top:5px;
@@ -554,9 +560,9 @@
 	right: 10px;
 }
 .grid .ui-grid-row-selected {
-	border : 1px solid #24aaec;
+	/*border : 1px solid #24aaec;
 	overflow: hidden !important;
-	/*box-shadow: 2px 1px 5px 1px #24aaec;
+	box-shadow: 2px 1px 5px 1px #24aaec;
     position: absolute;*/
 }
 .ui-grid-row.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
@@ -721,7 +727,7 @@
     min-width: 285px !important;
 }
 .ui-grid-header-cell .ui-grid-tree-base-row-header-buttons:first-child {
-	display: none;	
+	/*display: none;	*/
 }
 .ui-grid-tree-header-row {
 	font-weight: normal !important;
@@ -995,4 +1001,22 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 	z-index: 9;
 	font-weight: 400!important;
     font-family: Montserrat-Medium;
+}
+.addRowButton {
+	color: white;
+	background: #0935ae;
+	padding: 0px 5px;
+	border-radius: 6px;
+	font-size: 30px !important;
+	font-family: Montserrat-Medium;
+ }
+.setStockSection .md-datepicker-input {
+    min-width: 200px;
+}
+.specBorder {
+	border-bottom: 1px solid #0935ae;
+	margin-bottom:20px;
+}
+.expandableRow {
+	overflow-y: auto;
 }

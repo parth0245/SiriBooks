@@ -2,8 +2,38 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
     console.log('Inside Company Ledger Controller');
     $rootScope.isActive = 'LEDGERS';
     $scope.pageData = $stateParams.data;
+    if(angular.isDefined($scope.pageData.productname)){
+        $scope.showOnlyProduct = true;
+        $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
+        $scope.gridOptions.category =[{name: 'Net Balance', visible: true}];
+        $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
+        $scope.gridOptions.columnDefs = [
+            {field : "date" ,headerCellClass : 'topPadding15'},
+            {field : "particulars",headerCellClass : 'topPadding15'},
+            {field : "voucherType",headerCellClass : 'topPadding15'},
+            {field : "voucherNo",headerCellClass : 'topPadding15',
+            cellTemplate: '<div class="ui-grid-cell-contents" style="color:blue" ng-click="grid.appScope.salePurchase(row)" >'+
+            '<span>{{grid.getCellValue(row, col)}}</span>'+
+            '</div>'},
+            
+            {field : "debit",headerCellClass : 'topPadding15'},
+            {field : "credit",headerCellClass : 'topPadding15'},
+            {field : "count",category:"Net Balance",
+            cellTemplate: '<div class="ui-grid-cell-contents">'+
+            '<span class="" ng-if="row.entity.voucherType == \'purchase\'">+</span>'+
+            '<span class="" ng-if="row.entity.voucherType == \'sale\'">-</span>'+
+            '<span>{{grid.getCellValue(row, col)}}</span>'+
+            '</div>'
+    },
+            {field : "balance",category:"Net Balance"}
+    ]
+    }
+    else {
+        $scope.showOnlyProduct = false;
+        $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
+    }
     console.log($scope.pageData);
-    $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
+    
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
     }

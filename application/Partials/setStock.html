@@ -1,0 +1,84 @@
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column" style="overflow-y:hidden">
+    <div class="sectionSubHeading">
+        <h3>Product Name : {{fieldData.productname}}</h3>
+    </div>
+    <div class="topPadding20 col-xs-11 noPadding">
+      <form>
+            <div layout="row" class="topPadding10 setStockSection">
+                    <md-input-container flex="20">
+                        <label>Batch ID</label>
+                        <input name="batchId" ng-model="setStock.batchId" ng-blur="checkValidity(setStock.batchId)">
+                        <div ng-if="batchIdError" style="color:red">
+                                Batch ID already taken
+                            </div>
+                    </md-input-container>
+                    <md-input-container flex="20" flex-offset="5">
+                        <label>Purchase Date</label>
+                        <md-datepicker ng-model="setStock.purchaseDate" md-hide-icons="triangle" md-open-on-focus="" mo-date-input="{{date}}"></md-datepicker>
+                    </md-input-container>
+                    <md-input-container flex="20" flex-offset="5">
+                        <label>Price</label>
+                        <input name="price" ng-model="setStock.purchasePrice">
+                    </md-input-container>
+                    <md-input-container flex="20" flex-offset="5">
+                            <label>Opening Stock Count</label>
+                            <input type="number" name="count" ng-model="setStock.stockCount" ng-blur="setStockCountSpecs()">
+                        </md-input-container>
+            </div>
+            <div layout="row" ng-if="showSpecs">
+                    <div class="sectionSubHeading" style="margin-bottom:20px;">
+                            <h4>Specification : </h4>
+                    </div>
+            </div>
+            <div layout="row" ng-repeat="list in stockCountSpecifications track by $index" ng-class="{'specBorder' : !$last}">
+            <div layout="column" ng-class="{'marginRight15' : !$last}" ng-repeat="spec in list" ng-if="spec.ifSpecDefined">
+                    <div>
+                            <md-input-container>
+                                    <label>Name</label>
+                                    <input name="{{'name'+$index}}" ng-model="spec.specnamekey" ng-disabled="true">
+                                </md-input-container>
+                    </div>
+                    <div><md-input-container>
+                            <label>Value</label>
+                            <input name="{{'value'+$index}}" ng-model="spec.specvalue">
+                        </md-input-container>
+                    </div>
+            </div>
+        </div>
+      </form>
+      <div layout="row" class="addPaddingButtons">
+            <md-button class="md-raised md-primary ifBold" flex-offset="70" ng-disabled="batchIdError" ng-class="{'hideCursor' : batchIdError}" ng-click="add()">Add</md-button>
+            <md-button class="md-raised ifBold" flex-offset="5" ng-click="reset()">Reset</md-button>
+    </div>
+    </div>
+    <div>
+             <div class="col-xs-11 text-right pagingPart topPadding10 paddingBottom10 paddingRight30">
+                    <span class="pull-left">Total Records : <b>{{gridOptions.data.length}}</b></span>
+                    <span class="buttonBorder" ng-click="prevPage()">
+                        <img src="application/Images/Assets/pagination_left.png"/>
+                    </span>
+                    <span class="pageIndicator">{{ gridApi.pagination.getPage() }} / {{ gridApi.pagination.getTotalPages() }}</span>
+                    <span class="buttonBorder" ng-click="nextPage()">
+                        <img src="application/Images/Assets/pagination_right.png"/>
+                    </span>
+                    <span class="ui-grid-pager-row-count-picker">
+                        <select class="selectPaginationBox" ng-model="paging.pageSelected" 
+                        ng-change="seek(paging.pageSelected)"
+                         ng-options="o for o in pageNumber">
+                        </select>
+                    </span>
+            </div>
+        <div class="col-xs-11 inventorySection paddingBottom30 noPadding">
+            <div id="grid1" ui-grid="gridOptions" ui-grid-pagination ui-grid-expandable ui-grid-auto-resize class="grid optionalGrid">
+                <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+            </div>
+            
+    </div>
+    </div>
+</div>
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column">
+<div class="addPaddingButtons col-xs-11">
+        <md-button class="md-raised md-primary ifBold" flex-offset="70" ng-click="save()">Save</md-button>
+        <md-button class="md-raised ifBold" flex-offset="5" ng-click="cancel()">Cancel</md-button>
+</div>
+</div>

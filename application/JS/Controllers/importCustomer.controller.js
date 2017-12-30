@@ -1,9 +1,15 @@
-app.controller('importCustomerCtrl',function($scope, $rootScope , heightCalc ,CONSTANTS ,customerServices){
+app.controller('importCustomerCtrl',function($scope, $rootScope , $stateParams , heightCalc ,CONSTANTS ,customerServices){
     console.log('Inside Import Cust Controller');
-    $rootScope.isActive = 'CUSTOMERS';
-
+    
+    $scope.from = $stateParams.from
+    if( $scope.from == 'Inventory'){
+        $rootScope.isActive = 'INVENTORY';
+    } 
+    else {
+        $rootScope.isActive = 'CUSTOMERS';
+    }
     $scope.changeHeight = function(val){
-        heightCalc.calculateGridHeight(val);
+        heightCalc.calculateGridHeight(val , 0);
     }
 
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('ImportCustomer');

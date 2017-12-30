@@ -20,7 +20,7 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     }    
     $scope.editLedger = function(row){
         row.entity.bank = "bank";
-        $state.go('Home.companyLedgers' , { data: row.entity });
+        $state.go('Home.bankBRS');
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Banking');
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
