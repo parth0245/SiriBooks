@@ -419,7 +419,8 @@ app.constant('CONSTANTS', {
                         stockCountList :'application/fixture/stockCountList.json',
                         primaryGroupList : "application/fixture/primaryGroupList.json",
                         groupList : "application/fixture/groupList.json",
-                        saveReceiptList :''
+                        saveReceiptList :'',
+                        getBanks : 'application/fixture/getBanks.json'
                 }
         ],
         headBarNavigator : [
@@ -907,7 +908,8 @@ addReceiptfields : [
         {field:'regnumber', displayName:'Receipt Number',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '</div>'}
+        '</div>'},
+        {field : "bank"}
 ] , 
 Salesfields : [
         {field : "customerName",headerCellClass : 'topPadding15',
@@ -1767,6 +1769,11 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
 
     commonServices.getpaymentMode().then(function(response){
         $scope.paymentList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
+    commonServices.getBanks().then(function(response){
+        $scope.bankList = response.data;
            },function(error){
          console.log('error',error);
     });
@@ -5828,6 +5835,9 @@ app.service('commonServices',function($http , CONSTANTS){
     }
     this.getGstScheme = function(){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].gstScheme);
+    }
+    this.getBanks = function(){
+        return $http.get(CONSTANTS.service[CONSTANTS.appLevel].getBanks);
     }
     this.setPassword = function(data){
         return $http({

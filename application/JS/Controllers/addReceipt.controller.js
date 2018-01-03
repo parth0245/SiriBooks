@@ -127,6 +127,11 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
            },function(error){
          console.log('error',error);
     });
+    commonServices.getBanks().then(function(response){
+        $scope.bankList = response.data;
+           },function(error){
+         console.log('error',error);
+    });
 
     receiptServices.getPreviousReceipts().then(function(response){
         $scope.gridOptions.data = response.data;

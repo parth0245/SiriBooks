@@ -8,9 +8,14 @@
     "mode": "bank",
     "paymentmodeid": 2
     },
+    {
+      "description": "Useful when no transaction happens eg:-trial",
+      "mode": "NA",
+      "paymentmodeid": 3
+      },
       {
-    "description": "Useful when no transaction happens eg:-trial",
-    "mode": "NA",
-    "paymentmodeid": 3
-    }
+        "description": "Useful when no transaction happens eg:-trial",
+        "mode": "credit",
+        "paymentmodeid": 3
+        }
     ]

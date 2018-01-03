@@ -106,7 +106,8 @@ app.constant('CONSTANTS', {
                         stockCountList :'application/fixture/stockCountList.json',
                         primaryGroupList : "application/fixture/primaryGroupList.json",
                         groupList : "application/fixture/groupList.json",
-                        saveReceiptList :''
+                        saveReceiptList :'',
+                        getBanks : 'application/fixture/getBanks.json'
                 }
         ],
         headBarNavigator : [
@@ -594,7 +595,8 @@ addReceiptfields : [
         {field:'regnumber', displayName:'Receipt Number',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
         '<span>{{grid.getCellValue(row, col)}}</span>'+
-        '</div>'}
+        '</div>'},
+        {field : "bank"}
 ] , 
 Salesfields : [
         {field : "customerName",headerCellClass : 'topPadding15',
