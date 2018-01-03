@@ -199,33 +199,40 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
     $scope.checkBalance();
     $scope.showMainGroup = true;
     $scope.showSubGroup = true;
-    $scope.selectGroup = function(){
-        if($scope.ledger.group == 'main'){
-            $scope.showdrcr = true;
-            if($scope.ledger.ledger == 'ledger'){
-                return;
-            }
-            $scope.showMainGroup = false;
-            $scope.showSubGroup = false;
-           
-        }
-        else {
-            $scope.showdrcr = false;
-            if($scope.ledger.ledger == 'ledger'){
-                return;
-            }            
-            $scope.showSubGroup = false;
-            $scope.showMainGroup = true;
-            
-        }
-    }
+    
     $scope.subGroupList = [
        
     ];
     $scope.majorGroupList = [
        
     ];
+
+    $scope.selectGroup = function(){
+        if($scope.ledger.group == 'main'){
+            $scope.showdrcr = true;
+            if($scope.ledger.ledger == 'ledger'){
+                $scope.showMainGroup = true;
+                $scope.showSubGroup = false;
+            }
+            else {
+            $scope.showMainGroup = false;
+            $scope.showSubGroup = false;
+            }
+        }
+        else {
+            $scope.showdrcr = false;
+            if($scope.ledger.ledger == 'ledger'){
+                $scope.showMainGroup = true;
+                $scope.showSubGroup = true;
+            }           
+            else { 
+            $scope.showSubGroup = false;
+            $scope.showMainGroup = true;
+            }
+        }
+    }
     $scope.checkGroups = function(){
+        $scope.ledger.group='';
         $scope.showMainGroup = true;
         $scope.showSubGroup = true;
     }

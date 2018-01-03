@@ -18,7 +18,7 @@ app.controller('inventoryCtrl', function($rootScope,$scope ,$state ,$timeout , C
         $state.go('Home.AddInventory' , { data: $scope.myObj });
     }
     $scope.import = function(){
-        $state.go('Home.ImportCustomer' , { from: "Inventory" });
+        $state.go('Home.ImportInventory');
     }
     
     $scope.editData = function(row){

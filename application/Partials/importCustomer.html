@@ -26,6 +26,7 @@
         <a class="downloadSample" ng-click="downloadSample()">Download Sample Here</a>
     </div>
     <div class="col-xs-12 paddingTop100 noPaddingRight pagingPart">
+        <div class="col-xs-8" ng-if="!saveEnabled"></div>
         <ul class="nav nav-tabs col-xs-8 noPaddingRight" ng-if="saveEnabled">
             <li class="active">
                 <a data-toggle="tab" ng-click="switchData('success')">Success</a>

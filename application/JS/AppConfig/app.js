@@ -49,6 +49,11 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         controller: 'inventoryDetailsCtrl',
         params: {data : '' , gridData : ''}
     })
+    .state('Home.ImportInventory', {
+        url: '/InventoryImport',
+        templateUrl: 'application/Partials/importCustomer.html',
+        controller: 'importInventoryCtrl',
+    })
     .state('Home.SetStock', {
         url: '/setStock',
         templateUrl: 'application/Partials/setStock.html',
@@ -67,7 +72,7 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         params: {data : ''}
     })
     .state('Home.ImportCustomer', {
-        url: '/import',
+        url: '/CustomerImport',
         templateUrl: 'application/Partials/importCustomer.html',
         controller: 'importCustomerCtrl',
         params: {from : ''}
@@ -85,7 +90,7 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
     })
     .state('Home.ImportVendors', {
         url: '/importVendors',
-        templateUrl: 'application/Partials/importVendor.html',
+        templateUrl: 'application/Partials/importCustomer.html',
         controller: 'importVendorCtrl'
     })
     .state('Home.Ledgers', {
