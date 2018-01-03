@@ -1,13 +1,21 @@
-        <table class="journalTable withRole ">
-        <thead><tr>
-                <th>Name</th>
-                <th>Value</th>
+<table class="journalTable withRole">
+<thead ng-repeat="list in row.entity.specification">
+        <tr ng-if="$first">
+        <th >SNO.</th>
+        <th ng-repeat="spec in list" ng-if="spec.ifSpecDefined && $parent.$first">
+                {{spec.specnamekey}}
+        </th>
         </tr>
 </thead>
-        <tbody ng-repeat="list in row.entity.specification track by $index">
-                <tr ng-repeat="spec in list" ng-if="spec.ifSpecDefined">
-                        <td style="padding: 5px">{{spec.specnamekey}}</td>
-                        <td style="padding: 5px">{{spec.specvalue}}</td>
-                </tr>
+<tbody ng-repeat="list in row.entity.specification">
+        <tr>
+                <td>{{$index+1}}</td>
+                <td style="padding:0px;" ng-repeat="spec in list" ng-if="spec.ifSpecDefined && $parent.$first">
+               {{spec.specvalue}}
+                </td>
+                <td style="padding:0px;" ng-repeat="spec in list" ng-if="spec.ifSpecDefined && !$parent.$first">
+                                {{spec.specvalue}}
+                </td>
+        </tr>
         </tbody>
-        </table>
+</table>

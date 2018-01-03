@@ -1,4 +1,4 @@
-app.service('inventoryServices',function($http , CONSTANTS){
+app.service('inventoryServices',function($http , CONSTANTS , $q){
     this.getStockCount = function(prod){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].stockCountList);
     }
@@ -71,8 +71,22 @@ app.service('inventoryServices',function($http , CONSTANTS){
          console.log(data);
          return $http({
              method: "put",
-             url: "CONSTANTS.service[CONSTANTS.appLevel].updateInventory",
+             url: CONSTANTS.service[CONSTANTS.appLevel].updateInventory,
              data: data
              })
      }
+     this.saveImportedList = function(rowData) {
+        if(rowData.productname != null){
+            return $http.get('https://api.github.com/users/haroldrv');
+        }
+        else {
+            return $http.get('https://api.github.com/users/haroldrv0');
+        }
+        
+
+        //comment above code and uncomment the below code and change the url for the post call
+        //return $http({method: "post",url: "https://api.github.com/users/haroldrv",data: rowData})
+      };
+
+      
 });

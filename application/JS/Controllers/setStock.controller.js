@@ -2,14 +2,16 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
     console.log('Inside Set Stock Controller');
     $rootScope.isActive = 'INVENTORY';
     $scope.setStock = {};
+    $scope.rowCounts = 0;
     console.log('$stateParams',$stateParams);
     $scope.fieldData = $stateParams.data;
-    $scope.specifications = [
+    $scope.specifications = $stateParams.desc ;
+    /*$scope.specifications = [
         {specnamekey: "pp", specvalue: "12", visibleinsale: "", ifSpecDefined: true},
         {specnamekey: "p00p", specvalue: "23", visibleinsale: "", ifSpecDefined: true},
         {specnamekey: "p00p", specvalue: "34", visibleinsale: "", ifSpecDefined: false},
         {specnamekey: "p00p", specvalue: "45", visibleinsale: "", ifSpecDefined: true}
-        ];
+        ];*/
         $scope.showSpecs = false;
         angular.forEach($scope.specifications , function(key){
             if(key.ifSpecDefined){
@@ -21,13 +23,15 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
     //$scope.stockCountSpecifications.push($scope.specifications);
     $scope.setStockCountSpecs = function(){
         if($scope.showSpecs){
-        for(var i=0 ; i < $scope.setStock.stockCount; i++){
-            //$scope.specifications[i].specvalue = $scope.spec.specvalue;
-            var itm = angular.copy($scope.specifications);
-             console.log('itm[i].specvalue',itm.specvalue);
-          $scope.stockCountSpecifications.push(itm);
-        }
+
+                for(var i=0 ; i < $scope.setStock.stockCount; i++){
+                        //$scope.specifications[i].specvalue = $scope.spec.specvalue;
+                        var itm = angular.copy($scope.specifications);
+                        console.log('itm[i].specvalue',itm.specvalue);
+                    $scope.stockCountSpecifications.push(itm);
+                    }
     }
+    
     }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val,0);

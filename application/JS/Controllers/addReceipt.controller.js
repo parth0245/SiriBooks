@@ -1,8 +1,9 @@
-app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ,commonServices ){
+app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ,commonServices ,$timeout){
     console.log('Inside Add Receipt Controller');
     $rootScope.isActive = 'Receipt';
     $scope.custNameList = [];
 
+    
     $scope.getCustomers = function(){
         receiptServices.getCustomerDetails().then(function(response){
            $scope.receiptDataList = response.data;
@@ -30,29 +31,41 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         $scope.addReceiptLabel = "Update";
         console.log('row',$scope.receipt);
     }
-
-    if(angular.isDefined($stateParams.data.customerName)) {
+    $scope.receipt = {};
+    $scope.receipt.customername = '';
+    if(angular.isDefined($stateParams.data.customerName) && angular.isUndefined($stateParams.data.backFromSales)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.addReceiptLabel = "Update";
-        $scope.receipt = {};
+        
+    }
+    else if(angular.isDefined($stateParams.data.backFromSales)){
+        $scope.custNameList =  $stateParams.data.custNameList;
+        $scope.heading = "New";
+        $scope.btnLabel = "Save";
+        $scope.addReceiptLabel = "Add";
+        $scope.receipt = $stateParams.data;
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.addReceiptLabel = "Add";
-        $scope.receipt = {};
         $scope.getCustomers();
     }
+
+
+
     $scope.ifCustomer = true;
    
     
-    $scope.receipt.customername = '';
+  
     $scope.cancel = function(){
         $state.go('Home.Receipt');
     }
     $scope.checkCustomer = function(){
-        $state.go('Home.addCustomers', {data : {"customername" : $scope.receipt.customername}});
+        $scope.receipt.custNameList = $scope.custNameList;
+        $scope.receipt.selectedCustomer = $scope.receipt.customername;
+        $state.go('Home.addCustomers', {data : $scope.receipt});
     }
     $scope.resetAll = function(){
         $scope.receipt = {};
@@ -133,7 +146,9 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
 
  $scope.gotoSales = function(event , data){
     event.stopPropagation();
-     $state.go('Home.addSales', {data :  data });
+    $scope.receipt.selectedSales = data;
+    $scope.receipt.custNameList = $scope.custNameList;
+     $state.go('Home.addSales', {data :  $scope.receipt });
  }
    $scope.saveReceipt = function(){
     receiptServices.saveReceipt($scope.receipt).then(function(response){

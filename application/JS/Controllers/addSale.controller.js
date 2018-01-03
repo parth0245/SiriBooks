@@ -1,14 +1,15 @@
-app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams , commonServices){
+app.controller('addSalesCtrl',function($rootScope , $state ,$scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams , commonServices){
     console.log('Inside Add Sales Controller');
     $rootScope.isActive = 'Sales';
     $scope.disableAll = false;
-    if(angular.isDefined($stateParams.data.customerName)) {
+    if(angular.isDefined($stateParams.data.customerName) && angular.isUndefined($stateParams.data.selectedSales)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         }
-        else if(angular.isDefined($stateParams.data.id) ){
-            console.log('$stateParams.data',$stateParams.data);
+        else if(angular.isDefined($stateParams.data.selectedSales) ){
+            console.log('$scope.receiptData',$stateParams.data);
             $scope.disableAll = true;
+            $scope.receiptData = $stateParams.data;
         }
     else {
         $scope.heading = "New";
@@ -18,6 +19,10 @@ app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesServ
     $scope.panelShow = true;
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
+    }
+    $scope.backToReceipt = function(){
+        $scope.receiptData.backFromSales = true;
+       $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
     }
     var today = new Date();
     $scope.purchase = {};

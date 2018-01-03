@@ -6,7 +6,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         var splitedArray = onlydate[0].split("/")
         return new Date(splitedArray[1]+'/'+splitedArray[0]+'/'+splitedArray[2]);
     }*/
-    if(angular.isDefined($stateParams.data.customername)) {
+    if(angular.isDefined($stateParams.data.customername) && angular.isUndefined($stateParams.data.selectedCustomer)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.location = $stateParams.data;
@@ -14,7 +14,16 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.books = $stateParams.data.orgledger;
         if($stateParams.data.customername != ''){
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
-        }
+        };
+    }
+    else if(angular.isDefined($stateParams.data.selectedCustomer) ){
+        $scope.disableAll = true;
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+        $scope.location = $stateParams.data;
+        $scope.identity = $stateParams.data;
+        $scope.books = $stateParams.data.orgledger;
+        $scope.receiptData = $stateParams.data;
     }
     else {
         $scope.heading = "New";
@@ -148,7 +157,12 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
     $scope.identity.type = [
         {id : "1" , type : "Retail"},
         {id : "2" , type : "Dealer"}
-    ]
+    ];
+    $scope.backToReceipt = function(){
+        $scope.receiptData.backFromSales = true;
+       $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
+    }
+
     /*commonServices.getOrgType().then(function(success){
         $scope.identity.type = success.data;   
     },function(error){

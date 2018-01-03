@@ -1,4 +1,13 @@
-<div class="paddingLeft60" layout="column">
+<div class="ajaxLoader" ng-if="showLoaderWithProgress">
+        <img src="application/Images/Assets/ajax-loader.gif" />
+        <span style="position: absolute;
+        margin-top: 21%;
+        color: black;
+        left: 45%;
+        font-size: 16px;
+        font-weight: bold;">Saving {{i}} of {{tempGridData.length}} Records...</span>
+    </div>
+    <div class="paddingLeft60" layout="column">
     <div class="col-xs-12 sectionSubHeading">
         <h2>Import {{from}}</h2>
     </div>
@@ -10,19 +19,19 @@
         </div>
         <div class="col-xs-2 paddingLeft30 noPaddingRight">
             <!--<button class="col-xs-11 btn btn-primary btn-app-blue-color fontBold">Import</button>-->
-            <md-button class="md-raised md-primary ifBold ifWhite" type="file" ngf-select="" ng-model="picFile" name="file">Import</md-button>
+            <md-button class="md-raised md-primary ifBold ifWhite" type="file" ngf-select="import($file)" ng-model="picFile" name="file" >Import</md-button>
         </div>
     </div>
     <div class="col-xs-12">
         <a class="downloadSample" ng-click="downloadSample()">Download Sample Here</a>
     </div>
-    <div class="col-xs-9 paddingTop100 noPaddingRight pagingPart">
-        <ul class="nav nav-tabs col-xs-8 noPaddingRight">
+    <div class="col-xs-12 paddingTop100 noPaddingRight pagingPart">
+        <ul class="nav nav-tabs col-xs-8 noPaddingRight" ng-if="saveEnabled">
             <li class="active">
-                <a data-toggle="tab" href="#success">Success ( 10/20 )</a>
+                <a data-toggle="tab" ng-click="switchData('success')">Success</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#failure">Failure ( 10/20 )</a>
+                <a data-toggle="tab" ng-click="switchData('failure')">Failure</a>
             </li>
           </ul>
           <div class="col-xs-4 text-right" ng-if="!checkModule()">
@@ -43,12 +52,17 @@
     </div>
 
     <div class="tab-content">
-            <div id="home" class="tab-pane fade in active col-xs-9">
-                <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-pagination ui-grid-auto-resize class="grid">
-                    <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+            <div id="success" class="tab-pane fade in active col-xs-12">
+                    <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-edit ui-grid-pagination ui-grid-auto-resize class="grid">
+                        <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+                    </div>
                 </div>
-            </div>
-           <!-- <div id="menu1" class="tab-pane fade">
+                
+           <!-- <div id="failure" class="tab-pane fade col-xs-12">
+                        <div id="grid1" ui-grid="gridOptions" ui-grid-selection ui-grid-edit ui-grid-pagination ui-grid-auto-resize class="grid">
+                                <div class="watermark" ng-show="!gridOptions.data.length">No data available</div>
+                        </div>
+                    </div> <div id="menu1" class="tab-pane fade">
               <h3>Menu 1</h3>
               <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
             </div>-->
@@ -60,4 +74,7 @@
             </div>
     </div>-->
     
+</div>
+<div ng-if="saveEnabled">
+    <md-button class="md-raised md-primary ifBold ifWhite pull-right" ng-click="saveList()">Save</md-button>
 </div>

@@ -14,6 +14,9 @@
 
 		<script src="node_modules/csv-js/csv.js"></script>
 
+		<script src="application/lib/xlsx.js"></script>
+		<script src="application/lib/jszip.js"></script>
+
 		<script src="dist/src/js/script.js"></script>
 		<!--Main CSS File-->
 		<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,7 +30,7 @@
 	<body layout="column">
 		<ui-view></ui-view>
 		<div class="ajaxLoader" ng-if="showLoader">
-			<img src="application/Images/Assets/ajax-loader.gif" />
-		</div>
+				<img src="application/Images/Assets/ajax-loader.gif" />
+			</div>
 	</body>
 </html>

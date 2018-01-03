@@ -100,6 +100,9 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
    $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 0);
     }   
+    $scope.brs = function(){
+        $state.go('Home.bankBRS');
+    }
       
    $scope.changeHeight(0);
 

@@ -15,6 +15,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.inventory = {};
         $scope.inventory.lkupunitofmeasure = "1";
         $scope.enableStockButton = false;
+        $scope.inventory.productspecs = [];
     }
     $scope.gstList = ["5%" , "10%" , "15%"];
     commonServices.getProductType().then(function(success){
@@ -35,8 +36,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         console.log('error',error);
      });
     
-    $scope.Description = $scope.inventory.productspecs || [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
-
+    $scope.Description = $scope.inventory.productspecs.length != 0 ? $scope.inventory.productspecs : [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
     $scope.cancel = function(){
         $state.go('Home.Inventory');
     }

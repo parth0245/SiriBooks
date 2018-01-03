@@ -45,5 +45,4 @@ app.service('commonServices',function($http , CONSTANTS){
             data: data
             })
     }
-
 });

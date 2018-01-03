@@ -1020,3 +1020,6 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 .expandableRow {
 	overflow-y: auto;
 }
+.red {
+	background-color: red !important;
+}

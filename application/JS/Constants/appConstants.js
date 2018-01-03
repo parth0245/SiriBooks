@@ -527,12 +527,12 @@ BankLedgerfields : [
         {field : "netBalance"}
 ],
 BRSfields : [
-        {field : "date" ,enableCellEdit: false ,cellFilter: 'date:"dd-MM-yyyy"',},
+        {field : "date" ,enableCellEdit: false ,cellFilter: 'date:"dd-MM-yyyy"', displayName : 'Date'},
         {field : "particulars" ,enableCellEdit: false},
         {field : "voucherType" ,enableCellEdit: false},
         {field : "debit" ,enableCellEdit: false},
         {field : "credit" ,enableCellEdit: false},
-        {field : "date" , headerCellClass: 'headColor',
+        {field : "date" , displayName : 'Date' , headerCellClass: 'headColor',
         editableCellTemplate: 'application/Partials/dateTemplate.html' },
         {field : "notes" , width:"20%" , headerCellClass : 'headColor'}
 

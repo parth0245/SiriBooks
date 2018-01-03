@@ -1,6 +1,11 @@
 <div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column">
     <div class="sectionSubHeading">
         <h3>{{heading}} Customer</h3>
+        <button class="buttonRound buttonRound2" ng-click="backToReceipt()" ng-if="disableAll">
+                <div>Back</div>
+                <div>To</div>
+                <div>Receipt</div>
+            </button>
     </div>
     <div layout="row" class="topPadding20">
             <md-button ng-click="togglePannel1()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">

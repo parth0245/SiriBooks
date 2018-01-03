@@ -308,6 +308,7 @@ app.run(function($rootScope) {
     $rootScope.showNavigations = true ;
     $rootScope.appTitle = 'Siri-Books';
     $rootScope.showLoader = false;
+    $rootScope.showLoaderWithProgress = false;
     $rootScope.emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   });
 app.constant('CONSTANTS', {
@@ -839,12 +840,12 @@ BankLedgerfields : [
         {field : "netBalance"}
 ],
 BRSfields : [
-        {field : "date" ,enableCellEdit: false ,cellFilter: 'date:"dd-MM-yyyy"',},
+        {field : "date" ,enableCellEdit: false ,cellFilter: 'date:"dd-MM-yyyy"', displayName : 'Date'},
         {field : "particulars" ,enableCellEdit: false},
         {field : "voucherType" ,enableCellEdit: false},
         {field : "debit" ,enableCellEdit: false},
         {field : "credit" ,enableCellEdit: false},
-        {field : "date" , headerCellClass: 'headColor',
+        {field : "date" , displayName : 'Date' , headerCellClass: 'headColor',
         editableCellTemplate: 'application/Partials/dateTemplate.html' },
         {field : "notes" , width:"20%" , headerCellClass : 'headColor'}
 
@@ -991,7 +992,7 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         var splitedArray = onlydate[0].split("/")
         return new Date(splitedArray[1]+'/'+splitedArray[0]+'/'+splitedArray[2]);
     }*/
-    if(angular.isDefined($stateParams.data.customername)) {
+    if(angular.isDefined($stateParams.data.customername) && angular.isUndefined($stateParams.data.selectedCustomer)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.location = $stateParams.data;
@@ -999,7 +1000,16 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
         $scope.books = $stateParams.data.orgledger;
         if($stateParams.data.customername != ''){
         $scope.books.updateddate = CONSTANTS.getDateObject($stateParams.data.orgledger.updateddate);
-        }
+        };
+    }
+    else if(angular.isDefined($stateParams.data.selectedCustomer) ){
+        $scope.disableAll = true;
+        $scope.heading = "Update";
+        $scope.btnLabel = "Update";
+        $scope.location = $stateParams.data;
+        $scope.identity = $stateParams.data;
+        $scope.books = $stateParams.data.orgledger;
+        $scope.receiptData = $stateParams.data;
     }
     else {
         $scope.heading = "New";
@@ -1133,7 +1143,12 @@ app.controller('addCustomerCtrl',function($rootScope , $scope ,$stateParams , $s
     $scope.identity.type = [
         {id : "1" , type : "Retail"},
         {id : "2" , type : "Dealer"}
-    ]
+    ];
+    $scope.backToReceipt = function(){
+        $scope.receiptData.backFromSales = true;
+       $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
+    }
+
     /*commonServices.getOrgType().then(function(success){
         $scope.identity.type = success.data;   
     },function(error){
@@ -1191,6 +1206,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         $scope.inventory = {};
         $scope.inventory.lkupunitofmeasure = "1";
         $scope.enableStockButton = false;
+        $scope.inventory.productspecs = [];
     }
     $scope.gstList = ["5%" , "10%" , "15%"];
     commonServices.getProductType().then(function(success){
@@ -1211,8 +1227,7 @@ app.controller('addInventoryCtrl',function($rootScope , $scope ,$stateParams ,$s
         console.log('error',error);
      });
     
-    $scope.Description = $scope.inventory.productspecs || [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
-
+    $scope.Description = $scope.inventory.productspecs.length != 0 ? $scope.inventory.productspecs : [{ specnamekey: "", specvalue: "" , visibleinsale : "" } ];
     $scope.cancel = function(){
         $state.go('Home.Inventory');
     }
@@ -1626,11 +1641,12 @@ $scope.getData = function() {
     ,{"name": "2058"}]
 }
 });
-app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ,commonServices ){
+app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $state , receiptServices , CONSTANTS ,heightCalc ,commonServices ,$timeout){
     console.log('Inside Add Receipt Controller');
     $rootScope.isActive = 'Receipt';
     $scope.custNameList = [];
 
+    
     $scope.getCustomers = function(){
         receiptServices.getCustomerDetails().then(function(response){
            $scope.receiptDataList = response.data;
@@ -1658,29 +1674,41 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
         $scope.addReceiptLabel = "Update";
         console.log('row',$scope.receipt);
     }
-
-    if(angular.isDefined($stateParams.data.customerName)) {
+    $scope.receipt = {};
+    $scope.receipt.customername = '';
+    if(angular.isDefined($stateParams.data.customerName) && angular.isUndefined($stateParams.data.backFromSales)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.addReceiptLabel = "Update";
-        $scope.receipt = {};
+        
+    }
+    else if(angular.isDefined($stateParams.data.backFromSales)){
+        $scope.custNameList =  $stateParams.data.custNameList;
+        $scope.heading = "New";
+        $scope.btnLabel = "Save";
+        $scope.addReceiptLabel = "Add";
+        $scope.receipt = $stateParams.data;
     }
     else {
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.addReceiptLabel = "Add";
-        $scope.receipt = {};
         $scope.getCustomers();
     }
+
+
+
     $scope.ifCustomer = true;
    
     
-    $scope.receipt.customername = '';
+  
     $scope.cancel = function(){
         $state.go('Home.Receipt');
     }
     $scope.checkCustomer = function(){
-        $state.go('Home.addCustomers', {data : {"customername" : $scope.receipt.customername}});
+        $scope.receipt.custNameList = $scope.custNameList;
+        $scope.receipt.selectedCustomer = $scope.receipt.customername;
+        $state.go('Home.addCustomers', {data : $scope.receipt});
     }
     $scope.resetAll = function(){
         $scope.receipt = {};
@@ -1761,7 +1789,9 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
 
  $scope.gotoSales = function(event , data){
     event.stopPropagation();
-     $state.go('Home.addSales', {data :  data });
+    $scope.receipt.selectedSales = data;
+    $scope.receipt.custNameList = $scope.custNameList;
+     $state.go('Home.addSales', {data :  $scope.receipt });
  }
    $scope.saveReceipt = function(){
     receiptServices.saveReceipt($scope.receipt).then(function(response){
@@ -1838,17 +1868,18 @@ $scope.btnLeft = function (data , $index) {
    $scope.changeHeight(0);
 
 });
-app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams , commonServices){
+app.controller('addSalesCtrl',function($rootScope , $state ,$scope , $filter , salesService , CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams , commonServices){
     console.log('Inside Add Sales Controller');
     $rootScope.isActive = 'Sales';
     $scope.disableAll = false;
-    if(angular.isDefined($stateParams.data.customerName)) {
+    if(angular.isDefined($stateParams.data.customerName) && angular.isUndefined($stateParams.data.selectedSales)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         }
-        else if(angular.isDefined($stateParams.data.id) ){
-            console.log('$stateParams.data',$stateParams.data);
+        else if(angular.isDefined($stateParams.data.selectedSales) ){
+            console.log('$scope.receiptData',$stateParams.data);
             $scope.disableAll = true;
+            $scope.receiptData = $stateParams.data;
         }
     else {
         $scope.heading = "New";
@@ -1858,6 +1889,10 @@ app.controller('addSalesCtrl',function($rootScope , $scope , $filter , salesServ
     $scope.panelShow = true;
     $scope.togglePannel = function(){
         $scope.panelShow = !$scope.panelShow;
+    }
+    $scope.backToReceipt = function(){
+        $scope.receiptData.backFromSales = true;
+       $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
     }
     var today = new Date();
     $scope.purchase = {};
@@ -2714,6 +2749,9 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
    $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 0);
     }   
+    $scope.brs = function(){
+        $state.go('Home.bankBRS');
+    }
       
    $scope.changeHeight(0);
 
@@ -3106,12 +3144,57 @@ app.controller('homeCtrl',function($scope,$rootScope,CONSTANTS ,$state){
         $state.go('Home.Dashboard');
     }
 });
-app.controller('importCustomerCtrl',function($scope, $rootScope , $stateParams , heightCalc ,CONSTANTS ,customerServices){
+app.controller('importCustomerCtrl',function($http , $q ,$scope, $rootScope , $stateParams , heightCalc ,CONSTANTS ,customerServices , inventoryServices){
     console.log('Inside Import Cust Controller');
-    
-    $scope.from = $stateParams.from
+    $scope.from = $stateParams.from;
+    $scope.gridOptions = CONSTANTS.gridOptionsConstants('ImportCustomer');
     if( $scope.from == 'Inventory'){
         $rootScope.isActive = 'INVENTORY';
+        $scope.gridOptions.columnDefs = [
+            { field: 'productname' , displayName:'Product Name' , 
+            cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+               if (grid.getCellValue(row,col) == null) {
+                    return 'red';
+                }
+                else {
+                    return '';
+                }
+              },
+              enableCellEdit:true,
+              cellEditableCondition : function($scope){
+                  if($scope.row.entity.productname == null){
+                      return true;
+                    }else{
+                        return false;
+                    }
+            }
+            },
+            { field: 'description' ,enableCellEdit:false},
+            { field: 'barcode' , displayName:'Barcode',enableCellEdit:false },
+            { field: 'hsncode', displayName:'Code',enableCellEdit:false },
+            { field: 'sku', displayName:'Count',enableCellEdit:false },
+            { field: 'lkupunitofmeasure', displayName:'Unit Of Measure' , 
+            cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) {
+                    if(unitOfMeasure.indexOf(grid.getCellValue(row,col)) == -1){
+                        return 'red';
+                    }
+                    else {
+                        return '';
+                    }
+            },
+            enableCellEdit:true,
+            cellEditableCondition : function($scope){
+                if(unitOfMeasure.indexOf($scope.row.entity.lkupunitofmeasure == -1)){
+                    return true;
+                  }else{
+                      return false;
+                  }
+          }},
+            { field: 'gstpercent', displayName:'GST',enableCellEdit:false },
+            { field: 'group' ,enableCellEdit:false},
+            { field: 'specification name',enableCellEdit:false },
+            { field: 'specification value' ,enableCellEdit:false},
+        ];
     } 
     else {
         $rootScope.isActive = 'CUSTOMERS';
@@ -3119,11 +3202,35 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , $stateParams ,
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val , 0);
     }
-
-    $scope.gridOptions = CONSTANTS.gridOptionsConstants('ImportCustomer');
     $scope.gridOptions.enableRowSelection = false;
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
+        $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity, colDef, newValue, oldValue){
+            if(colDef.field == "productname"){
+                if(rowEntity.productname != null){
+                    $scope.errorCount = $scope.errorCount-1;
+                    if($scope.errorCount == 0){
+                        $scope.saveEnabled = true;
+                    }
+                    else {
+                        $scope.saveEnabled = false;
+                    }
+                    console.log("$scope.errorCount1",$scope.errorCount);
+                }
+            }
+            if(colDef.field == "lkupunitofmeasure"){
+                if(unitOfMeasure.indexOf(rowEntity.lkupunitofmeasure) != -1){
+                    $scope.errorCount = $scope.errorCount-1;
+                    if($scope.errorCount == 0){
+                        $scope.saveEnabled = true;
+                    }
+                    else {
+                        $scope.saveEnabled = false;
+                    }
+                    console.log("$scope.errorCount2",$scope.errorCount);
+                }
+            }
+          });
     }
     $scope.nextPage = function(){
         $scope.gridApi.pagination.nextPage();
@@ -3164,6 +3271,7 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , $stateParams ,
         }
     });
 
+    if($rootScope.isActive == 'CUSTOMERS'){
     customerServices.importCustomer().then(function(response){
         $scope.gridOptions.data = response.data;
         $scope.totalPages = Math.ceil(response.data.length / $scope.gridOptions.paginationPageSize);
@@ -3176,6 +3284,7 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , $stateParams ,
           },function(error){
         console.log('error',error);
      });
+    }
      $scope.checkModule = function(){
         if($scope.gridOptions.data.length == 0) {
             return true;
@@ -3185,7 +3294,100 @@ app.controller('importCustomerCtrl',function($scope, $rootScope , $stateParams ,
     $scope.downloadSample = function(){
         window.open('application/fixture/Files/download.csv');
     }
-   $scope.changeHeight(0);
+
+        if($rootScope.isActive == 'INVENTORY'){
+            $scope.changeHeight(200);
+        }
+        else{
+            $scope.changeHeight(0);
+        }
+
+        /*Import Logic & validation*/
+        $scope.saveEnabled = false;
+        var unitOfMeasure = ["Ampules","Bags", "Bale", "Bundles", "Buckles", "Billions of Units", "Boxes", "Bottles", "Bunches", "Cans", "Cases", "Cubic Meter", "Centi Meter", "Carat", "Cartons", "Dozen", "Drum", "Feet", "Great Gross", "Grams", "Gross Yards", "Kilogram Activity", "Kilogram Base", "Kilograms", "Kits", "Kilo Liter", "Kilo Meters", "Pounds", "Liters", "Milligrams", "Million Keasergen", "Milli Liter", "Millions of Unit", "Meter", "Metric Ton", "Million Units", "Number", "Packs", "Pieces", "Pairs", "Quintal", "Rolls", "Sets", "Square Feet", "Square Meter", "Square Yards", "Tablets", "Ten Grams", "Thousands", "Great Britain Ton", "Tubes", "US Gallons", "Units", "Vials", "Yards"];
+        $scope.gridOptions.failureData = [];
+        $scope.gridOptions.successData = [];
+        $scope.tempGridData = $scope.gridOptions.data;
+        $scope.saveList = function(){
+            $rootScope.showLoaderWithProgress = true;
+            $scope.tempGridData = $scope.gridOptions.data;
+            var promises = [];
+            $scope.i=0;            
+            $scope.gridOptions.data = [];
+            $scope.gridOptions.failureData = [];
+            $scope.gridOptions.successData = [];
+            $scope.tempGridData.forEach(function(d) {
+                inventoryServices.saveImportedList(d).then(function(response){
+                    $scope.gridOptions.data.push(d);
+                    $scope.gridOptions.successData.push(d);
+                },function(error){
+                    $scope.gridOptions.failureData.push(d);
+                }).finally(function(){
+                    $scope.i++;
+                    if($scope.i == $scope.tempGridData.length)
+                    {
+                        $rootScope.showLoaderWithProgress = false;
+                    }
+                    $scope.changeHeight(0);
+                });
+              });
+        };
+
+       
+    
+        $scope.switchData = function(section){
+            if(section == "failure"){
+                $scope.gridOptions.data = $scope.gridOptions.failureData;
+            }
+            else {
+                $scope.gridOptions.data = $scope.gridOptions.successData;
+            }
+        }
+
+        
+    function showGridData(data){
+        $scope.gridOptions.data = data;
+        $scope.totalPages = Math.ceil($scope.gridOptions.data.length / $scope.gridOptions.paginationPageSize);
+        if($scope.gridOptions.data.length !== 0){
+            $scope.changeHeight(0);
+        }
+        else {
+            $scope.changeHeight(200);
+        } 
+        verifyGridData($scope.gridOptions.data);
+    } 
+    $scope.errorCount = 0;
+    function verifyGridData(gridData){
+        angular.forEach(gridData , function(key , value){
+            if(angular.isUndefined(key["productname"])){
+                key.productname = null;
+                $scope.errorCount = $scope.errorCount+1;
+            }
+            if(angular.isUndefined(key["lkupunitofmeasure"])){
+                key.lkupunitofmeasure = null;
+                $scope.errorCount = $scope.errorCount+1;
+            }
+        });
+        if($scope.errorCount == 0){
+            $scope.saveEnabled = true;
+        }
+        else {
+            $scope.saveEnabled = false;
+        }
+    }   
+     $scope.import = function(file) {
+        var file = file;
+        var rABS = true; // true: readAsBinaryString ; false: readAsArrayBuffer
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var data = e.target.result;
+            if(!rABS) data = new Uint8Array(data);
+            var workbook = XLSX.read(data, {type: rABS ? 'binary' : 'array'});
+           var xlsxData = XLSX.utils.sheet_to_json(workbook.Sheets["Sheet1"],{raw:true});
+            showGridData(xlsxData);
+          };
+          if(rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
+        };
 });
 
 app.controller('importLedgerCtrl',function( $rootScope,$scope ,$state ,$timeout , CONSTANTS ,heightCalc , ledgerServices){
@@ -3507,10 +3709,13 @@ app.controller('inventoryDetailsCtrl', function($filter , $rootScope,$scope , $s
 
     $scope.productDetails = $stateParams.data;
     $scope.gridData = $stateParams.gridData;
+    /* remove Later after API INtegrated */
     angular.forEach($scope.gridData , function(key,value){
         $scope.gridData[value].createddate = CONSTANTS.getDateObject(key.createddate);
         $scope.gridData[value].currentMrp = "10";
-        $scope.gridData[value].newMrp = "0";
+        $scope.gridData[value].newMrp = "";
+        $scope.gridData[value].newSalePrice = "";
+        $scope.gridData[value].stockCount = "10";
     });
     $scope.selectedProduct = $scope.productDetails.productname;
     
@@ -3521,7 +3726,7 @@ app.controller('inventoryDetailsCtrl', function($filter , $rootScope,$scope , $s
         {field : "purchasePrice" , displayName : "Purchase Price" , enableCellEdit:false},
         {field : "stockCount" , displayName : "Stock Count", enableCellEdit:false},
         {field : "currentMrp" , displayName : "Current MRP", enableCellEdit:false},
-        {field : "newMrp" , displayName : "New MRP", enableCellEdit:false,
+        {field : "newMrp" , displayName : "New MRP",
         enableCellEdit:true,
         cellEditableCondition : function($scope){if($scope.row.entity.stockCount > 0){return true;}else{return false;}}},
         {field : "salePrice" , displayName : "Current Sale Price", enableCellEdit:false},
@@ -3538,17 +3743,57 @@ app.controller('inventoryDetailsCtrl', function($filter , $rootScope,$scope , $s
 $scope.getEffectiveDate = function(data){
     return data;
 }
+$scope.save = function(){
+
+}
+$scope.disableSave = true;
+function checkSaveDisable(){
+    $scope.trueRows = 0;
+    angular.forEach($scope.gridOptions.data , function(key,value){
+    if(key.newMrp != "" && key.newSalePrice != ""){
+        debugger;
+        $scope.trueRows = $scope.trueRows +1 ;
+    }
+    });
+    if($scope.trueRows == $scope.gridOptions.data.length ) {
+        $scope.disableSave = false;
+    }
+}
+
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
         $scope.gridApi.edit.on.afterCellEdit($scope,function(rowEntity, colDef, newValue, oldValue){
-          console.log(rowEntity);
-          //$scope.$apply();
+          console.log(colDef);
+          if(colDef.newMrp){
+            if(rowEntity.newMrp <= 0) {
+                
+                            rowEntity.newMrp = "";
+                          }
+                          else {
+                            rowEntity.newMrp=  rowEntity.newMrp ;
+                          }
+          }
+          else if(colDef.newSalePrice){
+            if(rowEntity.newSalePrice <= 0) {
+                
+                            rowEntity.newSalePrice = "";
+                          }
+                          else {
+                            rowEntity.newSalePrice=  rowEntity.newSalePrice ;
+                          }
+          }
+          else {
+              //
+          }
+          checkSaveDisable();
         });
     }
     $scope.cancel = function(){
         $state.go('Home.Inventory');
     }
+
     $scope.gridOptions.data = $scope.gridData;
+
     $scope.csvDownload = function(){
         $scope.gridApi.exporter.csvExport(uiGridExporterConstants.VISIBLE,uiGridExporterConstants.ALL);
       }
@@ -3599,7 +3844,7 @@ $scope.getEffectiveDate = function(data){
                 $scope.pageNumber[i] = i+1; 
             }        
     });
-
+    checkSaveDisable();
     $scope.changeHeight(0);
     
     console.log($stateParams.gridData);
@@ -5202,14 +5447,16 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
     console.log('Inside Set Stock Controller');
     $rootScope.isActive = 'INVENTORY';
     $scope.setStock = {};
+    $scope.rowCounts = 0;
     console.log('$stateParams',$stateParams);
     $scope.fieldData = $stateParams.data;
-    $scope.specifications = [
+    $scope.specifications = $stateParams.desc ;
+    /*$scope.specifications = [
         {specnamekey: "pp", specvalue: "12", visibleinsale: "", ifSpecDefined: true},
         {specnamekey: "p00p", specvalue: "23", visibleinsale: "", ifSpecDefined: true},
         {specnamekey: "p00p", specvalue: "34", visibleinsale: "", ifSpecDefined: false},
         {specnamekey: "p00p", specvalue: "45", visibleinsale: "", ifSpecDefined: true}
-        ];
+        ];*/
         $scope.showSpecs = false;
         angular.forEach($scope.specifications , function(key){
             if(key.ifSpecDefined){
@@ -5221,13 +5468,15 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
     //$scope.stockCountSpecifications.push($scope.specifications);
     $scope.setStockCountSpecs = function(){
         if($scope.showSpecs){
-        for(var i=0 ; i < $scope.setStock.stockCount; i++){
-            //$scope.specifications[i].specvalue = $scope.spec.specvalue;
-            var itm = angular.copy($scope.specifications);
-             console.log('itm[i].specvalue',itm.specvalue);
-          $scope.stockCountSpecifications.push(itm);
-        }
+
+                for(var i=0 ; i < $scope.setStock.stockCount; i++){
+                        //$scope.specifications[i].specvalue = $scope.spec.specvalue;
+                        var itm = angular.copy($scope.specifications);
+                        console.log('itm[i].specvalue',itm.specvalue);
+                    $scope.stockCountSpecifications.push(itm);
+                    }
     }
+    
     }
     $scope.changeHeight = function(val){
         heightCalc.calculateGridHeight(val,0);
@@ -5587,7 +5836,6 @@ app.service('commonServices',function($http , CONSTANTS){
             data: data
             })
     }
-
 });
 app.service('contraServices',function($http , CONSTANTS){
     this.getContraList = function(){
@@ -5720,7 +5968,7 @@ app.factory('heightCalc',function($timeout){
 },500);*/
 
 
-app.service('inventoryServices',function($http , CONSTANTS){
+app.service('inventoryServices',function($http , CONSTANTS , $q){
     this.getStockCount = function(prod){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].stockCountList);
     }
@@ -5793,10 +6041,24 @@ app.service('inventoryServices',function($http , CONSTANTS){
          console.log(data);
          return $http({
              method: "put",
-             url: "CONSTANTS.service[CONSTANTS.appLevel].updateInventory",
+             url: CONSTANTS.service[CONSTANTS.appLevel].updateInventory,
              data: data
              })
      }
+     this.saveImportedList = function(rowData) {
+        if(rowData.productname != null){
+            return $http.get('https://api.github.com/users/haroldrv');
+        }
+        else {
+            return $http.get('https://api.github.com/users/haroldrv0');
+        }
+        
+
+        //comment above code and uncomment the below code and change the url for the post call
+        //return $http({method: "post",url: "https://api.github.com/users/haroldrv",data: rowData})
+      };
+
+      
 });
 app.service('journalServices',function($http , CONSTANTS){
     this.searchJournal = function(search) {
