@@ -153,6 +153,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     event.stopPropagation();
     $scope.receipt.selectedSales = data;
     $scope.receipt.custNameList = $scope.custNameList;
+    $scope.receipt.from = "Receipt";
      $state.go('Home.addSales', {data :  $scope.receipt });
  }
    $scope.saveReceipt = function(){
@@ -173,17 +174,21 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
    }
 
    $scope.salesList = [
-    {"id":1,"date":"10/12/2017","amount":"200"},
-    {"id":2,"date":"10/12/2017","amount":"200"},
+    {"id":1,"date":"9/12/2009","amount":"200"},
+    {"id":2,"date":"10/12/2014","amount":"200"},
     {"id":3,"date":"10/12/2017","amount":"200"},
-    {"id":4,"date":"10/12/2017","amount":"200"},
-    {"id":5,"date":"10/12/2017","amount":"200"},
+    {"id":4,"date":"10/12/2018","amount":"200"},
+    {"id":5,"date":"7/12/2017","amount":"200"},
     {"id":6,"date":"10/12/2017","amount":"200"},
     {"id":7,"date":"10/12/2017","amount":"200"},
-    {"id":8,"date":"10/12/2017","amount":"200"},
-    {"id":9,"date":"10/12/2017","amount":"200"},
-    {"id":10,"date":"10/12/2017","amount":"200"},
+    {"id":8,"date":"8/12/2017","amount":"200"},
+    {"id":9,"date":"10/12/2011","amount":"200"},
+    {"id":10,"date":"10/12/2017","amount":"200"}
     ];
+
+    $scope.salesList.sort(function(a,b){
+                     return CONSTANTS.getDateObject(a.date) - CONSTANTS.getDateObject(b.date);
+                });
 
     function getSaleTotal(){
         $scope.totalOfSelectedSaleList = 0;

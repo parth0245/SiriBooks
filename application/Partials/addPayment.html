@@ -25,6 +25,71 @@
                                     <input name="add1" ng-model="payment.add" ng-readonly="ifCustomer">
                                 </md-input-container>
                         </div>
+
+<div layout="row" class="topPadding10">
+    <md-checkbox class="md-primary" ng-model="ifSaleSelected">
+        <label class="topPadding10">Associate this receipt with Purchases (optional)</label>
+    </md-checkbox>
+    </div>
+    <div layout="row" class="topPadding10" ng-if="ifSaleSelected">
+        <table class="journalTable" flex="55">
+            <thead style="border-bottom:1px solid #d4d4d4;">
+                    <tr>
+                    <th>Purchases</th>
+                    <th>Selected</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                                <td class="noPadding" style="vertical-align: text-top;">
+                                        <div id="table-wrapper">
+                                                <div id="table-scroll">
+                                                    <div class="row">
+                                                            <div class="secHeader col-xs-4">ID</div>
+                                                        <div class="secHeader col-xs-4">Date</div>
+                                                        <div class="secHeader noRightborder col-xs-4">Amount</div>
+                                                    </div>
+                                                        <div ng-click="btnRight(data , $index)" ng-repeat="data in salesList track by $index" class="row" style="border-bottom:1px solid #d4d4d4">
+                                                                <div class="secdata col-xs-4"><a ng-click="gotoSales($event , data)">{{data.id}}</a></div>
+                                                                <div class="secdata col-xs-4">{{data.date}}</div>
+                                                                <div class="secdata noRightborder col-xs-4">{{data.amount}}</div>
+                                                        </div>
+                                    
+                                    </div>
+                                    </div>
+                                        
+                                </td>  
+                                <td class="noPadding" style="vertical-align: text-top;">
+                                        <div id="table-wrapper">
+                                                <div id="table-scroll">
+                                                        <div class="row">
+                                                                <div class="secHeader col-xs-4">ID</div>
+                                                                <div class="secHeader col-xs-4">Date</div>
+                                                                <div class="secHeader noRightborder col-xs-4">Amount</div>
+                                                            </div>
+                                                            <div  ng-click="btnLeft(data , $index)"  ng-repeat="data in SelectedSalesList track by $index" class="row" style="border-bottom:1px solid #d4d4d4">
+                                                                <div class="secdata col-xs-4"><a ng-click="gotoSales($event)">{{data.id}}</a></div>
+                                                                <div class="secdata col-xs-4">{{data.date}}</div>
+                                                                <div class="secdata noRightborder col-xs-4">{{data.amount}}</div>
+                                                        </div>
+                                    
+                                </div>
+                            </div>  
+                                    
+                                </td>  
+                        </tr> 
+                        
+                    </tbody>
+                    <tfooter>
+                        <tr>
+                                <td>Total : {{totalOfSaleList}}</td>
+                                <td>Total : {{totalOfSelectedSaleList}}</td>
+                        </tr>
+                    </tfooter>
+            </table>
+
+        </div>
+    
                            <!-- <div layout="row" class="topPadding20">
                                 <md-button ng-click="togglePannel()" class="md-raised md-primary marginLeft0" flex="22" style="text-align:left;">
                                             Identity
@@ -100,11 +165,11 @@
                             <div layout="row" class="topPadding30">
                                     <md-input-container flex="25">
                                             <label>Voucher Number</label>
-                                            <input name="receipt" ng-model="receipt" disabled>
+                                            <input name="receipt" ng-model="payment.receipt" disabled>
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>Against</label>
-                                            <md-select name="against" ng-model="against" required>
+                                            <md-select name="against" ng-model="payment.against" required>
                                                 <md-option value="Product 1">against 1</md-option>
                                                 <md-option value="Product 2">against 2</md-option>
                                             </md-select>
@@ -116,7 +181,7 @@
                             <div layout="row">
                                     <md-input-container flex="25">
                                             <label>Payment Mode</label>
-                                            <md-select name="mode" ng-model="paymentMode" required>
+                                            <md-select name="mode" ng-model="payment.paymentMode" required>
                                                 <md-option ng-repeat="data in paymentList" ng-value="{{data.paymentmodeid}}">{{data.mode}}</md-option>
                                             </md-select>
                                             <div ng-messages="addPaymentForm.mode.$error" ng-if="addPaymentForm.mode.$touched">
@@ -132,7 +197,7 @@
                                     </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                             <label>Date</label>
-                                            <md-datepicker name="date" ng-model="date" md-hide-icons="triangle" md-open-on-focus="" required></md-datepicker>
+                                            <md-datepicker name="date" ng-model="payment.date" md-hide-icons="triangle" md-open-on-focus="" required></md-datepicker>
                                             <div ng-messages="addPaymentForm.date.$error" ng-if="addPaymentForm.date.$touched">
                                                     <div ng-message="required">This is required.</div>
                                                 </div>
@@ -141,35 +206,35 @@
                             <div layout="row">
                                     <md-input-container flex="25">
                                             <label>Bank Name</label>
-                                            <input name="bnkName" ng-model="bnkName" ng-disabled="paymentMode == 'credit'">
+                                            <input name="bnkName" ng-model="payment.bnkName" ng-disabled="paymentMode == 'credit'">
                                         </md-input-container>
                                     <md-input-container flex="25" flex-offset="5">
                                         <label>Branch</label>
-                                        <input name="branch" ng-model="branch" ng-disabled="paymentMode == 'credit'">
+                                        <input name="branch" ng-model="payment.branch" ng-disabled="paymentMode == 'credit'">
                                     </md-input-container>
                                     <md-input-container flex="25"  flex-offset="5">
                                             <label>Reference Number</label>
-                                            <input name="ref" ng-model="ref">
+                                            <input name="ref" ng-model="payment.ref">
                                     </md-input-container>
                             </div>
                             <div layout="row" class="topPadding30">
                                     <md-input-container flex="25">
                                             <label>TDS Deducted by Us</label>
-                                            <md-select name="tds" ng-model="tds">
+                                            <md-select name="tds" ng-model="payment.tds">
                                                 <md-option value="Product 1">tds 1</md-option>
                                                 <md-option value="Product 2">tds 2</md-option>
                                             </md-select>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
                                             <label>TDS Section</label>
-                                            <md-select name="tdsSec" ng-model="tdsSec">
+                                            <md-select name="tdsSec" ng-model="payment.tdsSec">
                                                 <md-option value="Product 1">tdsSec 1</md-option>
                                                 <md-option value="Product 2">tdsSec 2</md-option>
                                             </md-select>
                                         </md-input-container>
                                         <md-input-container flex="25" flex-offset="5">
                                                 <label>Amount</label>
-                                                <input name="amt" ng-model="amt">
+                                                <input name="amt" ng-model="payment.amt">
                                             </md-input-container>
                             </div>
                             
