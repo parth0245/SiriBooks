@@ -161,7 +161,7 @@ $scope.getCompanyLedger = function(row,column){
 app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $stateParams , ledgerServices){
     console.log('Inside Add Inventory Controller');
     $rootScope.isActive = 'LEDGERS';
-
+    $scope.groupLedgerList = [];
     if(angular.isDefined($stateParams.data.ledgerName)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
@@ -231,6 +231,22 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
             }
         }
     }
+    function getGroupOrLedgerList(primary , main , sub){
+        ledgerServices.getGroupOrLedgerList(primary , main , sub).then(function(success){
+            $scope.groupLedgerList = success.data;
+            /*if(main == "" && sub ==""){
+                $scope.groupLedgerList = success.data;
+            }
+            else if(sub == ""){
+                $scope.groupLedgerList = success.data;
+            }
+            else {
+                $scope.groupLedgerList = success.data;
+            }*/
+        },function(error){
+            console.log('error' , error);
+        });
+    }
     $scope.checkGroups = function(){
         $scope.ledger.group='';
         $scope.showMainGroup = true;
@@ -253,6 +269,10 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
         });
         $scope.ledger.majorGroup = "";
         $scope.ledger.subGroup = "";
+
+        if( $scope.showMainGroup == false && $scope.showSubGroup == false){
+            getGroupOrLedgerList($scope.ledger.primaryGroup , "" , "");
+        }
     }
     $scope.changeMainGroup = function(){
         angular.forEach($scope.majorGroupList , function(key,value){
@@ -263,5 +283,14 @@ app.controller('addLedgerCtrl',function($rootScope , $scope , $state , $statePar
             }
     });
     $scope.ledger.subGroup = "";
+
+    if( $scope.showMainGroup == true && $scope.showSubGroup == false){
+        getGroupOrLedgerList($scope.ledger.primaryGroup , $scope.ledger.majorGroup , "" );
+    }
+}
+$scope.changeSubGroup = function(){
+    
+    getGroupOrLedgerList($scope.ledger.primaryGroup , $scope.ledger.majorGroup , $scope.ledger.subGroup );
+    
 }
 });

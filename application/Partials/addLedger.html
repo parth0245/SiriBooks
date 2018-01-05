@@ -36,7 +36,7 @@
                             </md-input-container>
                             <md-input-container flex="25" flex-offset="5" ng-if="showSubGroup">
                                 <label>Sub Group</label>
-                                <md-select name="subGroup" ng-model="ledger.subGroup">
+                                <md-select name="subGroup" ng-model="ledger.subGroup" ng-change="changeSubGroup()">
                                     <md-option ng-repeat="data in subGroupList" ng-value="data.name">{{data.name}}</md-option>
                                 </md-select>
                             </md-input-container>
@@ -81,6 +81,22 @@
                         <div layout="row">
                             <hr />
                         </div>
+                        <div class="col-xs-6">
+                                <table class="journalTable" flex="55">
+                                <thead style="border-bottom:1px solid #d4d4d4;">
+                                    <tr>
+                                    <th>SNo.</th>
+                                    <th>Group or Ledger name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="data in groupLedgerList">
+                                            <td>{{$index}}</td>
+                                            <td>{{data.name}}</td>
+                                    </tr>
+                                </tbody>
+                                </table>
+                        </div>
 <div layout="row" class="addPaddingButtons">
     <md-button class="md-raised ifBold" flex-offset="50" ng-if="heading != 'Update'" ng-click="resetAll()">Reset All</md-button>
     <md-button class="md-raised md-primary ifBold" ng-if="heading != 'Update'">{{btnLabel}}</md-button>
@@ -90,6 +106,5 @@
             </form>
         </md-content>
     </div>
-    <div class="">
-    </div>
+   
 </div>

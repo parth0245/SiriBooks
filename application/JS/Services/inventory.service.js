@@ -68,7 +68,6 @@ app.service('inventoryServices',function($http , CONSTANTS , $q){
                 "drcr": inventory.orgledger.balanceamount     
                  }
         };
-         console.log(data);
          return $http({
              method: "put",
              url: CONSTANTS.service[CONSTANTS.appLevel].updateInventory,
