@@ -16,6 +16,6 @@
       {
         "description": "Useful when no transaction happens eg:-trial",
         "mode": "credit",
-        "paymentmodeid": 3
+        "paymentmodeid": 4
         }
     ]

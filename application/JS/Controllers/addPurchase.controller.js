@@ -1,10 +1,14 @@
-app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purchaseService ,commonServices, CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
+app.controller('addPurchaseCtrl',function($rootScope , $state , $scope , $filter , purchaseService ,commonServices, CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
-    if(angular.isDefined($stateParams.data.VendorName)) {
+    if(angular.isDefined($stateParams.data.customerName) && angular.isUndefined($stateParams.data.selectedSales)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        }
+        else if(angular.isDefined($stateParams.data.selectedSales) ){
+            $scope.disableAll = true;
+            $scope.purchaseData = $stateParams.data;
         }
     else {
         $scope.heading = "New";
@@ -106,6 +110,11 @@ app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purcha
         console.log('error',error);
    });
 
+   $scope.backToReceipt = function(){
+    $scope.purchaseData.backFromPurchase = true;
+    debugger;
+    $state.go('Home.addPayments' ,  {data :  $scope.purchaseData });
+}
 
    $scope.stateList = [];
    $scope.identity = {};

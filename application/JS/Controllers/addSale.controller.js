@@ -22,12 +22,7 @@ app.controller('addSalesCtrl',function($rootScope , $state ,$scope , $filter , s
     }
     $scope.backToReceipt = function(){
         $scope.receiptData.backFromSales = true;
-        if($scope.receiptData.from == "Receipt"){
-            $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
-        }else {
-            $state.go('Home.addPayments' ,  {data :  $scope.receiptData });
-        }
-       
+        $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
     }
     var today = new Date();
     $scope.purchase = {};

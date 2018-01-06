@@ -591,6 +591,7 @@ addReceiptfields : [
         '<span ng-if="row.entity.mode == \'1\'">Cash</span>'+
         '<span ng-if="row.entity.mode == \'2\'">Bank</span>'+
         '<span ng-if="row.entity.mode == \'3\'">NA</span>'+
+        '<span ng-if="row.entity.mode == \'4\'">Credit</span>'+
         '</div>' },
         {field:'regnumber', displayName:'Receipt Number',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+

@@ -909,6 +909,7 @@ addReceiptfields : [
         '<span ng-if="row.entity.mode == \'1\'">Cash</span>'+
         '<span ng-if="row.entity.mode == \'2\'">Bank</span>'+
         '<span ng-if="row.entity.mode == \'3\'">NA</span>'+
+        '<span ng-if="row.entity.mode == \'4\'">Credit</span>'+
         '</div>' },
         {field:'regnumber', displayName:'Receipt Number',
         cellTemplate: '<div class="ui-grid-cell-contents" >'+
@@ -1436,12 +1437,12 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , co
     console.log('Inside Add Payment Controller');
     $rootScope.isActive = 'Payments';
 
-    if(angular.isDefined($stateParams.data.vendorName) && angular.isUndefined($stateParams.data.backFromSales)) {
+    if(angular.isDefined($stateParams.data.vendorName) && angular.isUndefined($stateParams.data.backFromPurchase)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.payment = {}
     }
-    else if(angular.isDefined($stateParams.data.backFromSales)){
+    else if(angular.isDefined($stateParams.data.backFromPurchase)){
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.addReceiptLabel = "Add";
@@ -1472,7 +1473,8 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , co
         $scope.payment.selectedSales = data;
         $scope.payment.custNameList = $scope.custNameList;
         $scope.payment.from = "Payment";
-         $state.go('Home.addSales', {data :  $scope.payment });
+        debugger;
+         $state.go('Home.addPurchase', {data :  $scope.payment });
      }
     $scope.salesList = [
         {"id":1,"date":"9/12/2009","amount":"200"},
@@ -1544,13 +1546,17 @@ $scope.btnLeft = function (data , $index) {
 };
 
 });
-app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purchaseService ,commonServices, CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
+app.controller('addPurchaseCtrl',function($rootScope , $state , $scope , $filter , purchaseService ,commonServices, CONSTANTS , heightCalc , $timeout, $q, $log , uiGridConstants , $stateParams){
     console.log('Inside Purchase Controller');
     $rootScope.isActive = 'Purchase';
 
-    if(angular.isDefined($stateParams.data.VendorName)) {
+    if(angular.isDefined($stateParams.data.customerName) && angular.isUndefined($stateParams.data.selectedSales)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
+        }
+        else if(angular.isDefined($stateParams.data.selectedSales) ){
+            $scope.disableAll = true;
+            $scope.purchaseData = $stateParams.data;
         }
     else {
         $scope.heading = "New";
@@ -1652,6 +1658,11 @@ app.controller('addPurchaseCtrl',function($rootScope , $scope , $filter , purcha
         console.log('error',error);
    });
 
+   $scope.backToReceipt = function(){
+    $scope.purchaseData.backFromPurchase = true;
+    debugger;
+    $state.go('Home.addPayments' ,  {data :  $scope.purchaseData });
+}
 
    $scope.stateList = [];
    $scope.identity = {};
@@ -1864,7 +1875,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     event.stopPropagation();
     $scope.receipt.selectedSales = data;
     $scope.receipt.custNameList = $scope.custNameList;
-    $scope.receipt.from = "Receipt";
+    //$scope.receipt.from = "Receipt";
      $state.go('Home.addSales', {data :  $scope.receipt });
  }
    $scope.saveReceipt = function(){
@@ -1970,12 +1981,7 @@ app.controller('addSalesCtrl',function($rootScope , $state ,$scope , $filter , s
     }
     $scope.backToReceipt = function(){
         $scope.receiptData.backFromSales = true;
-        if($scope.receiptData.from == "Receipt"){
-            $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
-        }else {
-            $state.go('Home.addPayments' ,  {data :  $scope.receiptData });
-        }
-       
+        $state.go('Home.addReceipt' ,  {data :  $scope.receiptData });
     }
     var today = new Date();
     $scope.purchase = {};

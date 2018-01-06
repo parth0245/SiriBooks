@@ -153,7 +153,7 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     event.stopPropagation();
     $scope.receipt.selectedSales = data;
     $scope.receipt.custNameList = $scope.custNameList;
-    $scope.receipt.from = "Receipt";
+    //$scope.receipt.from = "Receipt";
      $state.go('Home.addSales', {data :  $scope.receipt });
  }
    $scope.saveReceipt = function(){

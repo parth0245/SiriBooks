@@ -2,12 +2,12 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , co
     console.log('Inside Add Payment Controller');
     $rootScope.isActive = 'Payments';
 
-    if(angular.isDefined($stateParams.data.vendorName) && angular.isUndefined($stateParams.data.backFromSales)) {
+    if(angular.isDefined($stateParams.data.vendorName) && angular.isUndefined($stateParams.data.backFromPurchase)) {
         $scope.heading = "Update";
         $scope.btnLabel = "Update";
         $scope.payment = {}
     }
-    else if(angular.isDefined($stateParams.data.backFromSales)){
+    else if(angular.isDefined($stateParams.data.backFromPurchase)){
         $scope.heading = "New";
         $scope.btnLabel = "Save";
         $scope.addReceiptLabel = "Add";
@@ -38,7 +38,8 @@ app.controller('addPaymentCtrl',function($rootScope , $scope , $stateParams , co
         $scope.payment.selectedSales = data;
         $scope.payment.custNameList = $scope.custNameList;
         $scope.payment.from = "Payment";
-         $state.go('Home.addSales', {data :  $scope.payment });
+        debugger;
+         $state.go('Home.addPurchase', {data :  $scope.payment });
      }
     $scope.salesList = [
         {"id":1,"date":"9/12/2009","amount":"200"},
