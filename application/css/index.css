@@ -1023,3 +1023,14 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 .red {
 	background-color: red !important;
 }
+.journalTable.withRole.withPL tbody tr td {
+    border-right: 1px solid #d4d4d4;
+    background-color: #fff;
+    padding: 5px 5px;
+}
+.journalTable.withRole.withPL tbody tr td:first-child, .journalTable.withRole.withPL tbody tr td:nth-child(2) {
+	width:initial;
+}
+.journalTable.withRole.withPL tbody tr td {
+    text-align: left;
+}

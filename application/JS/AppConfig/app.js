@@ -275,10 +275,17 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         templateUrl: 'application/Partials/applicationAccountingLevel.html',
         controller: 'applicationAccountingLevelCtrl'
     })
-
+    .state('Home.Reports', {
+        url: '/reports',
+        templateUrl: 'application/Partials/reports.html',
+        controller: 'reportsCtrl'
+    })
     .state('PageNotFound', {
         url: '/PageNotFound',
-        templateUrl: 'application/Partials/pageNotFound.html'
+        templateUrl: 'application/Partials/pageNotFound.html',
+        controller : function($scope){
+           console.log('Page Not Found');
+        }
     });
     flowFactoryProvider.defaults = {
         target: '',

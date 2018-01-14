@@ -2,6 +2,7 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
     console.log('Inside Company Ledger Controller');
     $rootScope.isActive = 'LEDGERS';
     $scope.pageData = $stateParams.data;
+    console.log('$scope.pageData',$scope.pageData);
     if(angular.isDefined($scope.pageData.productname)){
         $scope.showOnlyProduct = true;
         $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
@@ -32,7 +33,7 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
         $scope.showOnlyProduct = false;
         $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
     }
-    console.log($scope.pageData);
+   
     
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;

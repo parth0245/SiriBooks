@@ -275,10 +275,17 @@ app.config(function($stateProvider , $urlRouterProvider,  $locationProvider , fl
         templateUrl: 'application/Partials/applicationAccountingLevel.html',
         controller: 'applicationAccountingLevelCtrl'
     })
-
+    .state('Home.Reports', {
+        url: '/reports',
+        templateUrl: 'application/Partials/reports.html',
+        controller: 'reportsCtrl'
+    })
     .state('PageNotFound', {
         url: '/PageNotFound',
-        templateUrl: 'application/Partials/pageNotFound.html'
+        templateUrl: 'application/Partials/pageNotFound.html',
+        controller : function($scope){
+           console.log('Page Not Found');
+        }
     });
     flowFactoryProvider.defaults = {
         target: '',
@@ -434,7 +441,8 @@ app.constant('CONSTANTS', {
                 {url : 'Home.Customers', name : 'CUSTOMERS' , SelimgSrc:'application/Images/Assets/CUSTOMERS_active.png' , imgSrc : 'application/Images/Assets/CUSTOMERS.png', glyphClasses : 'glyphicon glyphicon-home'},
                 {url : 'Home.Vendors', name : 'VENDORS' , SelimgSrc:'application/Images/Assets/VENDORS_active.png' , imgSrc : 'application/Images/Assets/VENDORS.png', glyphClasses : 'glyphicon glyphicon-home'},
                 {url : 'Home.Ledgers', name : 'LEDGERS' , SelimgSrc:'application/Images/Assets/LEDGERS_active.png' , imgSrc : 'application/Images/Assets/LEDGERS.png', glyphClasses : 'glyphicon glyphicon-home'},
-                {url : 'Home.Banking', name : 'CASH/BANKING' ,SelimgSrc:'application/Images/Assets/CASH_BANKING_active.png' , imgSrc : 'application/Images/Assets/CASH_BANKING.png', glyphClasses : 'glyphicon glyphicon-home'}
+                {url : 'Home.Banking', name : 'CASH/BANKING' ,SelimgSrc:'application/Images/Assets/CASH_BANKING_active.png' , imgSrc : 'application/Images/Assets/CASH_BANKING.png', glyphClasses : 'glyphicon glyphicon-home'},
+                {url : 'Home.Reports', name : 'REPORTS' ,SelimgSrc:'application/Images/Assets/CASH_BANKING_active.png' , imgSrc : 'application/Images/Assets/CASH_BANKING.png', glyphClasses : 'glyphicon glyphicon-home'}
         ],
         sideBarNavigator : [
                 {url : 'Home.Sales', name : 'Sales' ,SelimgSrc:'application/Images/Assets/Sales_active.png' , imgSrc : 'application/Images/Assets/Sales.png', glyphClasses : 'glyphicon glyphicon-signal'},
@@ -1895,6 +1903,17 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     });
    }
 
+   $scope.withBankField = true;
+   $scope.paymentMode = function() {
+    if( $scope.receipt.mode == 4 ||  $scope.receipt.mode == 2){
+        $scope.withBankField = false;
+    }
+    else {
+        $scope.withBankField = true;
+    }
+    
+   
+   }
    $scope.salesList = [
     {"id":1,"date":"9/12/2009","amount":"200"},
     {"id":2,"date":"10/12/2014","amount":"200"},
@@ -2511,7 +2530,7 @@ app.controller('bankingCtrl',function($rootScope,$scope ,$state ,$timeout , CONS
     }    
     $scope.editLedger = function(row){
         row.entity.bank = "bank";
-        $state.go('Home.bankBRS');
+        $state.go('Home.companyLedgers', { data: row.entity });
     }
     $scope.gridOptions = CONSTANTS.gridOptionsConstants('Banking');
     $scope.gridOptions.headerTemplate = 'application/Partials/inventoryHeader.html';
@@ -2740,6 +2759,7 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
     console.log('Inside Company Ledger Controller');
     $rootScope.isActive = 'LEDGERS';
     $scope.pageData = $stateParams.data;
+    console.log('$scope.pageData',$scope.pageData);
     if(angular.isDefined($scope.pageData.productname)){
         $scope.showOnlyProduct = true;
         $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
@@ -2770,7 +2790,7 @@ app.controller('companyLedgersCtrl',function($rootScope,$scope ,$state ,$timeout
         $scope.showOnlyProduct = false;
         $scope.gridOptions = CONSTANTS.gridOptionsConstants('CompanyLedger');
     }
-    console.log($scope.pageData);
+   
     
     $scope.gridOptions.onRegisterApi = function( gridApi ) {
         $scope.gridApi = gridApi;
@@ -6623,6 +6643,63 @@ $scope.editLedger = function(row){
 }
    $scope.changeHeight(0);
 });
+app.controller('reportsCtrl',function($rootScope , $scope , $stateParams , $state){
+    console.log('Inside Reports Controller');
+    $rootScope.isActive = 'REPORTS';
+
+    $scope.tbReports = false;
+    $scope.plReports = false;
+    $scope.bsReports = false;
+
+    $scope.switchReport = function(report){
+        if(report == 'TB'){
+            $scope.tbReports = true;
+            $scope.plReports = false;
+            $scope.bsReports = false;
+        }
+        else if(report == 'PL'){
+            $scope.tbReports = false;
+            $scope.plReports = true;
+            $scope.bsReports = false;
+        }
+        else {
+            $scope.tbReports = false;
+            $scope.plReports = false;
+            $scope.bsReports = true;
+        }
+    }
+    /*Function For TB Report*/
+    $scope.dataArray = [
+        {
+            "Capital" : [
+                {"name" : "Bank Loan A/c" , "debit" : "" , "credit" : "20000"},
+                {"name" : "Bank Loan A/c1" , "debit" : "100" , "credit" : ""},
+                {"name" : "Bank Loan A/c2" , "debit" : "1522" , "credit" : ""}
+            ] , 
+            "Non Current Liabilities" : [
+                {"name" : "Bank Loan A/c" , "debit" : "" , "credit" : "20000"}
+            ],
+            "Current Liabilities" : [],
+            "Fixed Assets" : [] ,
+            "Non Current Assets" : [],
+            "Current Assets" : [],
+            "Sales" : [],
+            "Direct Incomes" : [],
+            "Indirect Incomes" : [],
+            "Purchases" : [
+                {"name" : "Bank Loan A/c" , "debit" : "" , "credit" : "20000"}
+            ],
+            "Direct Expenses" : [],
+            "Indirect Expenses" : []
+        }
+                
+    ];
+    $scope.dataObj = $scope.dataArray[0];
+    /*Function For TB Report*/
+
+
+
+});
 app.controller('passwordResetCtrl',function($scope , $rootScope , $stateParams , commonServices){
     console.log('Inside password Reset');
     var user = {};
@@ -6787,9 +6864,10 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
     $scope.stockCountSpecifications = [temp];
     //$scope.stockCountSpecifications.push($scope.specifications);
     $scope.setStockCountSpecs = function(){
+        $scope.stockCountSpecifications = [temp];
         if($scope.showSpecs){
 
-                for(var i=0 ; i < $scope.setStock.stockCount; i++){
+                for(var i=1 ; i < $scope.setStock.stockCount; i++){
                         //$scope.specifications[i].specvalue = $scope.spec.specvalue;
                         var itm = angular.copy($scope.specifications);
                         console.log('itm[i].specvalue',itm.specvalue);
@@ -6819,7 +6897,11 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
         {field : "purchaseDate" , displayName : "Purchase Date" , cellFilter : 'date : \'dd/MM/yyyy\''},
         {field : "purchasePrice" , displayName : "Purchase Price"},
         {field : "stockCount" , displayName : "Opening Stock Count"},
-        {field : "specification" , displayName : "Specification"}
+        {field : "specification" , displayName : "Specification",
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>Expand Row For Specification</span>'+
+        '</div>',
+        width : "20%"}
 ];
 
 $scope.gridOptions.onRegisterApi = function( gridApi ) {
@@ -6886,8 +6968,8 @@ $scope.add = function(){
     }
     console.log('frfr' , insideGridData);
     $scope.gridOptions.data.push(insideGridData);
-
-        $scope.changeHeight(0);
+    $scope.reset();
+    $scope.changeHeight(0);
 
    
 }
@@ -6949,6 +7031,7 @@ $scope.cancel = function(){
 $scope.reset = function(){
     $scope.setStock = {};
     $scope.batchIdError = false;
+    $scope.stockCountSpecifications = [temp];
 }
 $scope.save = function(){
     $state.go('Home.Inventory');

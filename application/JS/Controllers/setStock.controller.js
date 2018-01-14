@@ -22,9 +22,10 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
     $scope.stockCountSpecifications = [temp];
     //$scope.stockCountSpecifications.push($scope.specifications);
     $scope.setStockCountSpecs = function(){
+        $scope.stockCountSpecifications = [temp];
         if($scope.showSpecs){
 
-                for(var i=0 ; i < $scope.setStock.stockCount; i++){
+                for(var i=1 ; i < $scope.setStock.stockCount; i++){
                         //$scope.specifications[i].specvalue = $scope.spec.specvalue;
                         var itm = angular.copy($scope.specifications);
                         console.log('itm[i].specvalue',itm.specvalue);
@@ -54,7 +55,11 @@ app.controller('setStockCtrl',function($rootScope , $scope ,$stateParams, CONSTA
         {field : "purchaseDate" , displayName : "Purchase Date" , cellFilter : 'date : \'dd/MM/yyyy\''},
         {field : "purchasePrice" , displayName : "Purchase Price"},
         {field : "stockCount" , displayName : "Opening Stock Count"},
-        {field : "specification" , displayName : "Specification"}
+        {field : "specification" , displayName : "Specification",
+        cellTemplate: '<div class="ui-grid-cell-contents" >'+
+        '<span>Expand Row For Specification</span>'+
+        '</div>',
+        width : "20%"}
 ];
 
 $scope.gridOptions.onRegisterApi = function( gridApi ) {
@@ -121,8 +126,8 @@ $scope.add = function(){
     }
     console.log('frfr' , insideGridData);
     $scope.gridOptions.data.push(insideGridData);
-
-        $scope.changeHeight(0);
+    $scope.reset();
+    $scope.changeHeight(0);
 
    
 }
@@ -184,6 +189,7 @@ $scope.cancel = function(){
 $scope.reset = function(){
     $scope.setStock = {};
     $scope.batchIdError = false;
+    $scope.stockCountSpecifications = [temp];
 }
 $scope.save = function(){
     $state.go('Home.Inventory');

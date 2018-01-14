@@ -111,10 +111,10 @@
                                     </div>
                                     </md-input-container>
                         </div>
-                        <div layout="row" class="topPadding10">
+                        <div layout="row" class="topPadding10" ng-if="withBankField">
                                 <md-input-container flex="25">
                                         <label>Payment Mode</label>
-                                        <md-select name="mode" ng-model="receipt.mode" required>
+                                        <md-select name="mode" ng-model="receipt.mode" ng-change="paymentMode()" required>
 <md-option ng-repeat="data in paymentList" ng-value="data.paymentmodeid">{{data.mode}}</md-option>
                                         </md-select>
                                         <div ng-messages="addReceiptForm.mode.$error" ng-if="addReceiptForm.mode.$touched">
@@ -137,8 +137,17 @@
                                         </div>
                                     </md-input-container>
                         </div>
-                        <div layout="row" ng-if="receipt.mode == 4">
-                            <md-input-container flex="25">
+                        <div layout="row" class="topPadding10" ng-if="!withBankField">
+                                <md-input-container flex="25">
+                                        <label>Payment Mode</label>
+                                        <md-select name="mode" ng-model="receipt.mode" ng-change="paymentMode()" required>
+<md-option ng-repeat="data in paymentList" ng-value="data.paymentmodeid">{{data.mode}}</md-option>
+                                        </md-select>
+                                        <div ng-messages="addReceiptForm.mode.$error" ng-if="addReceiptForm.mode.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                    </div>
+                                    </md-input-container>
+                            <md-input-container flex="25" flex-offset="5">
                                         <label>Bank</label>
                                         <md-select name="bank" ng-model="receipt.bank" required>
 <md-option ng-repeat="data in bankList" ng-value="data.name">{{data.name}}</md-option>
@@ -147,18 +156,24 @@
                                             <div ng-message="required">This is required.</div>
                                     </div>
                                     </md-input-container>
-                               <!-- <md-input-container flex="25">
-                                        <label>Bank Name</label>
-                                        <input name="bnkName" ng-model="receipt.bankName" ng-disabled="receipt.mode == 'credit'">
+                        </div>
+                        <div layout="row" class="topPadding10" ng-if="!withBankField">
+                                <md-input-container flex="25">
+                                        <label>Amount</label>
+                                        <input name="amount" ng-model="receipt.amount" required>
+                                        <div ng-messages="addReceiptForm.amount.$error" ng-if="addReceiptForm.amount.$touched">
+                                            <div ng-message="required">This is required.</div>
+                                    </div>
                                     </md-input-container>
-                                <md-input-container flex="25" flex-offset="5">
-                                    <label>Branch</label>
-                                    <input name="branch" ng-model="receipt.branch" ng-disabled="receipt.mode == 'credit'">
-                                </md-input-container>
-                                <md-input-container flex="25"  flex-offset="5">
-                                        <label>Reference</label>
-                                        <input name="ref" ng-model="receipt.ref">
-                                </md-input-container>-->
+                                    <md-input-container flex="25" flex-offset="5">
+                                            <label>Date</label>
+                                            <md-datepicker name="date" ng-model="receipt.date" md-hide-icons="triangle" md-open-on-focus="" required></md-datepicker>
+                                            <div ng-messages="addReceiptForm.date.$error">
+                                                <div ng-message="valid">The entered value is not a date!</div>
+                                                <div ng-message="required">This date is required!</div>
+                                            </div>
+                                        </md-input-container>
+
                         </div>
                         <div layout="row" class="">
                                 <md-input-container flex="25">

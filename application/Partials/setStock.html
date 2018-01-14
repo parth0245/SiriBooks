@@ -5,7 +5,7 @@
     <div class="topPadding20 col-xs-11 noPadding">
       <form>
             <div layout="row" class="topPadding10 setStockSection">
-                    <md-input-container flex="20">
+                    <md-input-container flex="45">
                         <label>Batch ID</label>
                         <input name="batchId" ng-model="setStock.batchId" ng-blur="checkValidity(setStock.batchId)">
                         <div ng-if="batchIdError" style="color:red">
@@ -16,10 +16,16 @@
                         <label>Purchase Date</label>
                         <md-datepicker ng-model="setStock.purchaseDate" md-hide-icons="triangle" md-open-on-focus="" mo-date-input="{{date}}"></md-datepicker>
                     </md-input-container>
-                    <md-input-container flex="20" flex-offset="5">
-                        <label>Price</label>
-                        <input name="price" ng-model="setStock.purchasePrice">
-                    </md-input-container>
+            </div>
+            <div layout="row" class="topPadding10 setStockSection">
+                    <md-input-container flex="20">
+                            <label>Purchase Price</label>
+                            <input name="purchasePrice" ng-model="setStock.purchasePrice">
+                        </md-input-container>
+                        <md-input-container flex="20" flex-offset="5">
+                                <label>Sales Price</label>
+                                <input name="salePrice" ng-model="setStock.salesPrice">
+                            </md-input-container>
                     <md-input-container flex="20" flex-offset="5">
                             <label>Opening Stock Count</label>
                             <input type="number" name="count" ng-model="setStock.stockCount" ng-blur="setStockCountSpecs()">

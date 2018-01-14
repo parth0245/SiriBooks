@@ -173,6 +173,17 @@ app.controller('addReceiptCtrl',function($rootScope , $scope , $stateParams , $s
     });
    }
 
+   $scope.withBankField = true;
+   $scope.paymentMode = function() {
+    if( $scope.receipt.mode == 4 ||  $scope.receipt.mode == 2){
+        $scope.withBankField = false;
+    }
+    else {
+        $scope.withBankField = true;
+    }
+    
+   
+   }
    $scope.salesList = [
     {"id":1,"date":"9/12/2009","amount":"200"},
     {"id":2,"date":"10/12/2014","amount":"200"},

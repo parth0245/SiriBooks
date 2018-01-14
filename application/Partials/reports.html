@@ -1,0 +1,201 @@
+<div class="col-xs-11 col-xs-offset-1 fontNormal addInventory" layout="column">
+    <div class="sectionSubHeading">
+        <h3><span ng-click="switchReport('TB')">TB</span> /
+            <span ng-click="switchReport('PL')">PL</span> /
+            <span ng-click="switchReport('BS')">BS</span>
+        </h3>
+    </div>
+
+    <div class="col-xs-8 noPadding" ng-if="tbReports">
+            <table class="journalTable withRole">
+                    <thead>
+                        <tr>
+                            <th>Particulars</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="(key1 , val1) in dataObj">
+                            <tr>
+                                <td colspan="3"><a>{{key1}}</a></td>
+                            </tr>
+                            <tr ng-repeat="v in val1">
+                                    <td>{{v.name}}</td>
+                                    <td>{{v.debit}}</td>
+                                    <td>{{v.credit}}</td>
+                            </tr>
+                    </tbody>
+                    <thead>
+                            <tr>
+                                    <th>Total</th>
+                                    <th>1622</th>
+                                    <th>60000</th>
+                            </tr>
+                        </thead>
+                </table>
+    </div>
+    <div class="col-xs-10 noPadding" ng-if="plReports">
+            <table class="journalTable withRole withPL">
+                    <thead>
+                        <tr>
+                                <th></th>
+                                <th>Particulars</th>
+                                <th>Amount</th>
+                                <th>Amount</th>
+                                <th></th>
+                                <th>Particulars</th>
+                                <th>Amount</th>
+                                <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody class="insidePL">
+                            <tr>
+                                    <td rowspan="2">To</td>
+                                    <td rowspan="2">Opening Stock</td>
+                                    <td rowspan="2"></td>
+                                    <td rowspan="2"></td>
+                                    <td rowspan="2">By</td>
+                                    <td>Sales</td>
+                                    <td>120000</td>
+                                    <td></td>
+                            </tr>
+                            <tr>
+                                    <td>Less : Sales Returns</td>
+                                    <td>0</td>
+                                    <td>120000</td>
+                            </tr>
+                            <tr>
+                                    <td rowspan="2">To</td>
+                                    <td>Purchase</td>
+                                    <td>500000</td>
+                                    <td></td>
+                                    <td rowspan="2" colspan="4"></td>
+                            </tr>
+                            <tr>    
+                                    <td>Less : Purchase Returns</td>
+                                    <td>0</td>
+                                    <td>500000</td>
+                            </tr>   
+                            <tr>    
+                                    <td colspan="4"></td>
+                                    <td>By</td>
+                                    <td>Closing Stock</td>
+                                    <td></td>
+                                    <td>400000</td>
+                            </tr>
+                            <tr>    
+                                    <td>To</td>
+                                    <td>Direct Expenses</td>
+                                    <td></td>
+                                    <td>0</td>
+                                    <td colspan="4"></td>
+                            </tr>
+                            <tr>    
+                                    <td>To</td>
+                                    <td>Gross Profit (B/F)</td>
+                                    <td></td>
+                                    <td>20000</td>
+                                    <td colspan="4"></td>
+                            </tr> 
+                            <tr>
+                                    <td colspan="3"></td>
+                                    <td><a>520000</a></td>
+                                    <td colspan="3"></td>
+                                    <td><a>520000</a></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th colspan="8">Profit & Loss Account</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                    <td>To</td>
+                                    <td>Indirect Expenses</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td rowspan="3">By</td>
+                                    <td rowspan="3">Gross Profit</td>
+                                    <td rowspan="3"></td>
+                                    <td rowspan="3">20000</td>
+                            </tr>
+                            <tr>
+                                    <td rowspan="2"></td>
+                                    <td>Printing & Stationary</td>
+                                    <td>5000</td>
+                                    <td></td>
+                            </tr>
+                            <tr>
+                                    <td>Salaries</td>
+                                    <td>100000</td>
+                                    <td></td>
+                            </tr>
+                            <tr>
+                                    <td>To</td>
+                                    <td>Net Profit (B/f)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>By</td>
+                                    <td>Net Loss (B/f)</td>
+                                    <td></td>
+                                    <td>85000</td>   
+                            </tr>
+                            <tr>
+                                    <td colspan="3"></td>
+                                    <td><a>105000</a></td>
+                                    <td colspan="3"></td>
+                                    <td><a>105000</a></td>
+                            </tr>
+                        </tbody>
+                </table>
+    </div>
+    <div class="col-xs-10 noPadding" ng-if="bsReports">
+            <table class="journalTable withRole withPL">
+                    <thead>
+                        <tr>
+                            <th>Liabilities, Capital</th>
+                            <th>Amount</th>
+                            <th>Amount</th>
+                            <th>Assets</th>
+                            <th>Amount</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr>
+                                    <td>Capital</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Fixed Assets</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                        <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Computer</td>
+                                <td></td>
+                                <td>100000</td>
+                            </tr>
+                            <tr>
+                                    <td>Profit & Loss</td>
+                                    <td>-85000</td>
+                                    <td>-85000</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                            </tr>
+                            <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Non Current Assets</td>
+                                    <td></td>
+                                    <td></td>
+                            </tr>
+                    </tbody>
+                </table>
+    </div>
+</div>
