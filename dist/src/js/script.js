@@ -6647,7 +6647,7 @@ app.controller('reportsCtrl',function($rootScope , $scope , $stateParams , $stat
     console.log('Inside Reports Controller');
     $rootScope.isActive = 'REPORTS';
 
-    $scope.tbReports = false;
+    $scope.tbReports = true;
     $scope.plReports = false;
     $scope.bsReports = false;
 
@@ -6668,7 +6668,7 @@ app.controller('reportsCtrl',function($rootScope , $scope , $stateParams , $stat
             $scope.bsReports = true;
         }
     }
-    /*Function For TB Report*/
+    /*FunctionFor TB Report*/
     $scope.dataArray = [
         {
             "Capital" : [
