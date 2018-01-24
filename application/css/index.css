@@ -15,26 +15,30 @@
 	padding:0px;
 	height:100%;
 }
+.normalColor {
+	color:#6F7E95;
+}
 .setActiveSideBar {
 	background-color: #f5f6f8;
-	color:#0935ae;
-	border-left:2px solid #0935ae !important;
+	color:#232F3E;
+	border-left:2px solid #FF9A00 !important;
 }
+
 .buleColor {
 	color:#0935ae;
 }
 .setActiveHeadBar {
-	background-color: #f5f6f8;
-	color:#0935ae;
-	border-bottom:2px solid #0935ae !important;
+	background-color: #FFFFFF;
+	color:Black;
+	border-bottom:2px solid #FF9A00 !important;
 }
 .setActiveSubHeadBar {
 	background-color:white;
-	color: grey !important;
-	border-bottom: 2px solid grey !important;
+	color:Black !important;
+	border-bottom: 2px solid #FF9A00 !important;
 }
 .header {
-	background-color: #0935ae;
+	background-color: #232F3E;
 	color:white;
 }
 .logoutBtn {
@@ -56,16 +60,16 @@
 }
 .headerMenu ul li{
 	display: inline;
-	border-right: 1px solid #9caede;
+	/*border-right: 1px solid #9caede;*/
 	padding: 16px 5px 21px 0px;
 }
 .headerMenu ul li span{
 	padding: 24px 0px 9px 10px;
     font-size: 14px;
 }
-.headerMenu ul li:first-child{
+/*.headerMenu ul li:first-child{
 	border-left: 1px solid #9caede;
-}
+}*/
 .headerMenu.LoginActions ul {
 	color: grey;
 	cursor: pointer;
@@ -101,54 +105,70 @@
 	border:1px solid black;
 }
 .subHeader {
-	background-color: #d6d9d9;
+	/*background-color: #d6d9d9;*/
+	background-color:white;
+	border-bottom: 1px solid #d6d9d9;
 }
 .subHeaderOrgLevel {
 	font-family: "Montserrat-Regular";
 	background-color:white;
 }
 .subHeaderListImg {
-	background-color: grey;
+	background-color: white;
 	text-align: center;
-	border-right: 2px solid grey;
+	border-right: 2px solid #d6d9d9;
     float: left;
-    width: 112px;
-    height: 70px;
+    width: 170px;
+	height: 57px;
+	font-size: 20px;
+	font-family: "Montserrat-SemiBold";
 }
 .subHeaderListImg img {
 	/*width: 114px;*/
 	width:90%;
 	margin: 19px 0px 20px 0px;
 }
+.subHeaderListImg span {
+	color:#232f3b;
+}
+.subHeaderListImg span:first-child {
+	color:#FF9A00;
+}
 .subHeaderListImgOrg {
-	background-color: grey;
+	background-color: #FF9A00;
 	text-align: center;
-	border-right: 2px solid grey;
+	border-right: 1px solid grey;
 }
 .subHeaderListImgOrg img {
 	/*width: 114px;*/
-	margin: 25px 0px 25px 0px;
+	margin: 20px 0px;
 }
 .subHeaderList {
 	font-family: "Montserrat-SemiBold";
 	text-align: center;
-	border-right:2px solid white;
+	/*border-right:2px solid white;*/
 	font-size: 12px;
-	padding-top: 10px;
-	width: 9.15%;
+	padding-top: 15px;
+	/*width: 9.15%;*/
+	width:10.5%;
+	padding-left:0px;
+	padding-right:0px;
 	cursor: pointer;
-	border-bottom: 2px solid #d6d9d9;
+	/*border-bottom: 2px solid #d6d9d9;*/
 	padding-bottom: 5px;
 }
 .subHeaderList ~ div {
 	font-family: "Montserrat-SemiBold";
 	text-align: center;
-	border-right:2px solid white;
+	/*border-right:2px solid white;*/
 	font-size: 12px;
-	padding-top: 10px;
-	width: 9.15%;
+	padding-top: 15px;
+	padding-left:0px;
+	padding-right:0px;
+	/*width: 9.15%;*/
+	width:10.5%;
 	cursor: pointer;
-	border-bottom: 2px solid #d6d9d9;
+	/*border-bottom: 2px solid #d6d9d9;*/
 	padding-bottom: 5px;
 }
 .subHeaderList span{
@@ -162,21 +182,21 @@
 /**/
 
 .subHeaderOrgList {
-	text-align: center;
-	border-right:1px solid #f5f6f8;
+	/*text-align: center;*/
+	/*border-right:1px solid #f5f6f8;*/
 	font-size: 12px;
-	padding-top: 10px;
-	width: 9.15%;
+	padding-top: 17px;
+	width: 12.15%;
 	cursor: pointer;
 	padding-bottom: 5px;
 	color: #0935ae;
 }
 .subHeaderOrgList ~ div {
-	text-align: center;
-	border-right:1px solid #f5f6f8;
+	/*text-align: center;*/
+	/*border-right:1px solid #f5f6f8;*/
 	font-size: 12px;
-	padding-top: 10px;
-	width: 9.15%;
+	padding-top: 17px;
+	width: 12.15%;
 	cursor: pointer;
 	padding-bottom: 5px;
 }
@@ -190,25 +210,26 @@
 }
 /**/
 .sideMenu {
-	background-color: #d6d9d9;
+	background-color: #232F3E;
 }
 .sideMenu .glyphicon {
 	margin-bottom:10px;
 }
 .sideMenu > div {
-	border-bottom: 2px solid white;
+	/*border-bottom: 2px solid white;*/
 	cursor: pointer;	
 	padding:10px;
-	width:114px;
+	width:170px;
 }
 .login .md-content{
 	background-color: white !important;
 }
 .sideNav {
-	font-family: "Montserrat-Regular";
-		width: 112px;
+	font-family: "Montserrat-SemiBold";
+		width: 170px;
 		overflow:hidden;
-
+		font-size:12px;
+		min-height: 600px;
 }
 .dynamicSection {
 	background-color: #f5f6f8;
@@ -218,7 +239,7 @@
 }
 .sectionSubHeading {
 	padding-top:35px;
-	color : #0935ae;
+	color : #232f3b;
 }
 .sectionSubHeading h2 {
 	font-family: "Montserrat-Regular";
@@ -238,12 +259,16 @@
 	font-family: "Montserrat-SemiBold";
 	margin-top:0px;
 }
-.sectionSubSection .md-button.ifWhite{
-	color:white !important;
-	background-color: #0935ae;
+.md-button:not(.md-datepicker-button){
+	color:#232f3b !important;
+	/*background-color: #0935ae;*/
+	border: 1px solid #c89411;
+	background: linear-gradient(#f7e0a5, #e1ae2c);
 }
-.sectionSubSection .md-button.ifBlue{
-	color: #0935ae !important;
+.md-button:not(.md-datepicker-button){
+	color:#232f3b !important;
+	border: 1px solid #c89411;
+	background: linear-gradient(#f7e0a5, #e1ae2c);
 }
 .sectionSubSection input ,.sectionSubSection button{
 	height : 40px;
@@ -312,6 +337,9 @@
 .md-raised {
 	text-transform: capitalize !important;
 }
+.capitalize {
+	text-transform: capitalize !important;
+ }
 .addInventory button.md-raised {
 	color: #0935ae;
 	font-family: "Montserrat-Regular";
@@ -341,8 +369,8 @@
 	color:white;	
 }
 .addInventory button.md-raised.md-primary , .addInventory button.md-raised.md-primary label{
-	background-color: #0935ae !important;
-	color:white;	
+	color:#232f3b !important;
+	background: linear-gradient(#f7e0a5, #e1ae2c);
 }
 .dashboard .padded h2 {
 	color:#717373;
@@ -523,10 +551,13 @@
 .grid .ui-grid-header-cell {
 	height: 40px;
 	padding-left: 15px;
-	background-color: rgb(231, 233, 233);
+	background-color: #c1c8d1;
 }
 .optionalGrid.grid .ui-grid-header-cell {
 	padding-left:0px;
+}
+.ui-grid-row:nth-child(even) .ui-grid-cell {
+	background-color:#f2f5f6;
 }
 .grid .ui-grid-cell-contents {
 	text-align: center;	
@@ -667,11 +698,13 @@
 }
 .journalTable thead tr{
 	height: 40px;
-	background-color: #e7e9e9;
+	/*background-color: #e7e9e9;*/
+	background-color: #c1c8d1;
 }
 .journalTable thead tr th{
 	text-align: center;
 	border-right: 1px solid #d4d4d4;
+	color: #232F3E;
 }
 .journalTable tbody tr td{
 	border-right: 1px solid #d4d4d4;
@@ -996,7 +1029,7 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
     cursor: pointer;
     border-radius: 50px;
     position: fixed;
-    left: 130px;
+    left: 180px;
     top: 230px;
 	z-index: 9;
 	font-weight: 400!important;
@@ -1033,4 +1066,31 @@ md-autocomplete > md-autocomplete-wrap > md-input-container { margin-top:0px; }
 }
 .journalTable.withRole.withPL tbody tr td {
     text-align: left;
+}
+.md-button.md-raised:not([disabled]) {
+	box-shadow: none;
+}
+.dropdown-menu-left {
+    right: auto;
+    left: -230px;
+	top: 60px;
+	color:black;
+}
+.dropdown-menu-left div:not(.divider) {
+	padding:5px 15px;
+}
+.dropdown-menu-left div .divider {
+	padding:1px;
+}
+
+.dropdown-menu-left div .md-button {
+min-height: 25px !important;
+line-height: 25px;
+margin:0px;
+min-width: 55px;
+font-size: 12px;
+}
+.dropdown-menu {
+	min-width: 280px;
+	font-size: 12px;
 }

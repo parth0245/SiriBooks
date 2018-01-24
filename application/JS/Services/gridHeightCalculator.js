@@ -19,10 +19,18 @@ app.factory('heightCalc',function($timeout){
     }
 });
 
-
-
-/*$timeout(function(){
-    var headerHeight = $('.ui-grid-header-cell').height();
-    console.log('headerHeight',headerHeight);    
-},500);*/
-
+app.filter( 'camelCase', function ()
+     {
+         var camelCaseFilter = function ( input )
+         {
+             var words = input;
+             var firstLetter = words.charAt(0).toUpperCase();
+             var remaining = "";
+             for ( var i = 1, len = words.length; i < len; i++ ) {
+                remaining = remaining+words.charAt(i).toLowerCase();
+             }
+             return firstLetter + remaining;
+         };
+         
+         return camelCaseFilter;
+     } )

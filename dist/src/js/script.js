@@ -436,24 +436,24 @@ app.constant('CONSTANTS', {
                 }
         ],
         headBarNavigator : [
-                {url : 'Home.Dashboard', name : 'DASHBOARD' ,SelimgSrc:'application/Images/Assets/REPORTS_active.png' , imgSrc : 'application/Images/Assets/REPORTS.png', glyphClasses : 'glyphicon glyphicon-home'},
-                {url : 'Home.Inventory', name : 'INVENTORY' , SelimgSrc:'application/Images/Assets/INVENTORY_active.png' , imgSrc : 'application/Images/Assets/INVENTORY.png', glyphClasses : 'glyphicon glyphicon-home'},
-                {url : 'Home.Customers', name : 'CUSTOMERS' , SelimgSrc:'application/Images/Assets/CUSTOMERS_active.png' , imgSrc : 'application/Images/Assets/CUSTOMERS.png', glyphClasses : 'glyphicon glyphicon-home'},
-                {url : 'Home.Vendors', name : 'VENDORS' , SelimgSrc:'application/Images/Assets/VENDORS_active.png' , imgSrc : 'application/Images/Assets/VENDORS.png', glyphClasses : 'glyphicon glyphicon-home'},
-                {url : 'Home.Ledgers', name : 'LEDGERS' , SelimgSrc:'application/Images/Assets/LEDGERS_active.png' , imgSrc : 'application/Images/Assets/LEDGERS.png', glyphClasses : 'glyphicon glyphicon-home'},
-                {url : 'Home.Banking', name : 'CASH/BANKING' ,SelimgSrc:'application/Images/Assets/CASH_BANKING_active.png' , imgSrc : 'application/Images/Assets/CASH_BANKING.png', glyphClasses : 'glyphicon glyphicon-home'},
-                {url : 'Home.Reports', name : 'REPORTS' ,SelimgSrc:'application/Images/Assets/CASH_BANKING_active.png' , imgSrc : 'application/Images/Assets/CASH_BANKING.png', glyphClasses : 'glyphicon glyphicon-home'}
+                {url : 'Home.Dashboard', name : 'DASHBOARD' ,SelimgSrc:'application/Images/Assets/icons/dashboard.png' , imgSrc : 'application/Images/Assets/icons/dashboard.png', glyphClasses : 'glyphicon glyphicon-home'},
+                {url : 'Home.Inventory', name : 'INVENTORY' , SelimgSrc:'application/Images/Assets/icons/inventroy.png' , imgSrc : 'application/Images/Assets/icons/inventroy.png', glyphClasses : 'glyphicon glyphicon-home'},
+                {url : 'Home.Customers', name : 'CUSTOMERS' , SelimgSrc:'application/Images/Assets/icons/customars.png' , imgSrc : 'application/Images/Assets/icons/customars.png', glyphClasses : 'glyphicon glyphicon-home'},
+                {url : 'Home.Vendors', name : 'VENDORS' , SelimgSrc:'application/Images/Assets/icons/vendors.png' , imgSrc : 'application/Images/Assets/icons/vendors.png', glyphClasses : 'glyphicon glyphicon-home'},
+                {url : 'Home.Ledgers', name : 'LEDGERS' , SelimgSrc:'application/Images/Assets/icons/ledgers.png' , imgSrc : 'application/Images/Assets/icons/ledgers.png', glyphClasses : 'glyphicon glyphicon-home'},
+                {url : 'Home.Banking', name : 'CASH/BANKING' ,SelimgSrc:'application/Images/Assets/icons/cash & banking.png' , imgSrc : 'application/Images/Assets/icons/cash & banking.png', glyphClasses : 'glyphicon glyphicon-home'},
+                {url : 'Home.Reports', name : 'REPORTS' ,SelimgSrc:'application/Images/Assets/icons/dashboard.png' , imgSrc : 'application/Images/Assets/icons/dashboard.png', glyphClasses : 'glyphicon glyphicon-home'}
         ],
         sideBarNavigator : [
-                {url : 'Home.Sales', name : 'Sales' ,SelimgSrc:'application/Images/Assets/Sales_active.png' , imgSrc : 'application/Images/Assets/Sales.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.Purchase', name : 'Purchase' , SelimgSrc:'application/Images/Assets/Purchases_active.png' , imgSrc : 'application/Images/Assets/Purchases.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.Receipt', name : 'Receipt' , SelimgSrc:'application/Images/Assets/Receipts_active.png' , imgSrc : 'application/Images/Assets/Receipts.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.Payments', name : 'Payments' , SelimgSrc:'application/Images/Assets/Payments_active.png' , imgSrc : 'application/Images/Assets/Payments.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.Expense', name : 'Expense' , SelimgSrc:'application/Images/Assets/Expenses_active.png' , imgSrc : 'application/Images/Assets/Expenses.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.Journal', name : 'Journal' , SelimgSrc:'application/Images/Assets/Journal_active.png' , imgSrc : 'application/Images/Assets/Journal.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.Contra', name : 'Contra' , SelimgSrc:'application/Images/Assets/Contra_active.png' , imgSrc : 'application/Images/Assets/Contra.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.CreditNote', name : 'Credit Note' , SelimgSrc:'application/Images/Assets/Credit_Note_active.png' , imgSrc : 'application/Images/Assets/Credit_Note.png', glyphClasses : 'glyphicon glyphicon-signal'},
-                {url : 'Home.DebitNote', name : 'Debit Note' , SelimgSrc:'application/Images/Assets/Debit_Note_active.png' , imgSrc : 'application/Images/Assets/Debit_Note.png', glyphClasses : 'glyphicon glyphicon-signal'}
+                {url : 'Home.Sales', name : 'Sales' ,SelimgSrc:'application/Images/Assets/icons/sales.png' , imgSrc : 'application/Images/Assets/icons/sales.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.Purchase', name : 'Purchase' , SelimgSrc:'application/Images/Assets/icons/purchurs.png' , imgSrc : 'application/Images/Assets/icons/purchurs.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.Receipt', name : 'Receipt' , SelimgSrc:'application/Images/Assets/icons/recipet.png' , imgSrc : 'application/Images/Assets/icons/recipet.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.Payments', name : 'Payments' , SelimgSrc:'application/Images/Assets/icons/payment.png' , imgSrc : 'application/Images/Assets/icons/payment.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.Expense', name : 'Expense' , SelimgSrc:'application/Images/Assets/icons/expense.png' , imgSrc : 'application/Images/Assets/icons/expense.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.Journal', name : 'Journal' , SelimgSrc:'application/Images/Assets/icons/journal.png' , imgSrc : 'application/Images/Assets/icons/journal.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.Contra', name : 'Contra' , SelimgSrc:'application/Images/Assets/icons/contra.png' , imgSrc : 'application/Images/Assets/icons/contra.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.CreditNote', name : 'Credit Note' , SelimgSrc:'application/Images/Assets/icons/credit note.png' , imgSrc : 'application/Images/Assets/icons/credit note.png', glyphClasses : 'glyphicon glyphicon-signal'},
+                {url : 'Home.DebitNote', name : 'Debit Note' , SelimgSrc:'application/Images/Assets/icons/debit note.png' , imgSrc : 'application/Images/Assets/icons/debit note.png', glyphClasses : 'glyphicon glyphicon-signal'}
                 //{url : 'Home.SalesOrder', name : 'Sales Order' ,SelimgSrc:'application/Images/Assets/Sale_Order_active.png' , imgSrc : 'application/Images/Assets/Sale_Order.png', glyphClasses : 'glyphicon glyphicon-signal'},
                 //{url : 'Home.PurchaseOrder', name : 'Purchase Order' , SelimgSrc:'application/Images/Assets/Purchase_Order_active.png' , imgSrc : 'application/Images/Assets/Purchase_Order.png', glyphClasses : 'glyphicon glyphicon-signal'}
         ],
@@ -7366,14 +7366,21 @@ app.factory('heightCalc',function($timeout){
     }
 });
 
-
-
-/*$timeout(function(){
-    var headerHeight = $('.ui-grid-header-cell').height();
-    console.log('headerHeight',headerHeight);    
-},500);*/
-
-
+app.filter( 'camelCase', function ()
+     {
+         var camelCaseFilter = function ( input )
+         {
+             var words = input;
+             var firstLetter = words.charAt(0).toUpperCase();
+             var remaining = "";
+             for ( var i = 1, len = words.length; i < len; i++ ) {
+                remaining = remaining+words.charAt(i).toLowerCase();
+             }
+             return firstLetter + remaining;
+         };
+         
+         return camelCaseFilter;
+     } )
 app.service('inventoryServices',function($http , CONSTANTS , $q){
     this.getStockCount = function(prod){
         return $http.get(CONSTANTS.service[CONSTANTS.appLevel].stockCountList);

@@ -2,7 +2,7 @@
         <div class="col-xs-12 header">
         <div class="col-xs-3 brandName">COMPANY NAME & FINANCIAL YEAR</div>
         <div class="col-xs-9 noPadding">
-                <div class="col-xs-offset-5 col-xs-2 headerMenu noPadding">
+                <div class="col-xs-offset-7 col-xs-2 headerMenu noPadding">
                         <ul class="noPadding">
 
                         <li ui-sref="Home.Organization">
@@ -11,7 +11,7 @@
                                 </span>
                                 
                                 <span ng-if="isActive =='Org Level'">
-                                        <img  height="20" width="20" ng-src="application/Images/Assets/Admin_Icons/org_setting_active.png"/>
+                                        <img  height="20" width="20" ng-src="application/Images/Assets/icons/admin/icon_1_select.png"/>
                                 </span>                                     
                         </li>
                         <li ui-sref="Home.Help">
@@ -20,7 +20,7 @@
                                 </span>
                                 
                                 <span ng-if="isActive =='Help'">
-                                        <img  height="20" width="20" ng-src="application/Images/Assets/Admin_Icons/help_active.png"/>
+                                        <img  height="20" width="20" ng-src="application/Images/Assets/icons/admin/help_select.png"/>
                                 </span>                                     
                         </li>
                         <li ui-sref="Home.Notification">
@@ -38,49 +38,76 @@
                                         </span>
                                         
                                         <span ng-if="isActive =='Application Level'">
-                                                <img  height="20" width="20" ng-src="application/Images/Assets/Admin_Icons/admin_setting_active.png"/>
+                                                <img  height="20" width="20" ng-src="application/Images/Assets/icons/admin/icon_2_select.png"/>
                                         </span>                                     
                                 </li>
                         </ul>
                 </div>
                 <div class="userProfile col-xs-2 marginLeft4cent marginRight4cent">
-                                <div class="col-xs-7 topPadding10 noPadding">
+                                <div class="col-xs-7 topPadding20 noPadding">
                                         <div class="name">Hello Name</div>
-                                        <div class="subName">You are</div>
+                                        <!--<div class="subName">You are</div>-->
                                 </div>
-                                <div class="col-xs-5 noPadding topPadding5">
-                                        <img class="marginLeft5" src="application/Images/Assets/profile icons/avatarImg.png" width="45" height="45">
+                                <div class="col-xs-5 noPadding topPadding5 dropdown">
+                                        <img class="marginLeft5 dropdown-toggle" data-toggle="dropdown" src="application/Images/Assets/profile icons/avatarImg.png" width="45" height="45">
+                                       <div class="dropdown-menu dropdown-menu-left">
+                                                <div class="col-xs-4">Name</div>
+                                                <div class="col-xs-8">John Ark</div>
+
+                                                <div class="col-xs-4">Role</div>
+                                                <div class="col-xs-8">Manager</div>
+
+                                                <div class="col-xs-4">Contact</div>
+                                                <div class="col-xs-8">9856856589</div>
+
+                                                <div class="col-xs-4">Email</div>
+                                                <div class="col-xs-8">John@gmail.com</div>
+
+                                                <div class="col-xs-4">Address</div>
+                                                <div class="col-xs-8">Kondapur</div>
+
+                                                <div class="divider"></div>
+                                                        <div class="col-xs-4">
+                                                         <md-button class="md-raised md-primary ifBold ifWhite">Edit</md-button>
+                                                        </div>
+                                                                <div class="col-xs-8">
+                                                                                <md-button class="md-raised md-primary ifBold ifWhite">Logout</md-button>
+                                                                </div>
+                                               
+                                       </div>
                                 </div>
                 </div>
-                <div class="btn logoutBtn col-xs-1 topMargin10 text-center">
+                <!--<div class="btn logoutBtn col-xs-1 topMargin10 text-center">
                         <a>Logout</a>
-                </div>
+                </div>-->
         </div>
 </div>
 <div class="col-xs-12 subHeader noPadding"  ng-if="showNavigations">
-        <div ui-sref="Home.Dashboard" class="noPadding subHeaderListImg">
-                <img src="application/Images/Assets/siri_logo.png" height="30"/>
+        <div ui-sref="Home.Dashboard" class="noPadding subHeaderListImg" style="padding-top: 15px !important;">
+                <!--<img src="application/Images/Assets/siri_logo.png" height="30"/>-->
+                <span>SIRI</span>
+                <span> BOOKS</span>
         </div>
-        <div class="col-xs-1 subHeaderList" ng-repeat="options in headMenuOptions" ui-sref="{{options.url}}" ng-class="{setActiveHeadBar: isActive == '{{options.name}}'}">
-                <div class="paddingBottom10">
+        <div class="col-xs-2 subHeaderList normalColor" ng-repeat="options in headMenuOptions" ui-sref="{{options.url}}" ng-class="{setActiveHeadBar: isActive == '{{options.name}}'}">
+                <div class="paddingBottom10" style="display:inline-block;padding-right:5px;">
                         <span ng-if="isActive === options.name">
-                                <img  height="25" width="25" ng-src="{{options.SelimgSrc}}" />
+                                <img  height="20" width="20" ng-src="{{options.SelimgSrc}}" />
                         </span>
                         
                         <span ng-if="isActive !== options.name">
-                                <img  height="25" width="25" ng-src="{{options.imgSrc}}"/>
+                                <img  height="20" width="20" ng-src="{{options.imgSrc}}"/>
                         </span>
                  </div>
-                <div>{{options.name}}</div>
+                <div style="display:inline-block" class="capitalize">{{options.name | camelCase}}</div>
         </div>
 </div>
 
 <div class="col-xs-12 subHeaderOrgLevel noPadding"  ng-if="!showNavigations">
                 <div ng-click="backToHome()" class="col-xs-1 noPadding subHeaderListImgOrg">
-                        <img src="application/Images/Assets/Main_Menu_Icon.png" height="20" width="30"/>
+                        <img src="application/Images/Assets/Main_Menu_Icon.png" height="20" width="20"/>
                 </div>
-                <div class="col-xs-1 subHeaderOrgList" ng-repeat="options in organizationNavigation" ui-sref="{{options.url}}" ng-class="{setActiveSubHeadBar: isSubActive == '{{options.name}}'}">
-                        <div class="paddingBottom10">
+                <div class="col-xs-4 subHeaderOrgList" ng-repeat="options in organizationNavigation" ui-sref="{{options.url}}" ng-class="{setActiveSubHeadBar: isSubActive == '{{options.name}}'}">
+                        <div class="paddingBottom10" style="display:inline-block;padding-right:5px;">
                                 <span ng-if="isSubActive === options.name">
                                         <img  height="25" width="25" ng-src="{{options.SelimgSrc}}" />
                                 </span>
@@ -89,24 +116,24 @@
                                         <img  height="25" width="25" ng-src="{{options.imgSrc}}"/>
                                 </span>
                          </div>
-                        <div>{{options.name}}</div>
+                        <div style="display:inline-block">{{options.name}}</div>
                 </div>
         </div>
 
 </div>
 <div class="container-fluid noPadding noMargin" layout="row" flex>
-        <md-sidenav md-is-locked-open="true" class="sideNav sideMenu noPadding text-center" ng-if="showNavigations">
-                <div ng-repeat="options in sideMenuOptions" ui-sref="{{options.url}}" ng-class="{setActiveSideBar: isActive == '{{options.name}}'}">
-                        <div class="paddingBottom5">
-                                <span ng-if="isActive === options.name">
-                                        <img  height="25" width="25" ng-src="{{options.SelimgSrc}}" />
+        <md-sidenav md-is-locked-open="true" class="sideNav sideMenu noPadding" ng-if="showNavigations">
+                <div ng-repeat="options in sideMenuOptions" ui-sref="{{options.url}}" class="normalColor" ng-class="{setActiveSideBar: isActive == '{{options.name}}'}">
+                        <div class="paddingBottom5" style="display:inline-block;padding-right:5px;">
+                                <span ng-if="isActive === options.name" style="padding: 0px 10px;">
+                                        <img  height="20" width="20" ng-src="{{options.SelimgSrc}}" />
                                 </span>
                                 
-                                <span ng-if="isActive !== options.name">
-                                        <img  height="25" width="25" ng-src="{{options.imgSrc}}"/>
+                                <span ng-if="isActive !== options.name" style="padding: 0px 10px;">
+                                        <img  height="20" width="20" ng-src="{{options.imgSrc}}"/>
                                 </span>
                         </div>
-                        <div>{{options.name}}</div>
+                        <div style="display:inline-block;padding-right:5px;padding-top:10px;">{{options.name}}</div>
                 </div>
         </md-sidenav>
       
